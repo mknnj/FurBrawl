@@ -6,8 +6,10 @@ using UnityEngine;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
-    public GameObject ConnectedScreen;
-    public GameObject DisconnectedScreen;
+    public GameObject ConnectedScreen; // a UI object under which there are the UI elements responsible for connecting to a room/ joining a room
+    public GameObject DisconnectedScreen; // a simple RED UI interface shows that we've disconnected 
+    /*DisconnectedScreen can be furthe improved to have a 'reconnect' button*/
+
     public string Error;
     public void  OnClick_ConnectBtn()
     {
