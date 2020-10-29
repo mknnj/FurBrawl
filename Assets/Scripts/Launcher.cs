@@ -10,19 +10,19 @@ public class Launcher : MonoBehaviourPunCallbacks
     public GameObject DisconnectedScreen; // a simple RED UI interface shows that we've disconnected 
     /*DisconnectedScreen can be furthe improved to have a 'reconnect' button*/
 
-    public string Error;
+    public string Error; //the error message (not being used, yet)
     public void  OnClick_ConnectBtn()
     {
-        PhotonNetwork.ConnectUsingSettings();
+        PhotonNetwork.ConnectUsingSettings(); //uses the API_ID from settings to connect to Photon Server
     }
 
     public override void OnConnectedToMaster()
     {
-        PhotonNetwork.JoinLobby(TypedLobby.Default);
-        
+        PhotonNetwork.JoinLobby(TypedLobby.Default); //a mandatory extension to ConnectUsingSettings
+
     }
 
-    public override void OnJoinedLobby()
+    public override void OnJoinedLobby() // 
     {
         if (DisconnectedScreen.activeSelf)
             DisconnectedScreen.SetActive(false);

@@ -5,6 +5,8 @@ using Photon.Pun;
 using System;
 using System.Runtime.InteropServices.ComTypes;
 
+[RequireComponent(typeof(UserInput))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class Cat : MonoBehaviourPun, IPunObservable
 {
     public PhotonView pv;
@@ -13,12 +15,21 @@ public class Cat : MonoBehaviourPun, IPunObservable
     [SerializeField] private int _hearts;
     [SerializeField] private bool _canBeHit;
     private Vector3 smoothMove;
+    private UserInput userInput;
+    private Rigidbody2D rb;
+
+    private void Awake()
+    {
+        userInput = GetComponent<UserInput>();
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     private void Update()
     {
         if (photonView.IsMine)
         {
-            ProcesInput(); // if we're the player process user input and update location
+            Move(); // if we're the player process user input and update location
+            Jump(); // NOT SYNCED YET
         }
         else
         {
@@ -33,9 +44,17 @@ public class Cat : MonoBehaviourPun, IPunObservable
 
     }
 
-    private void ProcesInput() //simple
+    private void Jump() //simple
     {
-        var move = new Vector3(Input.GetAxis("Horizontal"), 0);
+        if (userInput.jumpInput)
+        {
+            rb.AddForce(Vector3.up * (5 - _furLevel), ForceMode2D.Impulse);
+        }
+
+    }
+    private void Move() //simple
+    {
+        var move = userInput.movementInput;
         transform.position += move * _speed * Time.deltaTime;
 
     }
@@ -47,7 +66,7 @@ public class Cat : MonoBehaviourPun, IPunObservable
             stream.SendNext(transform.position); // sends our current position to everbody else
         } else if (stream.IsReading)
         {
-            smoothMove = (Vector3)stream.ReceiveNext();
+            smoothMove = (Vector3) stream.ReceiveNext();
         }
     }
 } 
