@@ -13,13 +13,13 @@ public class Launcher : MonoBehaviourPunCallbacks
     public string Error; //the error message (not being used, yet)
     public void  OnClick_ConnectBtn()
     {
+        PhotonNetwork.SendRate = 40;
         PhotonNetwork.ConnectUsingSettings(); //uses the API_ID from settings to connect to Photon Server
     }
 
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby(TypedLobby.Default); //a mandatory extension to ConnectUsingSettings
-
     }
 
     public override void OnJoinedLobby() // 
