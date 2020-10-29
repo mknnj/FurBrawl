@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6863352722705761174}
   m_Layer: 0
   m_Name: cat1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -171,8 +171,9 @@ MonoBehaviour:
   pv: {fileID: 858362166988121072}
   _speed: 5
   _furLevel: 0
-  _hearts: 0
+  _hearts: 4
   _canBeHit: 0
+  extraHeight: 0.491
 --- !u!114 &6863352722705761174
 MonoBehaviour:
   m_ObjectHideFlags: 0

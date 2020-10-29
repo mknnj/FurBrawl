@@ -12,8 +12,10 @@ public class Cat : MonoBehaviourPun, IPunObservable
     public PhotonView pv;
     [SerializeField] private float _speed = 5;
     [SerializeField] private int _furLevel; //will act like a weight, too (probably?)
-    [SerializeField] private int _hearts;
+    [SerializeField] [Range(1, 9)] private int _hearts;
     [SerializeField] private bool _canBeHit;
+    [SerializeField] [Range (0, 1)] private float extraHeight = 0.01f;
+    private BoxCollider2D _boxCollider;
     private Vector3 smoothMove;
     private UserInput userInput;
     private Rigidbody2D rb;
@@ -22,6 +24,7 @@ public class Cat : MonoBehaviourPun, IPunObservable
     {
         userInput = GetComponent<UserInput>();
         rb = GetComponent<Rigidbody2D>();
+        _boxCollider = GetComponent<BoxCollider2D>();
     }
 
     private void Update()
@@ -52,6 +55,8 @@ public class Cat : MonoBehaviourPun, IPunObservable
         }
 
     }
+
+    //Check if the player is grounded, otherwise he won't be able to jump
     private void Move() //simple
     {
         var move = userInput.movementInput;
@@ -67,6 +72,25 @@ public class Cat : MonoBehaviourPun, IPunObservable
         } else if (stream.IsReading)
         {
             smoothMove = (Vector3) stream.ReceiveNext();
+        }
+    }
+
+    public void Die(String cause) { 
+        _hearts -= 1; 
+        if (_hearts == 0) {
+            print("player <...> died due to: " + cause);
+            gameObject.SetActive(false);
+        } else {
+            Vector3 respawnPoint = Utility.getRandomSpawnLocation();
+            switch (cause)
+            {
+                case "Fall":
+                    print("player <...> fell from an high place, " + _hearts + " lives left");
+                    break;
+                default:
+                    break;
+            }
+            transform.position = respawnPoint;
         }
     }
 } 
