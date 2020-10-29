@@ -13,8 +13,9 @@ public class Cat : MonoBehaviourPun, IPunObservable
     [SerializeField] private float _speed = 5;
     [SerializeField] private int _furLevel; //will act like a weight, too (probably?)
     [SerializeField] [Range(1, 9)] private int _hearts;
-    [SerializeField] private bool _canBeHit;
-    [SerializeField] [Range (0, 1)] private float extraHeight = 0.01f;
+    [SerializeField] private bool _canBeHit = true;
+    [SerializeField] private float invincibility;
+    
     private BoxCollider2D _boxCollider;
     private Vector3 smoothMove;
     private UserInput userInput;
@@ -87,10 +88,19 @@ public class Cat : MonoBehaviourPun, IPunObservable
                 case "Fall":
                     print("player <...> fell from an high place, " + _hearts + " lives left");
                     break;
-                default:
-                    break;
             }
+
+            _canBeHit = false;
             transform.position = respawnPoint;
+            StartCoroutine(InvincibilityFrame(invincibility));
         }
+    }
+
+    private IEnumerator InvincibilityFrame(float time)
+    {
+        yield return new WaitForSeconds(time);
+        _canBeHit = true;
+
+        yield return null;
     }
 } 
