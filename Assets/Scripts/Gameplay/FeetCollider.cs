@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class FeetCollider : MonoBehaviour
 {
+    [SerializeField]
     private bool _isOnGround = false;
 
     public bool IsOnGround => _isOnGround;

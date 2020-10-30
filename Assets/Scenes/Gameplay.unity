@@ -363,6 +363,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: LeftBorder
       objectReference: {fileID: 0}
+    - target: {fileID: 2808591896892279844, guid: 25ed0bf3908f6ab4ab44fcaccea5a2cf,
+        type: 3}
+      propertyPath: m_TagString
+      value: Border
+      objectReference: {fileID: 0}
     - target: {fileID: 2808591896892279845, guid: 25ed0bf3908f6ab4ab44fcaccea5a2cf,
         type: 3}
       propertyPath: isBottomBorder
@@ -789,6 +794,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RightBorder
+      objectReference: {fileID: 0}
+    - target: {fileID: 2808591896892279844, guid: 25ed0bf3908f6ab4ab44fcaccea5a2cf,
+        type: 3}
+      propertyPath: m_TagString
+      value: Border
       objectReference: {fileID: 0}
     - target: {fileID: 2808591896892279845, guid: 25ed0bf3908f6ab4ab44fcaccea5a2cf,
         type: 3}

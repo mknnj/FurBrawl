@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 858362166988121072}
   - component: {fileID: 858362166988121075}
   - component: {fileID: 6863352722705761174}
-  - component: {fileID: 622882762613144136}
+  - component: {fileID: 8824553030313071}
   m_Layer: 0
   m_Name: cat1
   m_TagString: Player
@@ -32,9 +32,10 @@ Transform:
   m_GameObject: {fileID: 858362166988121074}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.4368773, y: -0.6703415, z: -6.83}
-  m_LocalScale: {x: 0.19849883, y: 0.19335705, z: 1}
+  m_LocalScale: {x: 0.19, y: 0.19, z: 1}
   m_Children:
   - {fileID: 1440273441896099117}
+  - {fileID: 2109694103428204305}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -154,7 +155,7 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   ObservedComponents:
-  - {fileID: 622882762613144136}
+  - {fileID: 8824553030313071}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -172,11 +173,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pv: {fileID: 858362166988121072}
   _speed: 5
-  _furLevel: 0
+  _furLevel: 4
   _hearts: 4
   _canBeHit: 0
   invincibility: 0
   _jumpIntensity: 8.5
+  _throwPoint: {fileID: 2109694103428204305}
+  _throwWaitTime: 0.2
+  _isAttacking: 0
+  _furBallPrefab: {fileID: 6024337074199590728, guid: fa925b6b1e8acf3419f4766f061ce245,
+    type: 3}
+  _pushImpact: 5
   _feetCollider: {fileID: 0}
 --- !u!114 &6863352722705761174
 MonoBehaviour:
@@ -190,7 +197,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b64f20a5e41f4d4faf2d691ed433ea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &622882762613144136
+  _mousebutton: 0
+--- !u!114 &8824553030313071
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -199,30 +207,43 @@ MonoBehaviour:
   m_GameObject: {fileID: 858362166988121074}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8efc6b1d64977384eb3405357896c656, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PositionModel:
-    SynchronizeEnabled: 1
-    TeleportEnabled: 1
-    TeleportIfDistanceGreaterThan: 5
-    InterpolateOption: 2
-    InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 30
-    ExtrapolateOption: 2
-    ExtrapolateSpeed: 1
-    ExtrapolateIncludingRoundTripTime: 1
-    ExtrapolateNumberOfStoredPositions: 1
-  m_RotationModel:
-    SynchronizeEnabled: 0
-    InterpolateOption: 1
-    InterpolateRotateTowardsSpeed: 180
-    InterpolateLerpSpeed: 5
-  m_ScaleModel:
-    SynchronizeEnabled: 0
-    InterpolateOption: 0
-    InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 0
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
+--- !u!1 &1394613353438291591
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2109694103428204305}
+  m_Layer: 0
+  m_Name: ThrowPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2109694103428204305
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1394613353438291591}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.414549, y: -0.22678629, z: 0}
+  m_LocalScale: {x: 5.2631583, y: 5.2631583, z: 1}
+  m_Children: []
+  m_Father: {fileID: 858362166988121076}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8774287444621883613
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,3 +314,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899897b3b00ea014fb5b455b51d17d1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isOnGround: 0
