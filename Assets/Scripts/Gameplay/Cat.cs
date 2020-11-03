@@ -22,6 +22,8 @@ public class Cat : MonoBehaviourPun
     [SerializeField] private bool _isAttacking=false;
     [SerializeField]private GameObject _furBallPrefab;
     [SerializeField] private float _pushImpact=5f;
+    [SerializeField] private bool _hitted=false;
+    [SerializeField] private float _hittedWaitTime = 0.2f;
     
     private BoxCollider2D _boxCollider;
     private Vector3 smoothMove;
@@ -64,8 +66,11 @@ public class Cat : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            Move(); // if we're the player process user input and update location
-            Jump(); // NOT SYNCED YET
+            if (!_hitted)
+            {
+                Move(); // if we're the player process user input and update location
+                Jump(); // NOT SYNCED YET
+            }
         }
     }
 
@@ -144,15 +149,23 @@ public class Cat : MonoBehaviourPun
         
     }
 
+    private IEnumerator HitKnockoutTime()
+    {
+        yield return  new WaitForSeconds(_hittedWaitTime);
+        _hitted = false;
+    }
+
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("trigger with "+other.name);
         if (other.CompareTag("FurBall"))
-            {
-                Debug.Log(photonView.Owner+" hitted by a furball");
-                rb.AddForce(other.GetComponent<FurBall>().direction * _pushImpact, ForceMode2D.Impulse);
-            }
+        {
+            _hitted = true;
+            Debug.Log(photonView.Owner+" hitted by a furball");
+            rb.AddForce(other.GetComponent<FurBall>().direction * _pushImpact, ForceMode2D.Impulse);
+            StartCoroutine(HitKnockoutTime());
+        }
         
     }
 

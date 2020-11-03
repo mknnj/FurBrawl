@@ -16,11 +16,16 @@ public class FurBall : MonoBehaviour
     [SerializeField] private float _leftLimit;
     public Player Launcher { get; private set; }
     private Transform _transform;
+    private Rigidbody2D _rigidbody;
     public Vector3 direction;
+
+   // public bool hit = false;
+    
 
     private void Awake()
     {
         _transform = GetComponent<Transform>();
+        _rigidbody = GetComponent<Rigidbody2D>();
         direction = _transform.right;
         Debug.Log("Furball Launched");
         
@@ -28,16 +33,18 @@ public class FurBall : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _transform.position = _transform.position + _speed * Time.fixedDeltaTime * direction;
-        /*if (_transform.position.x > _rightLimit || _transform.position.x <_leftLimit)
+        //if(!hit)
+            _transform.position = _transform.position + _speed * Time.fixedDeltaTime * direction;
+        if (_transform.position.x > _rightLimit || _transform.position.x <_leftLimit)
         {
             Destroy(gameObject);
-        }*/
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log(other.name+ " furball collided");
+        //hit = true;
         Destroy(gameObject);
     }
 
@@ -45,5 +52,7 @@ public class FurBall : MonoBehaviour
     {
         Launcher = owner;
         _lag = lag;
+        _rigidbody.velocity = direction * _speed;
+        _rigidbody.position += _rigidbody.velocity * lag;
     }
 }

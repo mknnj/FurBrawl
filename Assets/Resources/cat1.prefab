@@ -177,13 +177,15 @@ MonoBehaviour:
   _hearts: 4
   _canBeHit: 0
   invincibility: 0
-  _jumpIntensity: 8.5
+  _jumpIntensity: 12.5
   _throwPoint: {fileID: 2109694103428204305}
   _throwWaitTime: 0.2
   _isAttacking: 0
   _furBallPrefab: {fileID: 6024337074199590728, guid: fa925b6b1e8acf3419f4766f061ce245,
     type: 3}
   _pushImpact: 5
+  _hitted: 0
+  _hittedWaitTime: 0.2
   _feetCollider: {fileID: 0}
 --- !u!114 &6863352722705761174
 MonoBehaviour:
@@ -238,7 +240,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394613353438291591}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.414549, y: -0.22678629, z: 0}
+  m_LocalPosition: {x: 3.31, y: -0.22678629, z: 0}
   m_LocalScale: {x: 5.2631583, y: 5.2631583, z: 1}
   m_Children: []
   m_Father: {fileID: 858362166988121076}
