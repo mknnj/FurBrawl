@@ -24,6 +24,7 @@ public class Cat : MonoBehaviourPun
     [SerializeField] private float _hittedWaitTime = 0.2f;
 
     
+    
     private BoxCollider2D _boxCollider;
     private Vector3 smoothMove;
     private UserInput userInput;
@@ -33,6 +34,9 @@ public class Cat : MonoBehaviourPun
     
     private void Awake()
     {
+
+
+
         userInput = GetComponent<UserInput>();
         rb = GetComponent<Rigidbody2D>();
         _boxCollider = GetComponent<BoxCollider2D>();
@@ -111,6 +115,10 @@ public class Cat : MonoBehaviourPun
             {
                 case "Fall":
                     print("player <...> fell from an high place, " + _hearts + " lives left");
+
+                    //YASEEN: Play sound
+                    FindObjectOfType<AudioManager>().Play("scream");
+
                     break;
             }
 
@@ -146,10 +154,15 @@ public class Cat : MonoBehaviourPun
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+
         Debug.Log("trigger with "+other.name);
         if (other.CompareTag("FurBall") && _canBeHit)
         {
             _hitted = true;
+
+            //YASEEN: Play sound
+            FindObjectOfType<AudioManager>().Play("scream");
+
             Debug.Log(photonView.Owner+" hitted by a furball");
             rb.AddForce(other.GetComponent<FurBall>().direction * _pushImpact, ForceMode2D.Impulse);
             StartCoroutine(HitKnockoutTime());
