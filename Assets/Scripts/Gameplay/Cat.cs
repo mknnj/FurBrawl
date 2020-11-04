@@ -30,19 +30,13 @@ public class Cat : MonoBehaviourPun
     private UserInput userInput;
     private Rigidbody2D rb;
     public FeetCollider _feetCollider;
-
     
-    
-
     private void Awake()
     {
         userInput = GetComponent<UserInput>();
         rb = GetComponent<Rigidbody2D>();
         _boxCollider = GetComponent<BoxCollider2D>();
         _feetCollider = GetComponentInChildren<FeetCollider>();
-        
-
-
     }
 
     private void Update()
@@ -55,6 +49,10 @@ public class Cat : MonoBehaviourPun
                 photonView.RPC("ThrowRPC", RpcTarget.AllViaServer, _throwPoint.position,_throwPoint.rotation);
                 StartCoroutine(ThrowWait());
             }
+            if (!_hitted)
+            {
+                Jump(); 
+            }
         }
         /*else
         {
@@ -64,13 +62,9 @@ public class Cat : MonoBehaviourPun
 
     private void FixedUpdate()
     {
-        if (photonView.IsMine)
+        if (photonView.IsMine && !_hitted)
         {
-            if (!_hitted)
-            {
-                Move(); // if we're the player process user input and update location
-                Jump(); // NOT SYNCED YET
-            }
+            Move(); // if we're the player process user input and update location
         }
     }
 
@@ -87,7 +81,6 @@ public class Cat : MonoBehaviourPun
         {
             rb.AddForce(Vector3.up * (_jumpIntensity - _furLevel), ForceMode2D.Impulse);
         }
-
     }
 
     //Check if the player is grounded, otherwise he won't be able to jump
@@ -97,7 +90,6 @@ public class Cat : MonoBehaviourPun
         //transform.position += move * _speed * Time.deltaTime;
         rb.velocity=new Vector2(move*_speed,rb.velocity.y);
     }
-
     
     /*public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) //manages read/write streams to the server
     {
@@ -130,8 +122,6 @@ public class Cat : MonoBehaviourPun
         }
     }
     
-    
-
     private IEnumerator InvincibilityFrame(float time)
     {
         
@@ -159,14 +149,13 @@ public class Cat : MonoBehaviourPun
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("trigger with "+other.name);
-        if (other.CompareTag("FurBall"))
+        if (other.CompareTag("FurBall") && _canBeHit)
         {
             _hitted = true;
             Debug.Log(photonView.Owner+" hitted by a furball");
             rb.AddForce(other.GetComponent<FurBall>().direction * _pushImpact, ForceMode2D.Impulse);
             StartCoroutine(HitKnockoutTime());
         }
-        
     }
 
     [PunRPC]

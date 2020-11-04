@@ -213,6 +213,11 @@ PrefabInstance:
       propertyPath: killsOnTouch
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2808591896892279846, guid: 25ed0bf3908f6ab4ab44fcaccea5a2cf,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2808591896892279847, guid: 25ed0bf3908f6ab4ab44fcaccea5a2cf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -396,6 +401,11 @@ PrefabInstance:
     - target: {fileID: 2808591896892279846, guid: 25ed0bf3908f6ab4ab44fcaccea5a2cf,
         type: 3}
       propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2808591896892279846, guid: 25ed0bf3908f6ab4ab44fcaccea5a2cf,
+        type: 3}
+      propertyPath: m_UsedByEffector
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2808591896892279847, guid: 25ed0bf3908f6ab4ab44fcaccea5a2cf,
@@ -830,6 +840,11 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2808591896892279846, guid: 25ed0bf3908f6ab4ab44fcaccea5a2cf,
+        type: 3}
+      propertyPath: m_UsedByEffector
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2808591896892279847, guid: 25ed0bf3908f6ab4ab44fcaccea5a2cf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -885,7 +900,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 25ed0bf3908f6ab4ab44fcaccea5a2cf, type: 3}
 --- !u!4 &1910428088 stripped
 Transform:
