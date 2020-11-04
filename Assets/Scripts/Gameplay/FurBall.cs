@@ -33,6 +33,10 @@ public class FurBall : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+        //YASEEN: Revese speed if player facing other direction
+
+
         //if(!hit)
             _transform.position = _transform.position + _speed * Time.fixedDeltaTime * direction;
         if (_transform.position.x > _rightLimit || _transform.position.x <_leftLimit)
@@ -48,10 +52,17 @@ public class FurBall : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void SetData(Player owner, float lag)
+    public void SetData(Player owner, float lag, bool oppositeDirection)
     {
         Launcher = owner;
         _lag = lag;
+
+        //YASEEN: if oppositeDirection, then the speed is flipped, too :P
+        if (oppositeDirection)
+        {
+            _speed *= -1;
+        }
+
         _rigidbody.velocity = direction * _speed;
         _rigidbody.position += _rigidbody.velocity * lag;
     }

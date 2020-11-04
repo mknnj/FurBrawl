@@ -28,7 +28,7 @@ namespace Photon.Pun
 
         public bool m_SynchronizePosition = true;
         public bool m_SynchronizeRotation = true;
-        public bool m_SynchronizeScale = false;
+        public bool m_SynchronizeScale = true;
 
         bool m_firstTake = false;
 

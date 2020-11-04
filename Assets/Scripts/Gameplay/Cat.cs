@@ -1,9 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using System;
-using System.Runtime.InteropServices.ComTypes;
 
 [RequireComponent(typeof(UserInput))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -11,7 +9,7 @@ public class Cat : MonoBehaviourPun
 {
     public PhotonView pv;
     [SerializeField] private float _speed = 5;
-    [Range(1,4)][SerializeField] private int _furLevel=4; //will act like a weight, too (probably?)
+    [Range(1,40)][SerializeField] private int _furLevel=4; //will act like a weight, too (probably?)
     [SerializeField] [Range(1, 9)] private int _hearts;
     [SerializeField] private bool _canBeHit = true;
     [SerializeField] private float invincibility;
@@ -20,16 +18,18 @@ public class Cat : MonoBehaviourPun
     [SerializeField] private Transform _throwPoint;
     [SerializeField] private float _throwWaitTime = 0.2f;
     [SerializeField] private bool _isAttacking=false;
-    [SerializeField]private GameObject _furBallPrefab;
+    [SerializeField] private GameObject _furBallPrefab;
     [SerializeField] private float _pushImpact=5f;
     [SerializeField] private bool _hitted=false;
     [SerializeField] private float _hittedWaitTime = 0.2f;
+
     
     private BoxCollider2D _boxCollider;
     private Vector3 smoothMove;
     private UserInput userInput;
     private Rigidbody2D rb;
     public FeetCollider _feetCollider;
+    private SpriteRenderer _SR;
     
     private void Awake()
     {
@@ -37,6 +37,7 @@ public class Cat : MonoBehaviourPun
         rb = GetComponent<Rigidbody2D>();
         _boxCollider = GetComponent<BoxCollider2D>();
         _feetCollider = GetComponentInChildren<FeetCollider>();
+        _SR = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
@@ -68,12 +69,7 @@ public class Cat : MonoBehaviourPun
         }
     }
 
-    /*private void smoothMovement()
-    {
-        //gets the new position of OTHER cats (according to when is this function called), and smoothes the transition between their past position and new one
-        transform.position = Vector3.Lerp(transform.position, smoothMove, Time.deltaTime * 10);
 
-    }*/
 
     private void Jump() //simple
     {
@@ -89,18 +85,20 @@ public class Cat : MonoBehaviourPun
         float move = userInput.movementInput.x;
         //transform.position += move * _speed * Time.deltaTime;
         rb.velocity=new Vector2(move*_speed,rb.velocity.y);
+
+        //YASEEN: Flip spirit when moving to the other direction
+        if (rb.velocity.x < 0)
+        {
+            rb.transform.localScale = new Vector2(-Math.Abs(rb.transform.localScale.x), transform.localScale.y);
+            //_SR.flipX = true;
+
+        } else if (rb.velocity.x > 0)
+        {
+            rb.transform.localScale = new Vector2(Math.Abs(rb.transform.localScale.x), transform.localScale.y);
+            //_SR.flipX = false;
+        }
     }
     
-    /*public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) //manages read/write streams to the server
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(transform.position); // sends our current position to everbody else
-        } else if (stream.IsReading)
-        {
-            smoothMove = (Vector3) stream.ReceiveNext();
-        }
-    }*/
 
     public void Die(String cause) { 
         _hearts -= 1; 
@@ -164,7 +162,16 @@ public class Cat : MonoBehaviourPun
         Debug.Log("Furball RPC");
         float lag = (float) (PhotonNetwork.Time - info.SentServerTime);
         GameObject fb=Instantiate(_furBallPrefab, pos, q);
-        fb.GetComponent<FurBall>().SetData(photonView.Owner,Mathf.Abs(lag));
+
+
+        //YASEEN: 'oppositeDirection' Passes the info of the direction to the lil cute Furball <3 
+        bool oppositeDirection =false;
+        if (rb.transform.localScale.x < 0)
+        {
+            oppositeDirection = true;
+        }
+
+        fb.GetComponent<FurBall>().SetData(photonView.Owner,Mathf.Abs(lag),oppositeDirection);
         
     }
 } 
