@@ -584,6 +584,34 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1042876797}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1042876799 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3391098177095587878, guid: c91a770070ee2db4d9ca87633ac7985d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1042876797}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1042876800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042876799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  observableSearch: 2
+  Synchronization: 3
+  OwnershipTransfer: 0
+  ObservedComponents: []
+  viewIdField: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &1170777228
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -863,6 +891,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   catPrefab: {fileID: 858362166988121074, guid: eab2f13ab305c9a4c8acf141509badd9,
     type: 3}
+  milkPrefab: {fileID: 7100667282729621235, guid: e7f40eed274946b4e9476cb280839b22,
+    type: 3}
+  _maxMilkSpawned: 10
+  _timeBetweenMilkSpawns: 5
 --- !u!4 &1810841817
 Transform:
   m_ObjectHideFlags: 0
