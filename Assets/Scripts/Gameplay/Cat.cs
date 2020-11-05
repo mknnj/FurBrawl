@@ -13,7 +13,7 @@ public class Cat : MonoBehaviourPun
     [SerializeField] [Range(1,5)] private int maxFurLevel=4; //will act like a weight, too (probably?)
     [SerializeField] [Range(1,5)] private int furLevel;
     [SerializeField] [Range(1, 9)] private int _hearts;
-    [SerializeField] [Range(0, 3)] private float idleTime; //Sorre97: time for player drinking the milk, no input is accepted
+    [SerializeField] [Range(0, 3)] private float idleTime = 2; //Sorre97: time for player drinking the milk, no input is accepted during it
     [SerializeField] private bool _canBeHit = true;
     [SerializeField] private float invincibility;
     [SerializeField] private float _jumpIntensity = 5f;

@@ -21,12 +21,13 @@ public class EnvironmentManager : MonoBehaviourPun
 
     [SerializeField]  private int _maxMilkSpawned = 10;
     [SerializeField]  private float _timeBetweenMilkSpawns = 5f;
+    [SerializeField] private float firstMilkDelay = 5f;
 
     void Start()
     {
         CatSpawn();
         if (PhotonNetwork.IsMasterClient) //YASEEN: If I'm the owner of the scene ? 
-            StartCoroutine(spawnMilk(_maxMilkSpawned));
+            StartCoroutine(spawnMilk(_maxMilkSpawned, firstMilkDelay));
         else
             Debug.Log("NOT MASTER");
     }
@@ -40,9 +41,10 @@ public class EnvironmentManager : MonoBehaviourPun
     }
 
     // Update is called once per frame
- 
-    private IEnumerator spawnMilk(int maxNumber)
+    
+    private IEnumerator spawnMilk(int maxNumber, float delay)
     {
+        yield return new WaitForSeconds(delay);
         WaitForSeconds wait = new WaitForSeconds(_timeBetweenMilkSpawns);
         foreach (int value in System.Linq.Enumerable.Range(1, maxNumber))
         {
