@@ -49,7 +49,7 @@ public class EnvironmentManager : MonoBehaviourPun
 
             var spawnPosition = Utility.getRandomSpawnLocation();
             PhotonNetwork.Instantiate(milkPrefab.name, spawnPosition, milkPrefab.transform.rotation); //spawn milk :)
-            Debug.Log("MILK COOUUNT - " + value);
+            Debug.Log("MILK COUNT - " + value);
             yield return wait;
         }
     }

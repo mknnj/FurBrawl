@@ -893,7 +893,7 @@ MonoBehaviour:
     type: 3}
   milkPrefab: {fileID: 7100667282729621235, guid: e7f40eed274946b4e9476cb280839b22,
     type: 3}
-  _maxMilkSpawned: 10
+  _maxMilkSpawned: 3
   _timeBetweenMilkSpawns: 5
 --- !u!4 &1810841817
 Transform:

@@ -176,8 +176,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pv: {fileID: 858362166988121072}
   _speed: 5
-  _furLevel: 4
+  maxFurLevel: 4
   _hearts: 4
+  idleTime: 0
   _canBeHit: 0
   invincibility: 0
   _jumpIntensity: 12.5
@@ -189,6 +190,8 @@ MonoBehaviour:
   _pushImpact: 5
   _hitted: 0
   _hittedWaitTime: 0.2
+  canMove: 1
+  furLevel: 0
   _feetCollider: {fileID: 0}
 --- !u!114 &6863352722705761174
 MonoBehaviour:

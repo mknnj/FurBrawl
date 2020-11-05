@@ -2,6 +2,7 @@
 using UnityEngine;
 using Photon.Pun;
 using System;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(UserInput))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -9,12 +10,13 @@ public class Cat : MonoBehaviourPun
 {
     public PhotonView pv;
     [SerializeField] private float _speed = 5;
-    [Range(1,40)][SerializeField] private int _furLevel=4; //will act like a weight, too (probably?)
+    [SerializeField] [Range(1,5)] private int maxFurLevel=4; //will act like a weight, too (probably?)
+    [SerializeField] [Range(1,5)] private int furLevel;
     [SerializeField] [Range(1, 9)] private int _hearts;
+    [SerializeField] [Range(0, 3)] private float idleTime; //Sorre97: time for player drinking the milk, no input is accepted
     [SerializeField] private bool _canBeHit = true;
     [SerializeField] private float invincibility;
     [SerializeField] private float _jumpIntensity = 5f;
-
     [SerializeField] private Transform _throwPoint;
     [SerializeField] private float _throwWaitTime = 0.2f;
     [SerializeField] private bool _isAttacking=false;
@@ -23,8 +25,8 @@ public class Cat : MonoBehaviourPun
     [SerializeField] private bool _hitted=false;
     [SerializeField] private float _hittedWaitTime = 0.2f;
 
-    
-    
+    [SerializeField] private bool canMove = true;
+
     private BoxCollider2D _boxCollider;
     private Vector3 smoothMove;
     private UserInput userInput;
@@ -33,28 +35,26 @@ public class Cat : MonoBehaviourPun
     private SpriteRenderer _SR;
     
     private void Awake()
-    {
-
-
-
+    { 
         userInput = GetComponent<UserInput>();
         rb = GetComponent<Rigidbody2D>();
         _boxCollider = GetComponent<BoxCollider2D>();
         _feetCollider = GetComponentInChildren<FeetCollider>();
         _SR = GetComponent<SpriteRenderer>();
+        furLevel = maxFurLevel;
     }
 
     private void Update()
     {
         if (photonView.IsMine)
         {
-            if (!_isAttacking && userInput.throwInput && _furLevel>1)
+            if (canMove && !_isAttacking && userInput.throwInput && furLevel >1)
             {
                 _isAttacking = true;
                 photonView.RPC("ThrowRPC", RpcTarget.AllViaServer, _throwPoint.position,_throwPoint.rotation);
                 StartCoroutine(ThrowWait());
             }
-            if (!_hitted)
+            if (canMove && !_hitted)
             {
                 Jump(); 
             }
@@ -67,7 +67,7 @@ public class Cat : MonoBehaviourPun
 
     private void FixedUpdate()
     {
-        if (photonView.IsMine && !_hitted)
+        if (photonView.IsMine && !_hitted && canMove)
         {
             Move(); // if we're the player process user input and update location
         }
@@ -79,7 +79,7 @@ public class Cat : MonoBehaviourPun
     {
         if (_feetCollider.IsOnGround && userInput.jumpInput)
         {
-            rb.AddForce(Vector3.up * (_jumpIntensity - _furLevel), ForceMode2D.Impulse);
+            rb.AddForce(Vector3.up * (_jumpIntensity - maxFurLevel), ForceMode2D.Impulse);
         }
     }
 
@@ -102,8 +102,31 @@ public class Cat : MonoBehaviourPun
             //_SR.flipX = false;
         }
     }
-    
 
+    public bool CanMove()
+    {
+        return canMove;
+    }
+    
+    public void Drink()
+    {
+        canMove = false;
+        StartCoroutine(IdleCoroutine(idleTime));
+        if (furLevel == maxFurLevel) {
+            //Sorre97: if cat has already the max Fur there is something to do?
+        } else {
+            furLevel++;
+        }
+    }
+
+    private IEnumerator IdleCoroutine(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        canMove = true;
+        yield return null;
+    }
+    
     public void Die(String cause) { 
         _hearts -= 1; 
         if (_hearts == 0) {
@@ -123,14 +146,13 @@ public class Cat : MonoBehaviourPun
             }
 
             _canBeHit = false;
+            furLevel = maxFurLevel;
             transform.position = respawnPoint;
             StartCoroutine(InvincibilityFrame(invincibility));
         }
     }
-    
     private IEnumerator InvincibilityFrame(float time)
     {
-        
         yield return new WaitForSeconds(time);
         
         _canBeHit = true;
@@ -139,7 +161,7 @@ public class Cat : MonoBehaviourPun
 
     private IEnumerator ThrowWait()
     {
-        _furLevel--;
+        furLevel--;
         yield return new WaitForSeconds(_throwWaitTime);
         _isAttacking = false;
         
@@ -154,8 +176,8 @@ public class Cat : MonoBehaviourPun
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-
-        Debug.Log("trigger with "+other.name);
+        Debug.Log("trigger with " + other.name);
+        
         if (other.CompareTag("FurBall") && _canBeHit)
         {
             _hitted = true;

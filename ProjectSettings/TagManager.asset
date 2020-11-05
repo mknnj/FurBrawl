@@ -9,6 +9,7 @@ TagManager:
   - FurBall
   - Border
   - PlayerHead
+  - Milk
   layers:
   - Default
   - TransparentFX

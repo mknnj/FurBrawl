@@ -10,15 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 7100667282729621239}
   - component: {fileID: 7100667282729621238}
-  - component: {fileID: 7100667282729621233}
   - component: {fileID: 7100667282729621232}
   - component: {fileID: 4272351104378576205}
-  - component: {fileID: 1710649788108960620}
   - component: {fileID: -8599357302556543800}
   - component: {fileID: 1259714116782247856}
   m_Layer: 0
   m_Name: milk
-  m_TagString: Untagged
+  m_TagString: Milk
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -87,27 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &7100667282729621233
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7100667282729621235}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &7100667282729621232
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -118,7 +95,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.22217965, y: -0.1558528}
@@ -146,22 +123,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8af711d26be094f4fbb923ef0756baed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1710649788108960620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7100667282729621235}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 0
-  m_TeleportEnabled: 0
-  m_TeleportIfDistanceGreaterThan: 3
 --- !u!114 &-8599357302556543800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,7 +158,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: -8599357302556543800}
-  - {fileID: 1710649788108960620}
+  - {fileID: 0}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
