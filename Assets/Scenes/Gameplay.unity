@@ -681,6 +681,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4829226218645396843, guid: c005b1289e636c04f9189293a54abd7a,
         type: 3}
+      propertyPath: sounds.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829226218645396843, guid: c005b1289e636c04f9189293a54abd7a,
+        type: 3}
       propertyPath: sounds.Array.data[0].pitch
       value: 1
       objectReference: {fileID: 0}
@@ -693,6 +698,31 @@ PrefabInstance:
         type: 3}
       propertyPath: sounds.Array.data[0].loop
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829226218645396843, guid: c005b1289e636c04f9189293a54abd7a,
+        type: 3}
+      propertyPath: sounds.Array.data[1].name
+      value: milkDrop
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829226218645396843, guid: c005b1289e636c04f9189293a54abd7a,
+        type: 3}
+      propertyPath: sounds.Array.data[1].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: fc47c996d57c0a347a43fc593bf18424, type: 3}
+    - target: {fileID: 4829226218645396843, guid: c005b1289e636c04f9189293a54abd7a,
+        type: 3}
+      propertyPath: sounds.Array.data[1].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829226218645396843, guid: c005b1289e636c04f9189293a54abd7a,
+        type: 3}
+      propertyPath: sounds.Array.data[1].volumeVariance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829226218645396843, guid: c005b1289e636c04f9189293a54abd7a,
+        type: 3}
+      propertyPath: sounds.Array.data[1].pitch
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c005b1289e636c04f9189293a54abd7a, type: 3}
@@ -893,9 +923,10 @@ MonoBehaviour:
     type: 3}
   milkPrefab: {fileID: 7100667282729621235, guid: e7f40eed274946b4e9476cb280839b22,
     type: 3}
-  _maxMilkSpawned: 5
-  _timeBetweenMilkSpawns: 5
-  firstMilkDelay: 10
+  _maxMilkSpawned: 20
+  _timeBetweenMilkSpawns: 2
+  firstMilkDelay: 2
+  counter: 0
 --- !u!4 &1810841817
 Transform:
   m_ObjectHideFlags: 0

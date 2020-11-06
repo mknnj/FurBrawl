@@ -19,9 +19,10 @@ public class EnvironmentManager : MonoBehaviourPun
     public GameObject catPrefab;
     public GameObject milkPrefab;
 
-    [SerializeField]  private int _maxMilkSpawned = 10;
-    [SerializeField]  private float _timeBetweenMilkSpawns = 5f;
+    [SerializeField]  private int _maxMilkSpawned = 20;
+    [SerializeField]  private float _timeBetweenMilkSpawns = 2f;
     [SerializeField] private float firstMilkDelay = 5f;
+    [SerializeField] private float counter;
 
     void Start()
     {
@@ -48,8 +49,9 @@ public class EnvironmentManager : MonoBehaviourPun
         WaitForSeconds wait = new WaitForSeconds(_timeBetweenMilkSpawns);
         foreach (int value in System.Linq.Enumerable.Range(1, maxNumber))
         {
-
-            var spawnPosition = Utility.getRandomSpawnLocation();
+            counter = value;
+            FindObjectOfType<AudioManager>().Play("milkDrop");
+            var spawnPosition = Utility.getRandomSpawnLocation() + Utility.GetRandomVector3(-1.5f,1.5f);
             PhotonNetwork.Instantiate(milkPrefab.name, spawnPosition, milkPrefab.transform.rotation); //spawn milk :)
             Debug.Log("MILK COUNT - " + value);
             yield return wait;
