@@ -38,7 +38,7 @@ public class FurBall : MonoBehaviour
 
 
         //if(!hit)
-            _transform.position = _transform.position + _speed * Time.fixedDeltaTime * direction;
+           // _transform.position = _transform.position + _speed * Time.fixedDeltaTime * direction;
         if (_transform.position.x > _rightLimit || _transform.position.x <_leftLimit)
         {
             Destroy(gameObject);
@@ -60,10 +60,10 @@ public class FurBall : MonoBehaviour
         //YASEEN: if oppositeDirection, then the speed is flipped, too :P
         if (oppositeDirection)
         {
-            _speed *= -1;
+            direction *= -1;
         }
 
-        _rigidbody.velocity = direction * _speed;
-        _rigidbody.position += _rigidbody.velocity * lag;
+       _rigidbody.velocity = direction * _speed;
+       _rigidbody.position += _rigidbody.velocity * lag;
     }
 }

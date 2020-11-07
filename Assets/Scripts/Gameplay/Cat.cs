@@ -181,12 +181,13 @@ public class Cat : MonoBehaviourPun
         if (other.CompareTag("FurBall") && _canBeHit)
         {
             _hitted = true;
-
+            
             //YASEEN: Play sound
             FindObjectOfType<AudioManager>().Play("scream");
-
             Debug.Log(photonView.Owner+" hitted by a furball");
+            rb.Sleep();
             rb.AddForce(other.GetComponent<FurBall>().direction * _pushImpact, ForceMode2D.Impulse);
+            Debug.Log("force applicate");
             StartCoroutine(HitKnockoutTime());
         }
     }
@@ -200,11 +201,7 @@ public class Cat : MonoBehaviourPun
 
 
         //YASEEN: 'oppositeDirection' Passes the info of the direction to the lil cute Furball <3 
-        bool oppositeDirection =false;
-        if (rb.transform.localScale.x < 0)
-        {
-            oppositeDirection = true;
-        }
+        bool oppositeDirection =rb.transform.localScale.x < 0;
 
         fb.GetComponent<FurBall>().SetData(photonView.Owner,Mathf.Abs(lag),oppositeDirection);
         

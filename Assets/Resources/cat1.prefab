@@ -180,7 +180,7 @@ MonoBehaviour:
   furLevel: 0
   _hearts: 4
   idleTime: 0
-  _canBeHit: 0
+  _canBeHit: 1
   invincibility: 0
   _jumpIntensity: 12.5
   _throwPoint: {fileID: 2109694103428204305}
@@ -190,7 +190,7 @@ MonoBehaviour:
     type: 3}
   _pushImpact: 5
   _hitted: 0
-  _hittedWaitTime: 0.2
+  _hittedWaitTime: 0.5
   canMove: 1
   _feetCollider: {fileID: 0}
 --- !u!114 &6863352722705761174
