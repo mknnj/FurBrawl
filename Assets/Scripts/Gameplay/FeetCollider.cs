@@ -12,16 +12,37 @@ public class FeetCollider : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Feet collided with: "+other.tag);
-        if (other.CompareTag("PlayerHead") || other.CompareTag("Balcony") || other.CompareTag("Platform"))
+        if ( other.CompareTag("Balcony") || other.CompareTag("Platform"))
         {
             _isOnGround = true;
+        }
+
+        if (other.CompareTag("PlayerHead") ) //we need a separate check if the player on which we are standing is mid-air
+        {
+            if (other.GetComponentInParent<Cat>()._feetCollider._isOnGround)
+            {
+                _isOnGround = true;
+            }
+            GetComponentInParent<Cat>().FallOnHead(other.GetComponentInParent<Cat>().photonView.ViewID);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if ( other.CompareTag("Balcony") || other.CompareTag("Platform"))
+        {
+            _isOnGround = true;
+        }
+
+        if (other.CompareTag("PlayerHead")) //we need a separate check if the player on which we are standing is mid-air
+        {
+            _isOnGround = other.GetComponentInParent<Cat>()._feetCollider._isOnGround;
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("PlayerHead") || other.CompareTag("Balcony"))
+        if (other.CompareTag("PlayerHead") || other.CompareTag("Balcony") || other.CompareTag("Platform")) // if for any reason the cat's feet don't collide anymore, it is considered mid-air
         {
             _isOnGround = false;
         }
