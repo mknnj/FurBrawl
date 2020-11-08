@@ -33,7 +33,9 @@ public class Cat : MonoBehaviourPun
     private Rigidbody2D rb;
     public FeetCollider _feetCollider;
     private SpriteRenderer _SR;
-    
+
+
+
     private void Awake()
     { 
         userInput = GetComponent<UserInput>();
@@ -42,7 +44,9 @@ public class Cat : MonoBehaviourPun
         _feetCollider = GetComponentInChildren<FeetCollider>();
         _SR = GetComponent<SpriteRenderer>();
         furLevel = maxFurLevel;
+
     }
+
 
     private void Update()
     {
@@ -118,6 +122,9 @@ public class Cat : MonoBehaviourPun
             furLevel++;
         }
     }
+
+
+  
 
     private IEnumerator IdleCoroutine(float time)
     {

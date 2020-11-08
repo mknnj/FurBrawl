@@ -13,7 +13,7 @@ public class FeetCollider : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("Feet collided with: "+other.tag);
-        if (other.CompareTag("PlayerHead") || other.CompareTag("Balcony"))
+        if (other.CompareTag("PlayerHead") || other.CompareTag("Balcony") || other.CompareTag("Platform"))
         {
             _isOnGround = true;
         }

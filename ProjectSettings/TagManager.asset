@@ -5,11 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Balcony
-  - Bullet
+  - Milk
+  - PlayerHead
   - FurBall
   - Border
-  - PlayerHead
-  - Milk
+  - Platform
   layers:
   - Default
   - TransparentFX

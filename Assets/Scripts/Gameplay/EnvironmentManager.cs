@@ -37,12 +37,12 @@ public class EnvironmentManager : MonoBehaviourPun
     {
 
         var spawnPosition = Utility.getRandomSpawnLocation();
-        PhotonNetwork.Instantiate(catPrefab.name, spawnPosition, catPrefab.transform.rotation); //spawn a cat :)
+        GameObject cat = PhotonNetwork.Instantiate(catPrefab.name, spawnPosition, catPrefab.transform.rotation); //spawn a cat :)
         //Instantiate(catPrefab, spawnPosition, catPrefab.transform.rotation); //spawn a cat :)
     }
 
     // Update is called once per frame
-    
+
     private IEnumerator spawnMilk(int maxNumber, float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -53,7 +53,7 @@ public class EnvironmentManager : MonoBehaviourPun
             FindObjectOfType<AudioManager>().Play("milkDrop");
             var spawnPosition = Utility.getRandomSpawnLocation() + Utility.GetRandomVector3(-1.5f,1.5f);
             PhotonNetwork.Instantiate(milkPrefab.name, spawnPosition, milkPrefab.transform.rotation); //spawn milk :)
-            Debug.Log("MILK COUNT - " + value);
+            //Debug.Log("MILK COUNT - " + value);
             yield return wait;
         }
     }
