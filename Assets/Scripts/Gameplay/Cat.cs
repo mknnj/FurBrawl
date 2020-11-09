@@ -130,10 +130,11 @@ public class Cat : MonoBehaviourPun
         } else {
             furLevel++;
         }
+        photonView.RPC("FurSyncRPC", RpcTarget.AllViaServer, furLevel, furSubLevel);
     }
 
-    [PunRPC]
-    public void RemoveFurRPC(int qty) //method to be called by other's melee attack to modify this cat's fur level
+    
+    public void RemoveFur(int qty) //method to be called by other's melee attack to modify this cat's fur level
     {
         if (furSubLevel > qty) // if the cat will conserve it's fur level
         {
@@ -144,12 +145,13 @@ public class Cat : MonoBehaviourPun
             int excess = qty - furSubLevel;
             furSubLevel = maxFurSubLevel;
             furLevel--;
-            RemoveFurRPC(excess);
+            RemoveFur(excess);
         }
         else if (furLevel == 1) // when the cat is already at minimum fur level and we try to remove more than it has
         {
             furSubLevel = 0;
         }
+        photonView.RPC("FurSyncRPC", RpcTarget.AllViaServer, furLevel, furSubLevel);
     }
     
     private IEnumerator IdleCoroutine(float time)
@@ -181,6 +183,7 @@ public class Cat : MonoBehaviourPun
             _canBeHit = false;
             furLevel = maxFurLevel;
             furSubLevel = maxFurSubLevel;
+            photonView.RPC("FurSyncRPC", RpcTarget.AllViaServer, furLevel, furSubLevel);
             transform.position = respawnPoint;
             StartCoroutine(InvincibilityFrame(invincibility));
         }
@@ -216,7 +219,7 @@ public class Cat : MonoBehaviourPun
 
     private IEnumerator ThrowWait()
     {
-        photonView.RPC("RemoveFurRPC", RpcTarget.AllViaServer, 1);
+        RemoveFur(1);
         yield return new WaitForSeconds(_throwWaitTime);
         _isAttacking = false;
     }
@@ -265,5 +268,12 @@ public class Cat : MonoBehaviourPun
     {
         Debug.Log("Other fur level: " + otherFurLevel + " my fur level: " + furLevel);
         if(otherFurLevel >= furLevel) Stun(1.0f);
+    }
+    
+    [PunRPC] //this rpc is called on each client, if a client notices that it is the one being stunned, it stuns its character
+    public void FurSyncRPC(int newFurLevel, int newFurSubLevel)
+    {
+        furLevel = newFurLevel;
+        furSubLevel = newFurSubLevel;
     }
 } 

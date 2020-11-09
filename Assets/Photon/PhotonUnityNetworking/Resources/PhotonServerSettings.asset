@@ -43,6 +43,7 @@ MonoBehaviour:
   - JumpOverMyHeadRPC
   - RemoveFur
   - RemoveFurRPC
+  - FurSyncRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
