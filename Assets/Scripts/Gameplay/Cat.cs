@@ -119,8 +119,11 @@ public class Cat : MonoBehaviourPun
         return canMove;
     }
     
-    public void Drink()
+    public void Drink(GameObject balcony)
     {
+        //[Sorre97]: There is SURELY a better way to find the environment manager
+        GameObject.FindGameObjectWithTag("Manager").GetComponent<EnvironmentManager>().milkDrinked(balcony);
+        
         canMove = false;
         StartCoroutine(IdleCoroutine(idleTime));
         furSubLevel = maxFurSubLevel; //a fur level corresponds to the maximum of the sublevels

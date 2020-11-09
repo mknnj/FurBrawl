@@ -5,13 +5,19 @@ using UnityEngine;
 
 public class Milk : MonoBehaviour
 {
+    private GameObject balcony;
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player") && other.gameObject.GetComponent<Cat>().CanMove()) 
         {
             Destroy(gameObject);
-            other.gameObject.GetComponent<Cat>().Drink();
+            other.gameObject.GetComponent<Cat>().Drink(balcony);
             //Debug.Log("Player " + other.name + " drank a bottle of milk");
         }
+    }
+
+    public void setBalcony(GameObject balcony)
+    {
+        this.balcony = balcony;
     }
 }

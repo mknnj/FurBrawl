@@ -989,7 +989,7 @@ GameObject:
   - component: {fileID: 1810841816}
   m_Layer: 0
   m_Name: EnvironmentManager
-  m_TagString: Untagged
+  m_TagString: Manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1010,10 +1010,11 @@ MonoBehaviour:
     type: 3}
   milkPrefab: {fileID: 7100667282729621235, guid: e7f40eed274946b4e9476cb280839b22,
     type: 3}
-  _maxMilkSpawned: 20
+  maxMilkSpawned: 3
   _timeBetweenMilkSpawns: 2
-  firstMilkDelay: 2
   counter: 0
+  milkHeight: 1
+  _milkCounter: 0
 --- !u!4 &1810841817
 Transform:
   m_ObjectHideFlags: 0
