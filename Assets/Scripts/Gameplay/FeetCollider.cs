@@ -23,7 +23,7 @@ public class FeetCollider : MonoBehaviour
             {
                 _isOnGround = true;
             }
-            GetComponentInParent<Cat>().FallOnHead(other.GetComponentInParent<Cat>().photonView.ViewID);
+            other.GetComponentInParent<Cat>().FallOnHead(GetComponentInParent<Cat>().GetFurLevel());
         }
     }
 

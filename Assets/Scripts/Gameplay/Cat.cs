@@ -11,7 +11,7 @@ public class Cat : MonoBehaviourPun
     public PhotonView pv;
     [SerializeField] private float _speed = 5;
     [SerializeField] [Range(1,5)] private int maxFurLevel=4; //will act like a weight, too (probably?)
-    [SerializeField] [Range(1,5)] private int furLevel;
+    [SerializeField] [Range(1, 5)] private int furLevel;
     [SerializeField] [Range(0,8)] private int maxFurSubLevel=8; //a fur level is composed by many sub-levels as discussed
     [SerializeField] [Range(0,8)] private int furSubLevel; //note that furlevel goes from 1 to max, while fursublevel from 0 to max
     [SerializeField] [Range(1, 9)] private int _hearts;
@@ -47,6 +47,11 @@ public class Cat : MonoBehaviourPun
         _SR = GetComponent<SpriteRenderer>();
         furLevel = maxFurLevel;
         furSubLevel = maxFurSubLevel;
+    }
+
+    public int GetFurLevel()
+    {
+        return furLevel;
     }
 
 
@@ -127,7 +132,8 @@ public class Cat : MonoBehaviourPun
         }
     }
 
-    public void RemoveFur(int qty) //method to be called by other's melee attack to modify this cat's fur level
+    [PunRPC]
+    public void RemoveFurRPC(int qty) //method to be called by other's melee attack to modify this cat's fur level
     {
         if (furSubLevel > qty) // if the cat will conserve it's fur level
         {
@@ -138,17 +144,14 @@ public class Cat : MonoBehaviourPun
             int excess = qty - furSubLevel;
             furSubLevel = maxFurSubLevel;
             furLevel--;
-            RemoveFur(excess);
+            RemoveFurRPC(excess);
         }
         else if (furLevel == 1) // when the cat is already at minimum fur level and we try to remove more than it has
         {
             furSubLevel = 0;
         }
     }
-
-
-  
-
+    
     private IEnumerator IdleCoroutine(float time)
     {
         yield return new WaitForSeconds(time);
@@ -186,12 +189,13 @@ public class Cat : MonoBehaviourPun
     private void Stun(float duration)
     {
         canMove = false; // a stunned cat can't move, should not attack either
+        //Debug.Log("I am stunned");
         StartCoroutine(StunFrame(duration));
     }
 
-    public void FallOnHead(int victimViewID)
+    public void FallOnHead(int otherFurLevel)
     {
-        photonView.RPC("JumpOverMyHeadRPC", RpcTarget.AllViaServer, furLevel, victimViewID);
+        photonView.RPC("JumpOverMyHeadRPC", RpcTarget.Others,  otherFurLevel);
     }
     
     private IEnumerator StunFrame(float duration)
@@ -212,10 +216,9 @@ public class Cat : MonoBehaviourPun
 
     private IEnumerator ThrowWait()
     {
-        RemoveFur(1);
+        photonView.RPC("RemoveFurRPC", RpcTarget.AllViaServer, 1);
         yield return new WaitForSeconds(_throwWaitTime);
         _isAttacking = false;
-        
     }
 
     private IEnumerator HitKnockoutTime()
@@ -227,7 +230,7 @@ public class Cat : MonoBehaviourPun
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("trigger with " + other.name);
+        //Debug.Log("trigger with " + other.name);
         
         if (other.CompareTag("FurBall") && _canBeHit)
         {
@@ -235,10 +238,10 @@ public class Cat : MonoBehaviourPun
             
             //YASEEN: Play sound
             FindObjectOfType<AudioManager>().Play("scream");
-            Debug.Log(photonView.Owner+" hitted by a furball");
+            //Debug.Log(photonView.Owner+" hitted by a furball");
             rb.Sleep();
             rb.AddForce(other.GetComponent<FurBall>().direction * _pushImpact, ForceMode2D.Impulse);
-            Debug.Log("force applicate");
+            //Debug.Log("force applicate");
             StartCoroutine(HitKnockoutTime());
         }
     }
@@ -246,7 +249,7 @@ public class Cat : MonoBehaviourPun
     [PunRPC]
     public void ThrowRPC(Vector3 pos, Quaternion q,PhotonMessageInfo info)
     {
-        Debug.Log("Furball RPC");
+        //Debug.Log("Furball RPC");
         float lag = (float) (PhotonNetwork.Time - info.SentServerTime);
         GameObject fb=Instantiate(_furBallPrefab, pos, q);
 
@@ -258,8 +261,9 @@ public class Cat : MonoBehaviourPun
     }
     
     [PunRPC] //this rpc is called on each client, if a client notices that it is the one being stunned, it stuns its character
-    public void JumpOverMyHeadRPC(int otherFurLevel,int viewIDTarget)
+    public void JumpOverMyHeadRPC(int otherFurLevel)
     {
-        if(viewIDTarget==photonView.ViewID && otherFurLevel >= furLevel) Stun(1.0f);
+        Debug.Log("Other fur level: " + otherFurLevel + " my fur level: " + furLevel);
+        if(otherFurLevel >= furLevel) Stun(1.0f);
     }
 } 

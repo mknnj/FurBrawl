@@ -11,7 +11,7 @@ public class Milk : MonoBehaviour
         {
             Destroy(gameObject);
             other.gameObject.GetComponent<Cat>().Drink();
-            Debug.Log("Player " + other.name + " drank a bottle of milk");
+            //Debug.Log("Player " + other.name + " drank a bottle of milk");
         }
     }
 }
