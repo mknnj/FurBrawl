@@ -34,6 +34,7 @@ public class Cat : MonoBehaviourPun
     private UserInput userInput;
     private Rigidbody2D rb;
     public FeetCollider _feetCollider;
+    public Animator animator;
     private SpriteRenderer _SR;
 
 
@@ -97,6 +98,9 @@ public class Cat : MonoBehaviourPun
     //Check if the player is grounded, otherwise he won't be able to jump
     private void Move() //simple
     {
+
+        
+        
         float move = userInput.movementInput.x;
         //transform.position += move * _speed * Time.deltaTime;
         rb.velocity=new Vector2(move*_speed,rb.velocity.y);
@@ -112,6 +116,9 @@ public class Cat : MonoBehaviourPun
             rb.transform.localScale = new Vector2(Math.Abs(rb.transform.localScale.x), transform.localScale.y);
             //_SR.flipX = false;
         }
+
+        //YASEEN: Set velocity IN ANIMATOR 
+        animator.SetFloat("velocity", Mathf.Abs(rb.velocity.x));
     }
 
     public bool CanMove()
