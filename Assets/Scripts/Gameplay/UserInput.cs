@@ -10,6 +10,7 @@ public class UserInput : MonoBehaviour
     public bool jumpInput { get; private set; }
     
     public bool throwInput { get; private set; }
+    public bool meleeInput { get; private set; }
     
 
     // Update is called once per frame
@@ -17,6 +18,7 @@ public class UserInput : MonoBehaviour
     {
         movementInput = new Vector3(Input.GetAxis("Horizontal"), 0);
         jumpInput = Input.GetKeyDown(KeyCode.Space);
-        throwInput = Input.GetKeyDown(KeyCode.E); 
+        throwInput = Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.E);
+        meleeInput = Input.GetMouseButtonDown(1);
     }
 }

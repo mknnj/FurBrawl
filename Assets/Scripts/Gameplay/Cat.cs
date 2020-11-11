@@ -17,18 +17,36 @@ public class Cat : MonoBehaviourPun
     [SerializeField] [Range(1, 9)] private int _hearts;
     [SerializeField] [Range(0, 3)] private float idleTime = 2; //Sorre97: time for player drinking the milk, no input is accepted during it
     [SerializeField] private bool _canBeHit = true;
+    public bool CanBeHit
+    {
+        get => _canBeHit;
+    }
     [SerializeField] private float invincibility;
     [SerializeField] private float _jumpIntensity = 5f;
+    [Tooltip("Point where prefab for furball is instantiated")]
     [SerializeField] private Transform _throwPoint;
+    [Tooltip("Time to wait between furball throws ")]    
     [SerializeField] private float _throwWaitTime = 0.2f;
     [SerializeField] private bool _isAttacking=false;
     [SerializeField] private GameObject _furBallPrefab;
-    [SerializeField] private float _pushImpact=5f;
+    [Tooltip("force that it is applicated when hitted by a furball")]
+    [SerializeField] private float _pushFurballImpact=5f;
     [SerializeField] private bool _hitted=false;
+    [Tooltip("Time to wait to move again after being hitted")]
     [SerializeField] private float _hittedWaitTime = 0.2f;
 
     [SerializeField] private bool canMove = true;
+    
+    [Tooltip("Time to wait between melee attack")]
+    [SerializeField] private float _attackWaitTime;
+    [Tooltip("radius of circle to control melee attack")]
+    [SerializeField] private float _radiusMelee = 1;
+    [Tooltip("Maximum distance over which to cast the circle")]
+    [SerializeField] private float _distanceMelee = 1;
 
+    [Tooltip("force that it is applicated when hitted by a melee")] [SerializeField]
+    private float _pushMeleeImpact = 5;
+    
     private BoxCollider2D _boxCollider;
     private Vector3 smoothMove;
     private UserInput userInput;
@@ -36,7 +54,7 @@ public class Cat : MonoBehaviourPun
     public FeetCollider _feetCollider;
     private SpriteRenderer _SR;
 
-
+    
 
     private void Awake()
     { 
@@ -64,6 +82,12 @@ public class Cat : MonoBehaviourPun
                 _isAttacking = true;
                 photonView.RPC("ThrowRPC", RpcTarget.AllViaServer, _throwPoint.position,_throwPoint.rotation);
                 StartCoroutine(ThrowWait());
+            }
+            if (canMove && !_isAttacking && userInput.meleeInput)
+            {
+                _isAttacking = true;
+                photonView.RPC("MeleeRPC", RpcTarget.AllViaServer, _throwPoint.position,_throwPoint.rotation,photonView.Owner);
+                StartCoroutine(AttackWait());
             }
             if (canMove && !_hitted)
             {
@@ -156,7 +180,22 @@ public class Cat : MonoBehaviourPun
         }
         photonView.RPC("FurSyncRPC", RpcTarget.AllViaServer, furLevel, furSubLevel);
     }
-    
+    /// <summary>
+    /// Method called when hitted by a melee attack
+    /// </summary>
+    /// <param name="direction"></param>
+    public void MeleeAttacked(Vector2 direction)
+    {
+        _hitted = true;
+        Debug.Log(photonView.Owner+" hitted by a melee");
+        rb.Sleep();
+        RemoveFur(4);
+        if (furLevel==1 && furSubLevel==0)
+        {
+           rb.AddForce(direction*_pushMeleeImpact,ForceMode2D.Impulse); 
+        }
+        StartCoroutine(HitKnockoutTime());
+    }
     private IEnumerator IdleCoroutine(float time)
     {
         yield return new WaitForSeconds(time);
@@ -227,6 +266,13 @@ public class Cat : MonoBehaviourPun
         _isAttacking = false;
     }
 
+    private IEnumerator AttackWait()
+    {   
+        Debug.Log(photonView.Owner+" melee");
+        yield return new WaitForSeconds(_attackWaitTime);
+        _isAttacking = false;
+    }
+
     private IEnumerator HitKnockoutTime()
     {
         yield return  new WaitForSeconds(_hittedWaitTime);
@@ -246,7 +292,7 @@ public class Cat : MonoBehaviourPun
             FindObjectOfType<AudioManager>().Play("scream");
             //Debug.Log(photonView.Owner+" hitted by a furball");
             rb.Sleep();
-            rb.AddForce(other.GetComponent<FurBall>().direction * _pushImpact, ForceMode2D.Impulse);
+            rb.AddForce(other.GetComponent<FurBall>().direction * _pushFurballImpact , ForceMode2D.Impulse);
             //Debug.Log("force applicate");
             StartCoroutine(HitKnockoutTime());
         }
@@ -278,5 +324,32 @@ public class Cat : MonoBehaviourPun
     {
         furLevel = newFurLevel;
         furSubLevel = newFurSubLevel;
+    }
+
+    [PunRPC]
+    public void MeleeRPC(Vector3 pos, Quaternion q,Photon.Realtime.Player attacker)
+    {
+        Debug.Log(attacker+" melee");
+        Collider2D[] hits;
+        
+        bool oppositeDirection = rb.transform.localScale.x < 0;
+        Vector2 direction=new Vector2(1,0);
+        if (oppositeDirection)
+            direction *= -1;
+        hits=Physics2D.OverlapCircleAll(pos, _radiusMelee);
+        foreach (var hit in hits)
+        {
+            Cat hitted = hit.GetComponent<Cat>();
+            if (hitted && hitted.CanBeHit && !attacker.Equals(hitted.photonView.Owner))
+            {
+                hitted.MeleeAttacked(direction);
+            }
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color=Color.red;
+        Gizmos.DrawWireSphere(_throwPoint.position,_radiusMelee);
     }
 } 

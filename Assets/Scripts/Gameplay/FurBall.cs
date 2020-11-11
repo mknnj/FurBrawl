@@ -57,7 +57,7 @@ public class FurBall : MonoBehaviour
         Launcher = owner;
         _lag = lag;
 
-        //YASEEN: if oppositeDirection, then the speed is flipped, too :P
+        //YASEEN: if oppositeDirection, then the direction is flipped, too :P
         if (oppositeDirection)
         {
             direction *= -1;

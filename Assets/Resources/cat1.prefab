@@ -190,10 +190,14 @@ MonoBehaviour:
   _isAttacking: 0
   _furBallPrefab: {fileID: 6024337074199590728, guid: fa925b6b1e8acf3419f4766f061ce245,
     type: 3}
-  _pushImpact: 5
+  _pushFurballImpact: 5
   _hitted: 0
   _hittedWaitTime: 0.5
   canMove: 1
+  _attackWaitTime: 0.4
+  _radiusMelee: 0.5
+  _distanceMelee: 0.3
+  _pushMeleeImpact: 5
   _feetCollider: {fileID: 0}
 --- !u!114 &6863352722705761174
 MonoBehaviour:
