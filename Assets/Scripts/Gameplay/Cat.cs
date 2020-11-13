@@ -53,7 +53,7 @@ public class Cat : MonoBehaviourPun
     private Rigidbody2D rb;
     public FeetCollider _feetCollider;
     private SpriteRenderer _SR;
-
+    
     
 
     private void Awake()
@@ -261,7 +261,7 @@ public class Cat : MonoBehaviourPun
 
     private IEnumerator ThrowWait()
     {
-        RemoveFur(1);
+        RemoveFur(4);
         yield return new WaitForSeconds(_throwWaitTime);
         _isAttacking = false;
     }
