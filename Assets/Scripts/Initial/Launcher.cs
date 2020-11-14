@@ -30,6 +30,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     }
     public override void OnDisconnected(DisconnectCause cause)
     {
+        //TODO [Sorre97] inform EnvironmentManager of the disconnection
         DisconnectedScreen.SetActive(true);
         Error = cause.ToString();
     }

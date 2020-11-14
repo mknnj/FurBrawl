@@ -16,7 +16,10 @@ public class Cat : MonoBehaviourPun
     [SerializeField] [Range(0,8)] private int furSubLevel; //note that furlevel goes from 1 to max, while fursublevel from 0 to max
     [SerializeField] [Range(1, 9)] private int _hearts;
     [SerializeField] [Range(0, 3)] private float idleTime = 2; //Sorre97: time for player drinking the milk, no input is accepted during it
+    [Tooltip("Stun time for the cat hitted by a Jar or jumped on by another cat")]
+    [SerializeField] [Range(0,3f)] private float stunTime = 1f;
     [SerializeField] private bool _canBeHit = true;
+
     public bool CanBeHit
     {
         get => _canBeHit;
@@ -24,10 +27,10 @@ public class Cat : MonoBehaviourPun
     [SerializeField] private float invincibility;
     [SerializeField] private float _jumpIntensity = 5f;
     [Tooltip("Point where prefab for furball is instantiated")]
-    [SerializeField] private Transform _throwPoint;
+    [SerializeField] private Transform throwPoint;
     [Tooltip("Time to wait between furball throws ")]    
-    [SerializeField] private float _throwWaitTime = 0.2f;
-    [SerializeField] private bool _isAttacking=false;
+    [SerializeField] private float throwWaitTime = 0.2f;
+    [SerializeField] private bool isAttacking=false;
     [SerializeField] private GameObject _furBallPrefab;
     [Tooltip("force that it is applicated when hitted by a furball")]
     [SerializeField] private float _pushFurballImpact=5f;
@@ -77,16 +80,16 @@ public class Cat : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            if (canMove && !_isAttacking && userInput.throwInput && (furLevel >1 || furSubLevel>0))
+            if (canMove && !isAttacking && userInput.throwInput && (furLevel >1 || furSubLevel>0))
             {
-                _isAttacking = true;
-                photonView.RPC("ThrowRPC", RpcTarget.AllViaServer, _throwPoint.position,_throwPoint.rotation);
+                isAttacking = true;
+                photonView.RPC("ThrowRPC", RpcTarget.AllViaServer, throwPoint.position,throwPoint.rotation);
                 StartCoroutine(ThrowWait());
             }
-            if (canMove && !_isAttacking && userInput.meleeInput)
+            if (canMove && !isAttacking && userInput.meleeInput)
             {
-                _isAttacking = true;
-                photonView.RPC("MeleeRPC", RpcTarget.AllViaServer, _throwPoint.position,_throwPoint.rotation,photonView.Owner);
+                isAttacking = true;
+                photonView.RPC("MeleeRPC", RpcTarget.AllViaServer, throwPoint.position,throwPoint.rotation,photonView.Owner);
                 StartCoroutine(AttackWait());
             }
             if (canMove && !_hitted)
@@ -231,8 +234,9 @@ public class Cat : MonoBehaviourPun
         }
     }
 
-    private void Stun(float duration)
+    public void Stun()
     {
+        float duration = stunTime;
         canMove = false; // a stunned cat can't move, should not attack either
         //Debug.Log("I am stunned");
         StartCoroutine(StunFrame(duration));
@@ -262,15 +266,15 @@ public class Cat : MonoBehaviourPun
     private IEnumerator ThrowWait()
     {
         RemoveFur(4);
-        yield return new WaitForSeconds(_throwWaitTime);
-        _isAttacking = false;
+        yield return new WaitForSeconds(throwWaitTime);
+        isAttacking = false;
     }
 
     private IEnumerator AttackWait()
     {   
         Debug.Log(photonView.Owner+" melee");
         yield return new WaitForSeconds(_attackWaitTime);
-        _isAttacking = false;
+        isAttacking = false;
     }
 
     private IEnumerator HitKnockoutTime()
@@ -316,7 +320,7 @@ public class Cat : MonoBehaviourPun
     public void JumpOverMyHeadRPC(int otherFurLevel)
     {
         Debug.Log("Other fur level: " + otherFurLevel + " my fur level: " + furLevel);
-        if(otherFurLevel >= furLevel) Stun(1.0f);
+        if(otherFurLevel >= furLevel) Stun();
     }
     
     [PunRPC] //this rpc is called on each client, if a client notices that it is the one being stunned, it stuns its character
@@ -350,6 +354,6 @@ public class Cat : MonoBehaviourPun
     private void OnDrawGizmosSelected()
     {
         Gizmos.color=Color.red;
-        Gizmos.DrawWireSphere(_throwPoint.position,_radiusMelee);
+        Gizmos.DrawWireSphere(throwPoint.position,_radiusMelee);
     }
 } 

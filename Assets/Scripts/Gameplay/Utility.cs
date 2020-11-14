@@ -18,9 +18,15 @@ public static class Utility
 
     public static Vector3 getRandomMilkSpawn(float y, GameObject balcony)
     {
-        float x = Random.Range(-1.5f, 1.5f);
-        float z = Random.Range(-1.5f, 1.5f);
-        var spawnPosition = balcony.transform.position + new Vector3(x, y, z);
+        float x = Random.Range(-1.5f, 1.5f);  //TODO [Sorre97] make program aware of balconies size, not hardcoded
+        var spawnPosition = balcony.transform.position + new Vector3(x, y, 0);
+        return spawnPosition;
+    }
+    
+    public static Vector3 getRandomJarSpawn(Vector3 position, float height)
+    {
+        float x = Random.Range(-2.5f, 2.5f); //TODO [Sorre97] hardcoded value, have to make check on borders too
+        var spawnPosition = position + new Vector3(x, height, 0);
         return spawnPosition;
     }
     public static Vector3 GetRandomVector3(float min, float max)
