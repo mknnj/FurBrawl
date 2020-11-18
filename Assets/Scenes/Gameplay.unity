@@ -1021,7 +1021,7 @@ MonoBehaviour:
   timeBetweenMilk: 2
   timeBetweenJars: 5
   counter: 0
-  milkHeight: 1
+  milkHeight: 1.28
   jarHeight: 10
   milkCounter: 0
 --- !u!4 &1810841817
