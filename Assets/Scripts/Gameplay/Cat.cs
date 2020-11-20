@@ -37,7 +37,8 @@ public class Cat : MonoBehaviourPun
     public Animator animator;
     private SpriteRenderer _SR;
 
-
+    public float velX;
+    public float vely;
 
     private void Awake()
     { 
@@ -64,6 +65,7 @@ public class Cat : MonoBehaviourPun
             {
                 _isAttacking = true;
                 photonView.RPC("ThrowRPC", RpcTarget.AllViaServer, _throwPoint.position,_throwPoint.rotation);
+                animator.SetTrigger("shooting");
                 StartCoroutine(ThrowWait());
             }
             if (canMove && !_hitted)
@@ -92,6 +94,15 @@ public class Cat : MonoBehaviourPun
         if (_feetCollider.IsOnGround && userInput.jumpInput)
         {
             rb.AddForce(Vector3.up * (_jumpIntensity - maxFurLevel), ForceMode2D.Impulse);
+            
+        }
+        if( rb.velocity.y != 0)
+        {
+            animator.SetBool("jump", true);
+        }
+        else
+        {
+            animator.SetBool("jump", false);
         }
     }
 
@@ -108,17 +119,18 @@ public class Cat : MonoBehaviourPun
         //YASEEN: Flip spirit when moving to the other direction
         if (rb.velocity.x < 0)
         {
-            rb.transform.localScale = new Vector2(-Math.Abs(rb.transform.localScale.x), transform.localScale.y);
+            rb.transform.localScale = new Vector2(Math.Abs(rb.transform.localScale.x), transform.localScale.y);
             //_SR.flipX = true;
 
         } else if (rb.velocity.x > 0)
         {
-            rb.transform.localScale = new Vector2(Math.Abs(rb.transform.localScale.x), transform.localScale.y);
+            rb.transform.localScale = new Vector2(-Math.Abs(rb.transform.localScale.x), transform.localScale.y);
             //_SR.flipX = false;
         }
 
         //YASEEN: Set velocity IN ANIMATOR 
         animator.SetFloat("velocity", Mathf.Abs(rb.velocity.x));
+        velX = rb.velocity.x;
     }
 
     public bool CanMove()
@@ -204,6 +216,7 @@ public class Cat : MonoBehaviourPun
         canMove = false; // a stunned cat can't move, should not attack either
         //Debug.Log("I am stunned");
         StartCoroutine(StunFrame(duration));
+        animator.SetBool("stunned", true);
     }
 
     public void FallOnHead(int otherFurLevel)
@@ -215,6 +228,7 @@ public class Cat : MonoBehaviourPun
     {
         yield return new WaitForSeconds(duration);
         canMove = true;
+        animator.SetBool("stunned", false);
         yield return null;
     }
     
@@ -264,11 +278,11 @@ public class Cat : MonoBehaviourPun
     {
         //Debug.Log("Furball RPC");
         float lag = (float) (PhotonNetwork.Time - info.SentServerTime);
-        GameObject fb=Instantiate(_furBallPrefab, pos, q);
+        GameObject fb = Instantiate(_furBallPrefab, pos, q);
 
 
         //YASEEN: 'oppositeDirection' Passes the info of the direction to the lil cute Furball <3 
-        bool oppositeDirection =rb.transform.localScale.x < 0;
+        bool oppositeDirection =rb.transform.localScale.x > 0;
 
         fb.GetComponent<FurBall>().SetData(photonView.Owner,Mathf.Abs(lag),oppositeDirection);
     }
