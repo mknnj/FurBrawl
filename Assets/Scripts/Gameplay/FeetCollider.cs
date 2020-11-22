@@ -9,12 +9,14 @@ public class FeetCollider : MonoBehaviour
     private bool _isOnGround = false;
 
     public bool IsOnGround => _isOnGround;
+    public Animator catAnimator;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if ( other.CompareTag("Balcony") || other.CompareTag("Platform"))
         {
             _isOnGround = true;
+            
         }
 
         if (other.CompareTag("PlayerHead") ) //we need a separate check if the player on which we are standing is mid-air
@@ -24,7 +26,10 @@ public class FeetCollider : MonoBehaviour
                 _isOnGround = true;
             }
             other.GetComponentInParent<Cat>().FallOnHead(GetComponentInParent<Cat>().GetFurLevel());
+            
         }
+
+
     }
 
     private void OnTriggerStay2D(Collider2D other)
