@@ -184,6 +184,7 @@ MonoBehaviour:
   furSubLevel: 0
   _hearts: 4
   idleTime: 0
+  stunTime: 1
   _canBeHit: 1
   invincibility: 0
   _jumpIntensity: 12.5
@@ -196,6 +197,10 @@ MonoBehaviour:
   _hitted: 0
   _hittedWaitTime: 0.5
   canMove: 1
+  _attackWaitTime: 0
+  _radiusMelee: 1
+  _distanceMelee: 1
+  _pushMeleeImpact: 5
   _feetCollider: {fileID: 0}
   animator: {fileID: 8207692213462885972}
   velX: 0

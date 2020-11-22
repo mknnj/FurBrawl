@@ -2053,11 +2053,15 @@ MonoBehaviour:
     type: 3}
   milkPrefab: {fileID: 7100667282729621235, guid: e7f40eed274946b4e9476cb280839b22,
     type: 3}
+  jarPrefab: {fileID: 391908430186353253, guid: 7eb4f02d8d9d0dd4d8bb485c4db55519,
+    type: 3}
   maxMilkSpawned: 3
-  _timeBetweenMilkSpawns: 2
+  timeBetweenMilk: 2
+  timeBetweenJars: 5
   counter: 0
   milkHeight: 1
-  _milkCounter: 0
+  jarHeight: 10
+  milkCounter: 0
 --- !u!4 &1810841817
 Transform:
   m_ObjectHideFlags: 0

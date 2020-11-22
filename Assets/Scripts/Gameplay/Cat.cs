@@ -16,19 +16,37 @@ public class Cat : MonoBehaviourPun
     [SerializeField] [Range(0,8)] private int furSubLevel; //note that furlevel goes from 1 to max, while fursublevel from 0 to max
     [SerializeField] [Range(1, 9)] private int _hearts;
     [SerializeField] [Range(0, 3)] private float idleTime = 2; //Sorre97: time for player drinking the milk, no input is accepted during it
+    [Tooltip("Stun time for the cat hitted by a Jar or jumped on by another cat")]
+    [SerializeField] [Range(0,3f)] private float stunTime = 1f;
     [SerializeField] private bool _canBeHit = true;
+    public bool CanBeHit
+    {
+        get => _canBeHit;
+    }
     [SerializeField] private float invincibility;
     [SerializeField] private float _jumpIntensity = 5f;
+    [Tooltip("Point where prefab for furball is instantiated")]
     [SerializeField] private Transform _throwPoint;
+    [Tooltip("Time to wait between furball throws ")]    
     [SerializeField] private float _throwWaitTime = 0.2f;
     [SerializeField] private bool _isAttacking=false;
     [SerializeField] private GameObject _furBallPrefab;
+    [Tooltip("force that it is applicated when hitted by a furball")]
     [SerializeField] private float _pushImpact=5f;
     [SerializeField] private bool _hitted=false;
+    [Tooltip("Time to wait to move again after being hitted")]
     [SerializeField] private float _hittedWaitTime = 0.2f;
-
     [SerializeField] private bool canMove = true;
+    [Tooltip("Time to wait between melee attack")]
+    [SerializeField] private float _attackWaitTime;
+    [Tooltip("radius of circle to control melee attack")]
+    [SerializeField] private float _radiusMelee = 1;
+    [Tooltip("Maximum distance over which to cast the circle")]
+    [SerializeField] private float _distanceMelee = 1;
 
+    [Tooltip("force that it is applicated when hitted by a melee")] [SerializeField]
+    private float _pushMeleeImpact = 5;
+    
     private BoxCollider2D _boxCollider;
     private Vector3 smoothMove;
     private UserInput userInput;
@@ -67,6 +85,12 @@ public class Cat : MonoBehaviourPun
                 photonView.RPC("ThrowRPC", RpcTarget.AllViaServer, _throwPoint.position,_throwPoint.rotation);
                 animator.SetTrigger("shooting");
                 StartCoroutine(ThrowWait());
+            }
+            if (canMove && !_isAttacking && userInput.meleeInput)
+            {
+                _isAttacking = true;
+                photonView.RPC("MeleeRPC", RpcTarget.AllViaServer, _throwPoint.position,_throwPoint.rotation,photonView.Owner);
+                StartCoroutine(AttackWait());
             }
             if (canMove && !_hitted)
             {
@@ -136,6 +160,23 @@ public class Cat : MonoBehaviourPun
     public bool CanMove()
     {
         return canMove;
+    }
+    
+    /// <summary>
+    /// Method called when hitted by a melee attack
+    /// </summary>
+    /// <param name="direction"></param>
+    public void MeleeAttacked(Vector2 direction)
+    {
+        _hitted = true;
+        Debug.Log(photonView.Owner+" hitted by a melee");
+        rb.Sleep();
+        RemoveFur(4);
+        if (furLevel==1 && furSubLevel==0)
+        {
+            rb.AddForce(direction*_pushMeleeImpact,ForceMode2D.Impulse); 
+        }
+        StartCoroutine(HitKnockoutTime());
     }
     
     public void Drink(GameObject balcony)
@@ -211,8 +252,9 @@ public class Cat : MonoBehaviourPun
         }
     }
 
-    private void Stun(float duration)
+    public void Stun()
     {
+        float duration = stunTime;
         canMove = false; // a stunned cat can't move, should not attack either
         //Debug.Log("I am stunned");
         StartCoroutine(StunFrame(duration));
@@ -243,8 +285,15 @@ public class Cat : MonoBehaviourPun
 
     private IEnumerator ThrowWait()
     {
-        RemoveFur(1);
+        RemoveFur(4);
         yield return new WaitForSeconds(_throwWaitTime);
+        _isAttacking = false;
+    }
+
+    private IEnumerator AttackWait()
+    {   
+        Debug.Log(photonView.Owner+" melee");
+        yield return new WaitForSeconds(_attackWaitTime);
         _isAttacking = false;
     }
 
@@ -291,7 +340,7 @@ public class Cat : MonoBehaviourPun
     public void JumpOverMyHeadRPC(int otherFurLevel)
     {
         Debug.Log("Other fur level: " + otherFurLevel + " my fur level: " + furLevel);
-        if(otherFurLevel >= furLevel) Stun(1.0f);
+        if(otherFurLevel >= furLevel) Stun();
     }
     
     [PunRPC] //this rpc is called on each client, if a client notices that it is the one being stunned, it stuns its character
@@ -299,5 +348,31 @@ public class Cat : MonoBehaviourPun
     {
         furLevel = newFurLevel;
         furSubLevel = newFurSubLevel;
+    }
+    [PunRPC]
+    public void MeleeRPC(Vector3 pos, Quaternion q,Photon.Realtime.Player attacker)
+    {
+        Debug.Log(attacker+" melee");
+        Collider2D[] hits;
+
+        bool oppositeDirection = rb.transform.localScale.x < 0;
+        Vector2 direction=new Vector2(1,0);
+        if (oppositeDirection)
+            direction *= -1;
+        hits=Physics2D.OverlapCircleAll(pos, _radiusMelee);
+        foreach (var hit in hits)
+        {
+            Cat hitted = hit.GetComponent<Cat>();
+            if (hitted && hitted.CanBeHit && !attacker.Equals(hitted.photonView.Owner))
+            {
+                hitted.MeleeAttacked(direction);
+            }
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color=Color.red;
+        Gizmos.DrawWireSphere(_throwPoint.position,_radiusMelee);
     }
 } 
