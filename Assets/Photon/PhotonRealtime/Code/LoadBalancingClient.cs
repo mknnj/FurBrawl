@@ -2398,11 +2398,11 @@ namespace Photon.Realtime
             }
             else if (level == DebugLevel.INFO)
             {
-                Debug.Log(message);
+               // Debug.Log(message);
             }
             else if (level == DebugLevel.ALL)
             {
-                Debug.Log(message);
+                //Debug.Log(message);
             }
             #endif
         }

@@ -1,22 +1,22 @@
 fileFormatVersion: 2
-guid: d958e0229b06fc844963e48f0c6861bf
+guid: 4e906242fe837834c9e5d88242000b94
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6335001704374852054
-    second: melee attack white cat_0
+      213: 4458176655038190095
+    second: vase breaking sprite sheet_0
   - first:
-      213: -4941451716590525812
-    second: melee attack white cat_1
+      213: 7660296348448982413
+    second: vase breaking sprite sheet_1
   - first:
-      213: 3068743725020598496
-    second: melee attack white cat_2
+      213: 5159953575387333612
+    second: vase breaking sprite sheet_2
   - first:
-      213: 7869988559204074294
-    second: melee attack white cat_3
+      213: -1657882765666954632
+    second: vase breaking sprite sheet_3
   - first:
-      213: -7868255470236789940
-    second: melee attack white cat_4
+      213: -8963661559426896820
+    second: vase breaking sprite sheet_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -102,7 +102,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: melee attack white cat_0
+      name: vase breaking sprite sheet_0
       rect:
         serializedVersion: 2
         x: 0
@@ -116,14 +116,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a262e3f938d8518a0800000000000000
-      internalID: -6335001704374852054
+      spriteID: f029d7d1c00aedd30800000000000000
+      internalID: 4458176655038190095
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: melee attack white cat_1
+      name: vase breaking sprite sheet_1
       rect:
         serializedVersion: 2
         x: 0
@@ -137,14 +137,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c82a0ed38df6c6bb0800000000000000
-      internalID: -4941451716590525812
+      spriteID: d85068361f6de4a60800000000000000
+      internalID: 7660296348448982413
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: melee attack white cat_2
+      name: vase breaking sprite sheet_2
       rect:
         serializedVersion: 2
         x: 0
@@ -158,14 +158,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0e0df84b82e569a20800000000000000
-      internalID: 3068743725020598496
+      spriteID: ce3087e2076db9740800000000000000
+      internalID: 5159953575387333612
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: melee attack white cat_3
+      name: vase breaking sprite sheet_3
       rect:
         serializedVersion: 2
         x: 0
@@ -179,14 +179,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6334fb9c5e0d73d60800000000000000
-      internalID: 7869988559204074294
+      spriteID: 872dd2198640ef8e0800000000000000
+      internalID: -1657882765666954632
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: melee attack white cat_4
+      name: vase breaking sprite sheet_4
       rect:
         serializedVersion: 2
         x: 0
@@ -200,8 +200,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c43138e66575ec290800000000000000
-      internalID: -7868255470236789940
+      spriteID: c4c298f9d4daa9380800000000000000
+      internalID: -8963661559426896820
       vertices: []
       indices: 
       edges: []

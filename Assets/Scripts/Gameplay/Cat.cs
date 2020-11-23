@@ -17,7 +17,7 @@ public class Cat : MonoBehaviourPun
     [SerializeField] [Range(1, 9)] private int _hearts;
     [SerializeField] [Range(0, 3)] private float idleTime = 2; //Sorre97: time for player drinking the milk, no input is accepted during it
     [Tooltip("Stun time for the cat hitted by a Jar or jumped on by another cat")]
-    [SerializeField] [Range(0,3f)] private float stunTime = 1f;
+    [SerializeField] [Range(0,3f)] private float stunTime = 5f;
     [SerializeField] private bool _canBeHit = true;
     public bool CanBeHit
     {
@@ -90,6 +90,7 @@ public class Cat : MonoBehaviourPun
             {
                 _isAttacking = true;
                 photonView.RPC("MeleeRPC", RpcTarget.AllViaServer, _throwPoint.position,_throwPoint.rotation,photonView.Owner);
+                animator.SetTrigger("attacking");
                 StartCoroutine(AttackWait());
             }
             if (canMove && !_hitted)
@@ -117,7 +118,7 @@ public class Cat : MonoBehaviourPun
     {
         if (_feetCollider.IsOnGround && userInput.jumpInput)
         {
-            rb.AddForce(Vector3.up * (_jumpIntensity - maxFurLevel), ForceMode2D.Impulse);
+            rb.AddForce(Vector3.up * (_jumpIntensity - furLevel), ForceMode2D.Impulse);
             
         }
         if( rb.velocity.y != 0)

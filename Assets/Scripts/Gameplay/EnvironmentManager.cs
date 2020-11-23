@@ -22,6 +22,7 @@ public class EnvironmentManager : MonoBehaviourPun
     public GameObject catPrefab;
     public GameObject milkPrefab;
     public GameObject jarPrefab;
+    public GameObject platformPrefab;
 
     [SerializeField]  private int maxMilkSpawned = 3;
     [SerializeField]  private float timeBetweenMilk = 2f;
@@ -34,35 +35,58 @@ public class EnvironmentManager : MonoBehaviourPun
     private List<GameObject> _balconies;
     private List<GameObject> _freeBalconies;
     //private List<Cat> _cats;
-    
+
     void Start()
     {
-        CatSpawn();
+        int id = CatSpawn();
+
+        //if (PhotonNetwork.CurrentRoom.PlayerCount == 1) {
+        //    Debug.LogWarning("MASTER SWITCHED");
+        //    PhotonNetwork.SetMasterClient(PhotonNetwork.LocalPlayer);
+        //}
+
         if (PhotonNetwork.IsMasterClient)
         {
             //YASEEN: If I'm the owner of the scene ? 
             StartCoroutine(spawnMilk());
             StartCoroutine(spawnJars());
+            StartCoroutine(spawnPlatforms());
+            Debug.LogWarning("MASTER CONNECTED");
+            FindObjectOfType<AudioManager>().Play("scream");
         }
         else
-            Debug.Log("NOT MASTER");
+            Debug.LogWarning("NOT MASTER");
         
         _balconies = new List<GameObject>(GameObject.FindGameObjectsWithTag("Balcony"));
         _freeBalconies = _balconies;
         //_cats = new List<Cat>();
     }
 
-    private void CatSpawn()
+    private int CatSpawn()
     {
 
         var spawnPosition = Utility.getRandomSpawnLocation();
         GameObject cat = PhotonNetwork.Instantiate(catPrefab.name, spawnPosition, catPrefab.transform.rotation); //spawn a cat :)
+        PhotonView photon_view = cat.GetComponent<PhotonView>();
+        return photon_view.ViewID;
         //_cats.Add(cat.GetComponent<Cat>());  TODO [Sorre97] THIS DOESN'T WORK FOR SOME REASON!
         //Instantiate(catPrefab, spawnPosition, catPrefab.transform.rotation); //spawn a cat :)
     }
 
     // Update is called once per frame
 
+
+    private IEnumerator spawnPlatforms()
+    {
+        yield return new WaitForSeconds(0);
+        var location_1 = new Vector3(0.009512998f, -2.128334f, -8.9f);
+        var location_2 = new Vector3(4.32f, 2.83f, -8.9f);
+
+        PhotonNetwork.Instantiate(platformPrefab.name, location_1, platformPrefab.transform.rotation);
+        PhotonNetwork.Instantiate(platformPrefab.name, location_2, platformPrefab.transform.rotation);
+
+        yield return null;
+    }
     private IEnumerator spawnJars()
     {
         yield return new WaitForSeconds(timeBetweenJars);

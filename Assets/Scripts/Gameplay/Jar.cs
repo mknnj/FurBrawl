@@ -4,17 +4,27 @@ using UnityEngine;
 
 public class Jar : MonoBehaviour
 {
+    public Rigidbody2D rb;
+    public Animator animator;
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player") && other.gameObject.GetComponent<Cat>().CanMove()) 
         {
-            Destroy(gameObject);
+            rb.bodyType = RigidbodyType2D.Static;
+            animator.SetTrigger("broken");
+            StartCoroutine(WaitThenDestroy(gameObject));
             other.gameObject.GetComponent<Cat>().Stun();
-            Debug.Log("Player " + other.name + " got hit by a falling jar");
+            Debug.Log("Player " + other.GetInstanceID() + " got hit by a falling jar");
         } else if (other.CompareTag("Border"))
         {
-            Destroy(gameObject);
+            StartCoroutine(WaitThenDestroy(gameObject));
+            
         }
     }
-    
+    private IEnumerator WaitThenDestroy(GameObject g)
+    {
+        yield return new WaitForSeconds(0.5f);
+        Destroy(g);
+        yield return null;
+    }
 }

@@ -49,7 +49,11 @@ public class FurBall : MonoBehaviour
     {
         Debug.Log(other.name+ " furball collided");
         //hit = true;
-        Destroy(gameObject);
+        if (!Launcher.Equals(other.gameObject))
+        {
+            Destroy(gameObject);
+        }
+        
     }
 
     public void SetData(Player owner, float lag, bool oppositeDirection)
