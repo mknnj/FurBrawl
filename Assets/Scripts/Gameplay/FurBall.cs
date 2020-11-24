@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using UnityEngine;
@@ -49,7 +50,7 @@ public class FurBall : MonoBehaviour
     {
         Debug.Log(other.name+ " furball collided");
         //hit = true;
-        if (!Launcher.Equals(other.gameObject))
+        if (other.CompareTag("Player") && !Launcher.Equals(other.GetComponent<PhotonView>().Owner))
         {
             Destroy(gameObject);
         }

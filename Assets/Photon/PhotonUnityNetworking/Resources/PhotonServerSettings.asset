@@ -45,6 +45,8 @@ MonoBehaviour:
   - RemoveFurRPC
   - FurSyncRPC
   - MeleeRPC
+  - RemoveLifeUIRPC
+  - DieRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

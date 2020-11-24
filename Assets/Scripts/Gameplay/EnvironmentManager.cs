@@ -32,6 +32,8 @@ public class EnvironmentManager : MonoBehaviourPun
     [SerializeField] [Range(0, 20f)] private float jarHeight = 10f;  //TODO this should be based on background y
 
     [SerializeField] private int milkCounter = 0;
+
+    public PlayerLifeUI[] playerLifeUis; //0 is topLeft, 1 is topRight, 2 is bottomLeft, 3 is bottomRight
     private List<GameObject> _balconies;
     private List<GameObject> _freeBalconies;
     //private List<Cat> _cats;
@@ -39,7 +41,7 @@ public class EnvironmentManager : MonoBehaviourPun
     void Start()
     {
         int id = CatSpawn();
-
+        Debug.Log(id+ " logged");
         //if (PhotonNetwork.CurrentRoom.PlayerCount == 1) {
         //    Debug.LogWarning("MASTER SWITCHED");
         //    PhotonNetwork.SetMasterClient(PhotonNetwork.LocalPlayer);
@@ -68,6 +70,7 @@ public class EnvironmentManager : MonoBehaviourPun
         var spawnPosition = Utility.getRandomSpawnLocation();
         GameObject cat = PhotonNetwork.Instantiate(catPrefab.name, spawnPosition, catPrefab.transform.rotation); //spawn a cat :)
         PhotonView photon_view = cat.GetComponent<PhotonView>();
+        //cat.GetComponent<Cat>().envi = this;
         return photon_view.ViewID;
         //_cats.Add(cat.GetComponent<Cat>());  TODO [Sorre97] THIS DOESN'T WORK FOR SOME REASON!
         //Instantiate(catPrefab, spawnPosition, catPrefab.transform.rotation); //spawn a cat :)

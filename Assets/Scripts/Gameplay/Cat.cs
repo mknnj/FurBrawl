@@ -3,6 +3,7 @@ using UnityEngine;
 using Photon.Pun;
 using System;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(UserInput))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -46,6 +47,8 @@ public class Cat : MonoBehaviourPun
 
     [Tooltip("force that it is applicated when hitted by a melee")] [SerializeField]
     private float _pushMeleeImpact = 5;
+
+    [SerializeField] private Text identifier;
     
     private BoxCollider2D _boxCollider;
     private Vector3 smoothMove;
@@ -54,9 +57,13 @@ public class Cat : MonoBehaviourPun
     public FeetCollider _feetCollider;
     public Animator animator;
     private SpriteRenderer _SR;
-
+    
+    
+    private int _number;
     public float velX;
     public float vely;
+    private PlayerLifeUI _lifeUI;
+    private EnvironmentManager _envi;//reference to environment manager of room;
 
     private void Awake()
     { 
@@ -67,6 +74,17 @@ public class Cat : MonoBehaviourPun
         _SR = GetComponent<SpriteRenderer>();
         furLevel = maxFurLevel;
         furSubLevel = maxFurSubLevel;
+        _envi=GameObject.FindWithTag("Manager").GetComponent<EnvironmentManager>();
+    }
+
+    private void Start()
+    {
+        //set life ui for this cat 
+        _number = (photonView.ViewID - 1001) / 1000;
+        _lifeUI = _envi.playerLifeUis[_number];
+        _lifeUI.SetPlayerName("Player "+(_number+1));
+        _lifeUI.gameObject.SetActive(true);
+        identifier.text = "P" + (_number + 1);
     }
 
     public int GetFurLevel()
@@ -227,10 +245,14 @@ public class Cat : MonoBehaviourPun
     }
     
     public void Die(String cause) { 
-        _hearts -= 1; 
+        _hearts -= 1;
+        if(photonView.IsMine)
+            photonView.RPC("RemoveLifeUIRPC",RpcTarget.AllViaServer,_number);
         if (_hearts == 0) {
             print("player <...> died due to: " + cause);
-            gameObject.SetActive(false);
+            //lifeUI.gameObject.SetActive(false);
+            //gameObject.SetActive(false);
+            photonView.RPC("DieRPC",RpcTarget.AllViaServer);
         } else {
             Vector3 respawnPoint = Utility.getRandomSpawnLocation();
             switch (cause)
@@ -309,7 +331,7 @@ public class Cat : MonoBehaviourPun
     {
         //Debug.Log("trigger with " + other.name);
         
-        if (other.CompareTag("FurBall") && _canBeHit)
+        if (other.CompareTag("FurBall") && _canBeHit && !other.GetComponent<FurBall>().Launcher.Equals(photonView.Owner))
         {
             _hitted = true;
             
@@ -356,7 +378,7 @@ public class Cat : MonoBehaviourPun
         Debug.Log(attacker+" melee");
         Collider2D[] hits;
 
-        bool oppositeDirection = rb.transform.localScale.x < 0;
+        bool oppositeDirection = rb.transform.localScale.x > 0;
         Vector2 direction=new Vector2(1,0);
         if (oppositeDirection)
             direction *= -1;
@@ -371,6 +393,18 @@ public class Cat : MonoBehaviourPun
         }
     }
 
+    [PunRPC]
+    public void RemoveLifeUIRPC(int index)
+    {
+        _envi.playerLifeUis[index].RemoveLife();
+    }
+
+    [PunRPC]
+    public void DieRPC()
+    {
+        gameObject.SetActive(false);
+    }
+    
     private void OnDrawGizmosSelected()
     {
         Gizmos.color=Color.red;
