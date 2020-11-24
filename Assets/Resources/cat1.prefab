@@ -201,17 +201,14 @@ MonoBehaviour:
   _hittedWaitTime: 0.5
   canMove: 1
   _attackWaitTime: 0
-  _radiusMelee: 0.3
+  _radiusMelee: 0.4
   _distanceMelee: 1
   _pushMeleeImpact: 5
   identifier: {fileID: 5410945110500946217}
   _feetCollider: {fileID: 0}
   animator: {fileID: 8207692213462885972}
-  number: 0
   velX: 0
   vely: 0
-  lifeUI: {fileID: 0}
-  envi: {fileID: 0}
 --- !u!114 &6863352722705761174
 MonoBehaviour:
   m_ObjectHideFlags: 0
