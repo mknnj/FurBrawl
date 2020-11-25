@@ -1315,6 +1315,54 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1030904052}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1156509543
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1156509545}
+  - component: {fileID: 1156509544}
+  m_Layer: 0
+  m_Name: AnimationsController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1156509544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1156509543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411435d2e9bc2b04fbb4327efb0b2611, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overrideControllers:
+  - {fileID: 22100000, guid: 57a3cca0b2356fe47ba9e296417c8b49, type: 2}
+  - {fileID: 22100000, guid: dff96785d28fdb44396d5afa213159bd, type: 2}
+  overrider: {fileID: 7182349258906234568, guid: eab2f13ab305c9a4c8acf141509badd9,
+    type: 3}
+--- !u!4 &1156509545
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1156509543}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.5641768, y: 1.2380368, z: -16.740702}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1170777228
 PrefabInstance:
   m_ObjectHideFlags: 0

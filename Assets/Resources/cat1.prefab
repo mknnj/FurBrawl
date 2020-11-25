@@ -19,6 +19,8 @@ GameObject:
   - component: {fileID: 37205144520255702}
   - component: {fileID: 8207692213462885972}
   - component: {fileID: 4768298471095570207}
+  - component: {fileID: 7182349258906234568}
+  - component: {fileID: 8970575324067755920}
   m_Layer: 0
   m_Name: cat1
   m_TagString: Player
@@ -209,6 +211,7 @@ MonoBehaviour:
   animator: {fileID: 8207692213462885972}
   velX: 0
   vely: 0
+  _animationsController: {fileID: 8970575324067755920}
 --- !u!114 &6863352722705761174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,6 +308,34 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
+--- !u!114 &7182349258906234568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858362166988121074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d03303465842c248bd630068abde2fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8970575324067755920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858362166988121074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411435d2e9bc2b04fbb4327efb0b2611, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overrideControllers:
+  - {fileID: 22100000, guid: dff96785d28fdb44396d5afa213159bd, type: 2}
+  - {fileID: 22100000, guid: 57a3cca0b2356fe47ba9e296417c8b49, type: 2}
+  overrider: {fileID: 7182349258906234568}
 --- !u!1 &1394613353438291591
 GameObject:
   m_ObjectHideFlags: 0

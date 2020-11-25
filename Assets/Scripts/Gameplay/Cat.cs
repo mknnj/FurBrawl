@@ -64,7 +64,7 @@ public class Cat : MonoBehaviourPun
     public float vely;
     private PlayerLifeUI _lifeUI;
     private EnvironmentManager _envi;//reference to environment manager of room;
-
+    [SerializeField] private AnimationTypeController _animationsController;
     private void Awake()
     { 
         userInput = GetComponent<UserInput>();
@@ -75,6 +75,7 @@ public class Cat : MonoBehaviourPun
         furLevel = maxFurLevel;
         furSubLevel = maxFurSubLevel;
         _envi=GameObject.FindWithTag("Manager").GetComponent<EnvironmentManager>();
+        _animationsController = GetComponentInChildren<AnimationTypeController>();
     }
 
     private void Start()
@@ -95,6 +96,17 @@ public class Cat : MonoBehaviourPun
 
     private void Update()
     {
+
+        //YASEEN: Change Animation based on Furlevel (Not the cleanest way to do it)
+        if(furLevel == 4)
+        {
+            _animationsController.Set(0);
+        }
+        else
+        {
+            _animationsController.Set(1);
+        }
+
         if (photonView.IsMine)
         {
             if (canMove && !_isAttacking && userInput.throwInput && (furLevel >1 || furSubLevel>0))

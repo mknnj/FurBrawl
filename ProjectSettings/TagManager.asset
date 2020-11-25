@@ -11,6 +11,7 @@ TagManager:
   - Border
   - Platform
   - Manager
+  - AnimationsController
   layers:
   - Default
   - TransparentFX
