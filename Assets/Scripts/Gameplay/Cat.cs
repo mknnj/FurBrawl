@@ -102,9 +102,13 @@ public class Cat : MonoBehaviourPun
         {
             _animationsController.Set(0);
         }
-        else
+        else if (furLevel == 3)
         {
             _animationsController.Set(1);
+        }
+        else
+        {
+            _animationsController.Set(2);
         }
 
         if (photonView.IsMine)
