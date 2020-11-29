@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class ScreenManager : MonoBehaviourPunCallbacks
 {
@@ -24,10 +25,19 @@ public class ScreenManager : MonoBehaviourPunCallbacks
     {
         if(!NickNameTF.text.Equals("")) //Maybe we should display some UI to notify that the user needs to choose a nickname
         {
+            PhotonNetwork.AutomaticallySyncScene = true;
             PhotonNetwork.NickName = NickNameTF.text; //sets the nickname of the player
             PhotonNetwork.SendRate = 40;
+            PhotonNetwork.SetPlayerCustomProperties(GenerateCustomProperties()); // function used to initialize the skin, maybe we can fetch a local preference
             PhotonNetwork.ConnectUsingSettings(); //uses the API_ID from settings to connect to Photon Server
         }
+    }
+
+    private Hashtable GenerateCustomProperties()
+    {
+        Hashtable _myCustomProperties = new Hashtable();
+        _myCustomProperties["SkinID"] = 0;
+        return _myCustomProperties;
     }
 
     public void OnClick_PlayBtn() //go to the main menu
@@ -64,9 +74,18 @@ public class ScreenManager : MonoBehaviourPunCallbacks
         MainMenu.SetActive(true);
     }
 
+    public void OnClick_LeaveRoom()
+    {
+        Debug.Log("Room left");
+        PhotonNetwork.LeaveRoom(true);
+        InRoomScreen.SetActive(false);
+        RoomListMenu.SetActive(true);
+    }
+
     public override void OnConnectedToMaster() 
     {
-        PhotonNetwork.JoinLobby(TypedLobby.Default); //a mandatory extension to ConnectUsingSettings
+        if (!PhotonNetwork.InLobby)
+            PhotonNetwork.JoinLobby(TypedLobby.Default); //a mandatory extension to ConnectUsingSettings
     }
 
     public override void OnJoinedLobby() // When the client joins the lobby, enter the room list menu
@@ -81,7 +100,6 @@ public class ScreenManager : MonoBehaviourPunCallbacks
         RoomListMenu.SetActive(false);
         InRoomScreen.SetActive(true);
         print("JOINED");
-        //PhotonNetwork.LoadLevel(1);
     }
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
@@ -94,5 +112,7 @@ public class ScreenManager : MonoBehaviourPunCallbacks
         DisconnectedScreen.SetActive(true);
         Error = cause.ToString();
     }
+    
+    
     
 }
