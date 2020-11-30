@@ -20,10 +20,6 @@ public class Cat : MonoBehaviourPun
     [Tooltip("Stun time for the cat hitted by a Jar or jumped on by another cat")]
     [SerializeField] [Range(0,3f)] private float stunTime = 5f;
     [SerializeField] private bool _canBeHit = true;
-    public bool CanBeHit
-    {
-        get => _canBeHit;
-    }
     [SerializeField] private float invincibility;
     [SerializeField] private float _jumpIntensity = 5f;
     [Tooltip("Point where prefab for furball is instantiated")]
@@ -92,13 +88,28 @@ public class Cat : MonoBehaviourPun
     {
         return furLevel;
     }
-
-
-    private void Update()
+    public bool CanBeHit
     {
+        get => _canBeHit;
+    }
+
+    
+    private void Update() {
 
         //YASEEN: Change Animation based on Furlevel (Not the cleanest way to do it)
-        if(furLevel == 4)
+        switch (furLevel)
+        {
+            case 4:
+                _animationsController.Set(0);
+                break;
+            case 3:
+                _animationsController.Set(1);
+                break;
+            default:
+                _animationsController.Set(2);
+                break;
+        }
+        /*if(furLevel == 4)
         {
             _animationsController.Set(0);
         }
@@ -109,7 +120,7 @@ public class Cat : MonoBehaviourPun
         else
         {
             _animationsController.Set(2);
-        }
+        } */
 
         if (photonView.IsMine)
         {
@@ -137,6 +148,13 @@ public class Cat : MonoBehaviourPun
             smoothMovement(); // for other players, then get their new locations and smooth the movements 
         }*/
     }
+    private IEnumerator AttackWait()
+    {   
+        Debug.Log(photonView.Owner+" melee");
+        yield return new WaitForSeconds(_attackWaitTime);
+        _isAttacking = false;
+    }
+
 
     private void FixedUpdate()
     {
@@ -184,6 +202,7 @@ public class Cat : MonoBehaviourPun
         } else if (rb.velocity.x > 0)
         {
             rb.transform.localScale = new Vector2(-Math.Abs(rb.transform.localScale.x), transform.localScale.y);
+
             //_SR.flipX = false;
         }
 
@@ -195,6 +214,32 @@ public class Cat : MonoBehaviourPun
     public bool CanMove()
     {
         return canMove;
+    }
+    
+    
+    
+    //************************************ BEGIN SECTION for melee attack **********************************************
+     
+    
+    [PunRPC]
+    public void MeleeRPC(Vector3 pos, Quaternion q,Photon.Realtime.Player attacker)
+    {
+        Debug.Log(attacker+" melee");
+        Collider2D[] hits;
+
+        bool oppositeDirection = rb.transform.localScale.x > 0;
+        Vector2 direction=new Vector2(1,0);
+        if (oppositeDirection)
+            direction *= -1;
+        hits=Physics2D.OverlapCircleAll(pos, _radiusMelee);
+        foreach (var hit in hits)
+        {
+            Cat hitted = hit.GetComponent<Cat>();
+            if (hitted && hitted.CanBeHit && !attacker.Equals(hitted.photonView.Owner))
+            {
+                hitted.MeleeAttacked(direction);
+            }
+        }
     }
     
     /// <summary>
@@ -213,6 +258,31 @@ public class Cat : MonoBehaviourPun
         }
         StartCoroutine(HitKnockoutTime());
     }
+
+    //********************************* BEGIN SECTION for furball throw ************************************************
+    private IEnumerator ThrowWait()
+    {
+        RemoveFur(4);
+        yield return new WaitForSeconds(_throwWaitTime);
+        _isAttacking = false;
+    }
+    
+    
+    [PunRPC]
+    public void ThrowRPC(Vector3 pos, Quaternion q,PhotonMessageInfo info)
+    {
+        //Debug.Log("Furball RPC");
+        float lag = (float) (PhotonNetwork.Time - info.SentServerTime);
+        GameObject fb = Instantiate(_furBallPrefab, pos, q);
+
+
+        //YASEEN: 'oppositeDirection' Passes the info of the direction to the lil cute Furball <3 
+        bool oppositeDirection =rb.transform.localScale.x > 0;
+
+        fb.GetComponent<FurBall>().SetData(photonView.Owner,Mathf.Abs(lag),oppositeDirection);
+    }
+
+    //*************************************** BEGIN SECTION for Fur management *****************************************
     
     public void Drink(GameObject balcony)
     {
@@ -230,7 +300,14 @@ public class Cat : MonoBehaviourPun
         }
         photonView.RPC("FurSyncRPC", RpcTarget.AllViaServer, furLevel, furSubLevel);
     }
+    
+    private IEnumerator IdleCoroutine(float time)
+    {
+        yield return new WaitForSeconds(time);
 
+        canMove = true;
+        yield return null;
+    }
     
     public void RemoveFur(int qty) //method to be called by other's melee attack to modify this cat's fur level
     {
@@ -251,15 +328,46 @@ public class Cat : MonoBehaviourPun
         }
         photonView.RPC("FurSyncRPC", RpcTarget.AllViaServer, furLevel, furSubLevel);
     }
-    
-    private IEnumerator IdleCoroutine(float time)
-    {
-        yield return new WaitForSeconds(time);
 
-        canMove = true;
-        yield return null;
+    [PunRPC] //this rpc is called on each client, if a client notices that it is the one being stunned, it stuns its character
+    public void FurSyncRPC(int newFurLevel, int newFurSubLevel)
+    {
+        furLevel = newFurLevel;
+        furSubLevel = newFurSubLevel;
+    }
+
+    //************************************* BEGIN SECTION for stun logic ***********************************************
+    public void Stun() {
+        float duration = stunTime;
+        canMove = false; // a stunned cat can't move, should not attack either
+        //Debug.Log("I am stunned");
+        StartCoroutine(StunFrame(duration));
+        animator.SetBool("stunned", true);
     }
     
+    private IEnumerator StunFrame(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        canMove = true;
+        animator.SetBool("stunned", false);
+        yield return null;
+    }
+
+
+    public void FallOnHead(int otherFurLevel)
+    {
+        photonView.RPC("JumpOverMyHeadRPC", RpcTarget.Others,  otherFurLevel);
+    }
+    
+    [PunRPC] //this rpc is called on each client, if a client notices that it is the one being stunned, it stuns its character
+    public void JumpOverMyHeadRPC(int otherFurLevel)
+    {
+        Debug.Log("Other fur level: " + otherFurLevel + " my fur level: " + furLevel);
+        if(otherFurLevel >= furLevel) Stun();
+    }
+
+    //*********************************** BEGIN SECTION for death & lives loss logic ***********************************
+
     public void Die(String cause) { 
         _hearts -= 1;
         if(photonView.IsMine)
@@ -290,30 +398,6 @@ public class Cat : MonoBehaviourPun
             StartCoroutine(InvincibilityFrame(invincibility));
         }
     }
-
-    public void Stun()
-    {
-        float duration = stunTime;
-        canMove = false; // a stunned cat can't move, should not attack either
-        //Debug.Log("I am stunned");
-        StartCoroutine(StunFrame(duration));
-        animator.SetBool("stunned", true);
-    }
-
-    public void FallOnHead(int otherFurLevel)
-    {
-        photonView.RPC("JumpOverMyHeadRPC", RpcTarget.Others,  otherFurLevel);
-    }
-    
-    private IEnumerator StunFrame(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        canMove = true;
-        animator.SetBool("stunned", false);
-        yield return null;
-    }
-    
-    
     private IEnumerator InvincibilityFrame(float time)
     {
         yield return new WaitForSeconds(time);
@@ -321,28 +405,7 @@ public class Cat : MonoBehaviourPun
         _canBeHit = true;
         yield return null;
     }
-
-    private IEnumerator ThrowWait()
-    {
-        RemoveFur(4);
-        yield return new WaitForSeconds(_throwWaitTime);
-        _isAttacking = false;
-    }
-
-    private IEnumerator AttackWait()
-    {   
-        Debug.Log(photonView.Owner+" melee");
-        yield return new WaitForSeconds(_attackWaitTime);
-        _isAttacking = false;
-    }
-
-    private IEnumerator HitKnockoutTime()
-    {
-        yield return  new WaitForSeconds(_hittedWaitTime);
-        _hitted = false;
-    }
-
-
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
         //Debug.Log("trigger with " + other.name);
@@ -360,53 +423,10 @@ public class Cat : MonoBehaviourPun
             StartCoroutine(HitKnockoutTime());
         }
     }
-
-    [PunRPC]
-    public void ThrowRPC(Vector3 pos, Quaternion q,PhotonMessageInfo info)
+    private IEnumerator HitKnockoutTime()
     {
-        //Debug.Log("Furball RPC");
-        float lag = (float) (PhotonNetwork.Time - info.SentServerTime);
-        GameObject fb = Instantiate(_furBallPrefab, pos, q);
-
-
-        //YASEEN: 'oppositeDirection' Passes the info of the direction to the lil cute Furball <3 
-        bool oppositeDirection =rb.transform.localScale.x > 0;
-
-        fb.GetComponent<FurBall>().SetData(photonView.Owner,Mathf.Abs(lag),oppositeDirection);
-    }
-    
-    [PunRPC] //this rpc is called on each client, if a client notices that it is the one being stunned, it stuns its character
-    public void JumpOverMyHeadRPC(int otherFurLevel)
-    {
-        Debug.Log("Other fur level: " + otherFurLevel + " my fur level: " + furLevel);
-        if(otherFurLevel >= furLevel) Stun();
-    }
-    
-    [PunRPC] //this rpc is called on each client, if a client notices that it is the one being stunned, it stuns its character
-    public void FurSyncRPC(int newFurLevel, int newFurSubLevel)
-    {
-        furLevel = newFurLevel;
-        furSubLevel = newFurSubLevel;
-    }
-    [PunRPC]
-    public void MeleeRPC(Vector3 pos, Quaternion q,Photon.Realtime.Player attacker)
-    {
-        Debug.Log(attacker+" melee");
-        Collider2D[] hits;
-
-        bool oppositeDirection = rb.transform.localScale.x > 0;
-        Vector2 direction=new Vector2(1,0);
-        if (oppositeDirection)
-            direction *= -1;
-        hits=Physics2D.OverlapCircleAll(pos, _radiusMelee);
-        foreach (var hit in hits)
-        {
-            Cat hitted = hit.GetComponent<Cat>();
-            if (hitted && hitted.CanBeHit && !attacker.Equals(hitted.photonView.Owner))
-            {
-                hitted.MeleeAttacked(direction);
-            }
-        }
+        yield return  new WaitForSeconds(_hittedWaitTime);
+        _hitted = false;
     }
 
     [PunRPC]

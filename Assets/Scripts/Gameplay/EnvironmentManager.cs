@@ -27,6 +27,7 @@ public class EnvironmentManager : MonoBehaviourPun
     [SerializeField]  private int maxMilkSpawned = 3;
     [SerializeField]  private float timeBetweenMilk = 2f;
     [SerializeField]  private float timeBetweenJars = 5f;
+    [SerializeField]  private float timeBetweenPlatforms = 10f;
     [SerializeField]  private float counter;
     [SerializeField] [Range(0, 5f)] private float milkHeight = 1.28f;
     [SerializeField] [Range(0, 20f)] private float jarHeight = 10f;  //TODO this should be based on background y
@@ -36,6 +37,9 @@ public class EnvironmentManager : MonoBehaviourPun
     public PlayerLifeUI[] playerLifeUis; //0 is topLeft, 1 is topRight, 2 is bottomLeft, 3 is bottomRight
     private List<GameObject> _balconies;
     private List<GameObject> _freeBalconies;
+    
+    private List<Vector3> _freePlatforms;
+    
     //private List<Cat> _cats;
 
     void Start()
@@ -61,6 +65,8 @@ public class EnvironmentManager : MonoBehaviourPun
         
         _balconies = new List<GameObject>(GameObject.FindGameObjectsWithTag("Balcony"));
         _freeBalconies = _balconies;
+
+        _freePlatforms = new List<Vector3>();
         //_cats = new List<Cat>();
     }
 
@@ -81,15 +87,30 @@ public class EnvironmentManager : MonoBehaviourPun
 
     private IEnumerator spawnPlatforms()
     {
-        yield return new WaitForSeconds(0);
-        var location_1 = new Vector3(0.009512998f, -2.128334f, -8.9f);
-        var location_2 = new Vector3(4.32f, 2.83f, -8.9f);
+        yield return new WaitForSeconds(timeBetweenPlatforms);
+        if (_freePlatforms.Count > 0)
+        {
+            System.Random rnd = new System.Random();
+            int rnd_num = rnd.Next(0, _freePlatforms.Count);
+            Vector3 platform = _freePlatforms[rnd_num];
+            _freePlatforms.Remove(platform);
+            PhotonNetwork.Instantiate(platformPrefab.name, platform, platformPrefab.transform.rotation);
+            
+        }
+        //var location_1 = new Vector3(0.009512998f, -2.128334f, -8.9f);
+        //var location_2 = new Vector3(4.32f, 2.83f, -8.9f);
 
-        PhotonNetwork.Instantiate(platformPrefab.name, location_1, platformPrefab.transform.rotation);
-        PhotonNetwork.Instantiate(platformPrefab.name, location_2, platformPrefab.transform.rotation);
-
+        //PhotonNetwork.Instantiate(platformPrefab.name, location_1, platformPrefab.transform.rotation);
+        //PhotonNetwork.Instantiate(platformPrefab.name, location_2, platformPrefab.transform.rotation);
         yield return null;
+        StartCoroutine(spawnPlatforms());
     }
+
+    public void destroyedPlatform(float xAxis, float yAxis)
+    {
+        _freePlatforms.Add(new Vector3(xAxis, yAxis, -8.9f));
+    }
+
     private IEnumerator spawnJars()
     {
         yield return new WaitForSeconds(timeBetweenJars);

@@ -56,9 +56,12 @@ public class Platform : MonoBehaviour
             Debug.Log("crnt helth" + initialHealth);
             initialHealth -= 10 * Mathf.Pow(3, _damageFactor);
             _SR.color = new Color((255 - initialHealth)/255, Mathf.Max(initialHealth, 0)/255, 0);
-            if(initialHealth <= 0)
+            if (initialHealth <= 0)
+            {
                 Destroy(gameObject);
-            if(!_damage)
+                GameObject.FindGameObjectWithTag("Manager").GetComponent<EnvironmentManager>()
+                    .destroyedPlatform(transform.position.x, transform.position.y);
+            } if(!_damage)
                 yield break;
             yield return wait;
         }
