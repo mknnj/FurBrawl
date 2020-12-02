@@ -105,8 +105,11 @@ public class Cat : MonoBehaviourPun
             case 3:
                 _animationsController.Set(1);
                 break;
-            default:
+            case 2:
                 _animationsController.Set(2);
+                break;
+            default:
+                _animationsController.Set(3);
                 break;
         }
         /*if(furLevel == 4)
