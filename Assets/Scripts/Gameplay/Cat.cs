@@ -79,7 +79,7 @@ public class Cat : MonoBehaviourPun
         //set life ui for this cat 
         _number = (photonView.ViewID - 1001) / 1000;
         _lifeUI = _envi.playerLifeUis[_number];
-        _lifeUI.SetPlayerName("Player "+(_number+1));
+        _lifeUI.SetPlayerName("P"+(_number+1)+" - "+photonView.Owner.NickName);
         _lifeUI.gameObject.SetActive(true);
         identifier.text = "P" + (_number + 1);
     }

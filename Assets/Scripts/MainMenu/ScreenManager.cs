@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using System;
+using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +9,19 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class ScreenManager : MonoBehaviourPunCallbacks
 {
+    
+    public enum Menu 
+    {
+        TitleScreen,
+        MainMenu,
+        RoomListMenu,
+        InRoomScreen,
+        SettingsMenu,
+        TutorialScreen,
+        DisconnectedScreen,
+        FeedbackScreen
+    };
+    
     //Following the structure defined in the final game design document:
     public GameObject TitleScreen; //Simple screen with "play" button at the start of the game
     public GameObject MainMenu; //Menu of the game where one can choose among "settings", "play" or "commands tutorial" 
@@ -16,11 +30,85 @@ public class ScreenManager : MonoBehaviourPunCallbacks
     public GameObject SettingsMenu; //Maybe used later
     public GameObject TutorialScreen; //Explains how to play the game
     public GameObject DisconnectedScreen; //Used to display errors
-    
+    public GameObject FeedbackScreen; //used to submit feedback to the professor's drive
     
     public string Error; //the error message (not being used, yet)
     public InputField NickNameTF;
     
+    public void SetMenu(Menu menu)
+    {
+        TitleScreen.SetActive(false);
+        MainMenu.SetActive(false);
+        RoomListMenu.SetActive(false);
+        InRoomScreen.SetActive(false);
+        SettingsMenu.SetActive(false);
+        TutorialScreen.SetActive(false);
+        DisconnectedScreen.SetActive(false);
+        FeedbackScreen.SetActive(false);
+        switch (menu)
+        {
+            case Menu.TitleScreen:
+                TitleScreen.SetActive(true);
+                break;
+            case Menu.MainMenu:
+                MainMenu.SetActive(true);
+                break;
+            case Menu.RoomListMenu:
+                RoomListMenu.SetActive(true);
+                break;
+            case Menu.InRoomScreen:
+                InRoomScreen.SetActive(true);
+                break;
+            case Menu.SettingsMenu:
+                SettingsMenu.SetActive(true);
+                break;
+            case Menu.TutorialScreen:
+                TutorialScreen.SetActive(true);
+                break;
+            case Menu.DisconnectedScreen:
+                DisconnectedScreen.SetActive(true);
+                break;
+            case Menu.FeedbackScreen:
+                FeedbackScreen.SetActive(true);
+                break;
+        }
+    }
+    
+    public void OpenMainMenu()
+    {
+        SetMenu(Menu.MainMenu);
+    }
+    
+    public void OpenRoomListMenu()
+    {
+        SetMenu(Menu.RoomListMenu);
+    }
+    
+    public void OpenInRoomScreen()
+    {
+        SetMenu(Menu.InRoomScreen);
+    }
+    
+    public void OpenSettingsMenu()
+    {
+        SetMenu(Menu.SettingsMenu);
+    }
+    
+    public void OpenTutorialScreen()
+    {
+        SetMenu(Menu.TutorialScreen);
+    }
+    
+    public void OpenDisconnectedScreen()
+    {
+        SetMenu(Menu.DisconnectedScreen);
+    }
+    
+    public void OpenFeedbackScreen()
+    {
+        SetMenu(Menu.FeedbackScreen);
+    }
+
     public void  OnClick_ConnectToRoomsBtn()
     {
         if(!NickNameTF.text.Equals("")) //Maybe we should display some UI to notify that the user needs to choose a nickname
@@ -42,23 +130,17 @@ public class ScreenManager : MonoBehaviourPunCallbacks
 
     public void OnClick_PlayBtn() //go to the main menu
     {
-        if (TitleScreen.activeSelf)
-            TitleScreen.SetActive(false);
-        MainMenu.SetActive(true);
+        OpenMainMenu();
     }
     
     public void OnClick_SettingsBtn() //jump to the settings menu
     {
-        if (MainMenu.activeSelf)
-            MainMenu.SetActive(false);
-        SettingsMenu.SetActive(true);
+        OpenSettingsMenu();
     }
     
     public void OnClick_TutorialBtn() //jump to the tutorial
     {
-        if (MainMenu.activeSelf)
-            MainMenu.SetActive(false);
-        TutorialScreen.SetActive(true);
+        OpenTutorialScreen();
     }
 
     public void OnClick_DisconnectBtn() // Disconnect from server
@@ -68,18 +150,14 @@ public class ScreenManager : MonoBehaviourPunCallbacks
     
     public void OnClick_ReturnToMain() //now the same for settings/tutorial, maybe we want to save settings or something
     {
-        SettingsMenu.SetActive(false);
-        TutorialScreen.SetActive(false);
-        DisconnectedScreen.SetActive(false);
-        MainMenu.SetActive(true);
+        OpenMainMenu();
     }
 
     public void OnClick_LeaveRoom()
     {
         Debug.Log("Room left");
         PhotonNetwork.LeaveRoom(true);
-        InRoomScreen.SetActive(false);
-        RoomListMenu.SetActive(true);
+        OpenRoomListMenu();
     }
 
     public override void OnConnectedToMaster() 
@@ -90,15 +168,12 @@ public class ScreenManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby() // When the client joins the lobby, enter the room list menu
     {
-        DisconnectedScreen.SetActive(false); //The client can arrive from a reconnection
-        MainMenu.SetActive(false); //The client can arrive from the main menu
-        RoomListMenu.SetActive(true); //When the client is connected, it should be able to see the rooms
+        OpenRoomListMenu();
     }
     
     public override void OnJoinedRoom()
     {
-        RoomListMenu.SetActive(false);
-        InRoomScreen.SetActive(true);
+        OpenInRoomScreen();
         print("JOINED");
     }
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -107,12 +182,7 @@ public class ScreenManager : MonoBehaviourPunCallbacks
     }
     public override void OnDisconnected(DisconnectCause cause)
     {
-        RoomListMenu.SetActive(false); //Upon disconnection, one should not see anymore the list of rooms
-        InRoomScreen.SetActive(false); 
-        DisconnectedScreen.SetActive(true);
+        OpenDisconnectedScreen();
         Error = cause.ToString();
     }
-    
-    
-    
 }
