@@ -497,7 +497,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 4217dbba63b1ed949a25ecd783f53584, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -562,9 +562,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   overrideControllers:
   - {fileID: 22100000, guid: 620dc4303da2eb242b66bc3f68447ec1, type: 2}
-  - {fileID: 22100000, guid: 57a3cca0b2356fe47ba9e296417c8b49, type: 2}
-  - {fileID: 22100000, guid: 99c1fe1b4b8eaae4b884f8277c8ca27e, type: 2}
-  - {fileID: 22100000, guid: 58dd98619f08e5e46b7f103b2132d7c3, type: 2}
+  - {fileID: 22100000, guid: 7055d3e968ba72e4d9a589a2a935f2e9, type: 2}
+  - {fileID: 22100000, guid: 1e4acf59f4f3a33429255b4129228371, type: 2}
+  - {fileID: 22100000, guid: a4bb3d7556de19c4589e82aa8bfe9b68, type: 2}
   overrider: {fileID: 425586516917319657}
 --- !u!1 &8435665701625970598
 GameObject:

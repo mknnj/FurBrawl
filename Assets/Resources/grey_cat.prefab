@@ -442,9 +442,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   overrideControllers:
   - {fileID: 22100000, guid: a68a4eee12e274843b2951cbc3e513e3, type: 2}
-  - {fileID: 22100000, guid: 57a3cca0b2356fe47ba9e296417c8b49, type: 2}
-  - {fileID: 22100000, guid: 99c1fe1b4b8eaae4b884f8277c8ca27e, type: 2}
-  - {fileID: 22100000, guid: 58dd98619f08e5e46b7f103b2132d7c3, type: 2}
+  - {fileID: 22100000, guid: 03bd9bff800c4824cbe85dec36e6950a, type: 2}
+  - {fileID: 22100000, guid: 1cb40824d3033f84f829950e7852dd58, type: 2}
+  - {fileID: 22100000, guid: 8b10ffe734cc948438ecb072eafe52a8, type: 2}
   overrider: {fileID: 9025413919829869668}
 --- !u!1 &7433443306038448753
 GameObject:
