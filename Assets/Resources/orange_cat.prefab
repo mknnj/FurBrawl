@@ -250,7 +250,7 @@ GameObject:
   - component: {fileID: 425586516917319657}
   - component: {fileID: 1888919800300269233}
   m_Layer: 0
-  m_Name: cat_white 1
+  m_Name: orange_cat
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -313,7 +313,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7806329778290562220, guid: 62ff4f46b0315cf4f98385af82556555,
+  m_Sprite: {fileID: -1659628029921930110, guid: c25a5f125d3ea7849b5f78fee487e904,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -561,7 +561,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overrideControllers:
-  - {fileID: 22100000, guid: dff96785d28fdb44396d5afa213159bd, type: 2}
+  - {fileID: 22100000, guid: 620dc4303da2eb242b66bc3f68447ec1, type: 2}
   - {fileID: 22100000, guid: 57a3cca0b2356fe47ba9e296417c8b49, type: 2}
   - {fileID: 22100000, guid: 99c1fe1b4b8eaae4b884f8277c8ca27e, type: 2}
   - {fileID: 22100000, guid: 58dd98619f08e5e46b7f103b2132d7c3, type: 2}
