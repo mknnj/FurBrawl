@@ -433,8 +433,10 @@ public class Cat : MonoBehaviourPun
             //YASEEN: Play sound
             FindObjectOfType<AudioManager>().Play("scream");
             //Debug.Log(photonView.Owner+" hitted by a furball");
+            float power = Mathf.Pow((_pushImpact - furLevel), 1.65f);
+
             rb.Sleep();
-            rb.AddForce(other.GetComponent<FurBall>().direction * (_pushImpact- furLevel), ForceMode2D.Impulse);
+            rb.AddForce(other.GetComponent<FurBall>().direction * power, ForceMode2D.Impulse);
             //Debug.Log("force applicate");
             StartCoroutine(HitKnockoutTime());
         }
