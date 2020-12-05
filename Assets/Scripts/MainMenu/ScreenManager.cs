@@ -19,7 +19,8 @@ public class ScreenManager : MonoBehaviourPunCallbacks
         SettingsMenu,
         TutorialScreen,
         DisconnectedScreen,
-        FeedbackScreen
+        FeedbackScreen,
+        RulesScreen
     };
     
     //Following the structure defined in the final game design document:
@@ -31,6 +32,7 @@ public class ScreenManager : MonoBehaviourPunCallbacks
     public GameObject TutorialScreen; //Explains how to play the game
     public GameObject DisconnectedScreen; //Used to display errors
     public GameObject FeedbackScreen; //used to submit feedback to the professor's drive
+    public GameObject RulesScreen;
     
     public string Error; //the error message (not being used, yet)
     public InputField NickNameTF;
@@ -45,6 +47,7 @@ public class ScreenManager : MonoBehaviourPunCallbacks
         TutorialScreen.SetActive(false);
         DisconnectedScreen.SetActive(false);
         FeedbackScreen.SetActive(false);
+        RulesScreen.SetActive(false);
         switch (menu)
         {
             case Menu.TitleScreen:
@@ -70,6 +73,9 @@ public class ScreenManager : MonoBehaviourPunCallbacks
                 break;
             case Menu.FeedbackScreen:
                 FeedbackScreen.SetActive(true);
+                break;
+            case Menu.RulesScreen:
+                RulesScreen.SetActive(true);
                 break;
         }
     }
@@ -107,6 +113,11 @@ public class ScreenManager : MonoBehaviourPunCallbacks
     public void OpenFeedbackScreen()
     {
         SetMenu(Menu.FeedbackScreen);
+    }
+    
+    public void OpenRulesScreen()
+    {
+        SetMenu(Menu.RulesScreen);
     }
 
     public void  OnClick_ConnectToRoomsBtn()
