@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4768298471095570207}
   - component: {fileID: 7182349258906234568}
   - component: {fileID: 8970575324067755920}
+  - component: {fileID: 595954159230553985}
   m_Layer: 0
   m_Name: cat_white
   m_TagString: Player
@@ -338,6 +339,18 @@ MonoBehaviour:
   - {fileID: 22100000, guid: 99c1fe1b4b8eaae4b884f8277c8ca27e, type: 2}
   - {fileID: 22100000, guid: 58dd98619f08e5e46b7f103b2132d7c3, type: 2}
   overrider: {fileID: 7182349258906234568}
+--- !u!114 &595954159230553985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858362166988121074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a3be39f4c9c9354d8026c9ae30db55c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1394613353438291591
 GameObject:
   m_ObjectHideFlags: 0

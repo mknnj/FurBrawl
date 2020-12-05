@@ -17,6 +17,8 @@ public class PlayerListing : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject _leftSkinBtn; // references to btn to hide them if the player is not the local one
     [SerializeField] private GameObject _rightSkinBtn;
     [SerializeField] private Text _SkinIdText; // for debugging purpose, or we can explicit the type of cat
+
+    [SerializeField] private GameObject[] catSkinsList;
     public Player Player { get; private set; }
     public bool IsReady {get; private set; }//tells if the player is ready or not
     
@@ -40,6 +42,8 @@ public class PlayerListing : MonoBehaviourPunCallbacks
     {
         var newCustomProperties = new Hashtable();
         newCustomProperties["SkinID"] = (int) PhotonNetwork.LocalPlayer.CustomProperties["SkinID"] - 1;
+        if ((int)newCustomProperties["SkinID"] < 0)
+            newCustomProperties["SkinID"] = catSkinsList.Length - 1;
         PhotonNetwork.SetPlayerCustomProperties(newCustomProperties) ;
        
     }
@@ -48,6 +52,8 @@ public class PlayerListing : MonoBehaviourPunCallbacks
     {
         var newCustomProperties = new Hashtable();
         newCustomProperties["SkinID"] = (int) PhotonNetwork.LocalPlayer.CustomProperties["SkinID"] + 1;
+        if ((int)newCustomProperties["SkinID"] > catSkinsList.Length - 1)
+            newCustomProperties["SkinID"] = 0;
         PhotonNetwork.SetPlayerCustomProperties(newCustomProperties) ;
     }
 
@@ -66,6 +72,8 @@ public class PlayerListing : MonoBehaviourPunCallbacks
     {
         _name.text = player.NickName;
         _skin = (int)player.CustomProperties["SkinID"];
+
+        _image.sprite = catSkinsList[_skin].GetComponent<SpriteRenderer>().sprite;
         _SkinIdText.text = _skin.ToString();
     }
 

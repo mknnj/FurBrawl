@@ -417,11 +417,15 @@ MonoBehaviour:
   _name: {fileID: 5898449859898526493}
   _skin: 0
   _image: {fileID: 8474846008433160150}
-  _isReady: 0
   _isReadyText: {fileID: 4996333329117358156}
   _leftSkinBtn: {fileID: 3730931017650560348}
   _rightSkinBtn: {fileID: 5199499636540234819}
   _SkinIdText: {fileID: 2703009648377125167}
+  catSkinsList:
+  - {fileID: 858362166988121074, guid: eab2f13ab305c9a4c8acf141509badd9, type: 3}
+  - {fileID: 1514864699429095774, guid: 44cf5e6ba66a30b4191ca9a59a236fab, type: 3}
+  - {fileID: 7900065681836489427, guid: b96f20a43d2affd4d87ed4f39d63ea49, type: 3}
+  - {fileID: 339226381594718457, guid: 302a85d22e1badf42b146f24853f2ea2, type: 3}
 --- !u!1 &5199499636540234819
 GameObject:
   m_ObjectHideFlags: 0

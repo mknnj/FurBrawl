@@ -19,7 +19,7 @@ the borders
  */
 public class EnvironmentManager : MonoBehaviourPun
 {
-    public GameObject catPrefab;
+    public GameObject[] catPrefabs;
     public GameObject milkPrefab;
     public GameObject jarPrefab;
     public GameObject platformPrefab;
@@ -72,9 +72,9 @@ public class EnvironmentManager : MonoBehaviourPun
 
     private int CatSpawn()
     {
-
+        //TODO Spawn the prefab corresponding to LocalPlayer.CustomProperty["SkinID"]
         var spawnPosition = Utility.getRandomSpawnLocation();
-        GameObject cat = PhotonNetwork.Instantiate(catPrefab.name, spawnPosition, catPrefab.transform.rotation); //spawn a cat :)
+        GameObject cat = PhotonNetwork.Instantiate(catPrefabs[(int)PhotonNetwork.LocalPlayer.CustomProperties["SkinID"]].name, spawnPosition, catPrefabs[(int)PhotonNetwork.LocalPlayer.CustomProperties["SkinID"]].transform.rotation); //spawn a cat :)
         PhotonView photon_view = cat.GetComponent<PhotonView>();
         //cat.GetComponent<Cat>().envi = this;
         return photon_view.ViewID;

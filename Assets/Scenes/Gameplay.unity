@@ -295,6 +295,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: orange_cat
       objectReference: {fileID: 0}
+    - target: {fileID: 7900065681836489427, guid: b96f20a43d2affd4d87ed4f39d63ea49,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7900065681836489429, guid: b96f20a43d2affd4d87ed4f39d63ea49,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -333,7 +338,7 @@ PrefabInstance:
     - target: {fileID: 7900065681836489429, guid: b96f20a43d2affd4d87ed4f39d63ea49,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7900065681836489429, guid: b96f20a43d2affd4d87ed4f39d63ea49,
         type: 3}
@@ -1629,7 +1634,7 @@ PrefabInstance:
     - target: {fileID: 4829226218645396840, guid: c005b1289e636c04f9189293a54abd7a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4829226218645396840, guid: c005b1289e636c04f9189293a54abd7a,
         type: 3}
@@ -1958,7 +1963,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 73ffbf0922273c746b9587b370ced9c6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cdd42eb70bc93c149bd8d9a1b3dbb3be, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1977,8 +1982,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1373569424}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.45776412, y: 1.0867178, z: 105.72615}
-  m_LocalScale: {x: 3.5059164, y: 3.5723028, z: 1}
+  m_LocalPosition: {x: 1.249, y: 1.378, z: 105.72615}
+  m_LocalScale: {x: 1.6632847, y: 1.6501402, z: 1}
   m_Children: []
   m_Father: {fileID: 734155911}
   m_RootOrder: 0
@@ -2028,7 +2033,7 @@ PrefabInstance:
     - target: {fileID: 1514864699429095768, guid: 44cf5e6ba66a30b4191ca9a59a236fab,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1514864699429095768, guid: 44cf5e6ba66a30b4191ca9a59a236fab,
         type: 3}
@@ -2054,6 +2059,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: grey_cat
+      objectReference: {fileID: 0}
+    - target: {fileID: 1514864699429095774, guid: 44cf5e6ba66a30b4191ca9a59a236fab,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44cf5e6ba66a30b4191ca9a59a236fab, type: 3}
@@ -2408,8 +2418,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef0145b5bccf2f347829ee8e11c760ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  catPrefab: {fileID: 858362166988121074, guid: eab2f13ab305c9a4c8acf141509badd9,
-    type: 3}
+  catPrefabs:
+  - {fileID: 858362166988121074, guid: eab2f13ab305c9a4c8acf141509badd9, type: 3}
+  - {fileID: 1514864699429095774, guid: 44cf5e6ba66a30b4191ca9a59a236fab, type: 3}
+  - {fileID: 7900065681836489427, guid: b96f20a43d2affd4d87ed4f39d63ea49, type: 3}
+  - {fileID: 339226381594718457, guid: 302a85d22e1badf42b146f24853f2ea2, type: 3}
   milkPrefab: {fileID: 7100667282729621235, guid: e7f40eed274946b4e9476cb280839b22,
     type: 3}
   jarPrefab: {fileID: 391908430186353253, guid: 7eb4f02d8d9d0dd4d8bb485c4db55519,
@@ -2454,6 +2467,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: siamese_cat
+      objectReference: {fileID: 0}
+    - target: {fileID: 339226381594718457, guid: 302a85d22e1badf42b146f24853f2ea2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 339226381594718459, guid: 302a85d22e1badf42b146f24853f2ea2,
         type: 3}
