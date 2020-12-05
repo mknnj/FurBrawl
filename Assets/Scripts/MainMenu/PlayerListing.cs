@@ -18,7 +18,7 @@ public class PlayerListing : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject _rightSkinBtn;
     [SerializeField] private Text _SkinIdText; // for debugging purpose, or we can explicit the type of cat
 
-    [SerializeField] private GameObject[] catSkinsList;
+    [SerializeField] private Sprite[] catSkinsList;
     public Player Player { get; private set; }
     public bool IsReady {get; private set; }//tells if the player is ready or not
     
@@ -73,7 +73,7 @@ public class PlayerListing : MonoBehaviourPunCallbacks
         _name.text = player.NickName;
         _skin = (int)player.CustomProperties["SkinID"];
 
-        _image.sprite = catSkinsList[_skin].GetComponent<SpriteRenderer>().sprite;
+        _image.sprite = catSkinsList[_skin];
         _SkinIdText.text = _skin.ToString();
     }
 
