@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine.SocialPlatforms;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 
 
@@ -39,11 +44,17 @@ public class EnvironmentManager : MonoBehaviourPun
     private List<GameObject> _freeBalconies;
     
     private List<Vector3> _freePlatforms;
+
+    private int _numberPlayerConnected;
+    private List<Player> _players;
+
+    [SerializeField] private Text _victoryText;
     
     //private List<Cat> _cats;
 
     void Start()
     {
+        _victoryText.gameObject.SetActive(false);
         int id = CatSpawn();
         Debug.Log(id+ " logged");
         //if (PhotonNetwork.CurrentRoom.PlayerCount == 1) {
@@ -68,6 +79,9 @@ public class EnvironmentManager : MonoBehaviourPun
 
         _freePlatforms = new List<Vector3>();
         //_cats = new List<Cat>();
+        _players =  PhotonNetwork.PlayerList.ToList();
+        _numberPlayerConnected=_players.Count;
+        
     }
 
     private int CatSpawn()
@@ -172,4 +186,28 @@ public class EnvironmentManager : MonoBehaviourPun
         _freeBalconies.Add(balcony);
 
     }
+
+    public void VictoryCheck(Player player)
+    {
+        if (_numberPlayerConnected <= 1) return;
+        int c = _players.Count;
+        if (c>1)
+            _players.Remove(player);
+        if ( c-1< 2)
+        {
+            Debug.Log(_players[0].NickName+ " Wins");
+            _victoryText.text = (_players[0].NickName + "\nWins");
+            _victoryText.gameObject.SetActive(true);
+            StartCoroutine(exitRoom());
+        }
+
+    }
+
+    IEnumerator exitRoom()
+    {
+        yield return new WaitForSeconds(10);
+        PhotonNetwork.Disconnect();
+        PhotonNetwork.LoadLevel(0);
+    }
+    
 }

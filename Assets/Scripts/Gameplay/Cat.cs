@@ -3,6 +3,7 @@ using UnityEngine;
 using Photon.Pun;
 using System;
 using System.Collections.Generic;
+using Photon.Realtime;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -390,7 +391,7 @@ public class Cat : MonoBehaviourPun
             print("player <...> died due to: " + cause);
             //lifeUI.gameObject.SetActive(false);
             //gameObject.SetActive(false);
-            photonView.RPC("DieRPC",RpcTarget.AllViaServer);
+            photonView.RPC("DieRPC",RpcTarget.AllViaServer,photonView.Owner);
         } else {
             Vector3 respawnPoint = Utility.getRandomSpawnLocation();
             switch (cause)
@@ -450,9 +451,10 @@ public class Cat : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void DieRPC()
+    public void DieRPC(Player p)
     {
         gameObject.SetActive(false);
+        _envi.VictoryCheck(p);
     }
     
     private void OnDrawGizmosSelected()
