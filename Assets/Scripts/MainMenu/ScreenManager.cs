@@ -171,11 +171,17 @@ public class ScreenManager : MonoBehaviourPunCallbacks
         OpenRoomListMenu();
     }
 
+    public void OnClick_Quit()
+    {
+        Application.Quit();
+    }
+
     public override void OnConnectedToMaster() 
     {
         if (!PhotonNetwork.InLobby)
             PhotonNetwork.JoinLobby(TypedLobby.Default); //a mandatory extension to ConnectUsingSettings
     }
+    
 
     public override void OnJoinedLobby() // When the client joins the lobby, enter the room list menu
     {

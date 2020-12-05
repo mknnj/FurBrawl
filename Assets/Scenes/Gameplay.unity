@@ -3040,8 +3040,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -23, y: -2.99}
-  m_SizeDelta: {x: 259.79562, y: 95.833466}
+  m_AnchoredPosition: {x: 0.000012398, y: -7}
+  m_SizeDelta: {x: 459.2087, y: 95.833466}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2099461330
 MonoBehaviour:
@@ -3063,7 +3063,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 495c9e2a934bcc640a8d7427b13cb680, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
@@ -3075,7 +3075,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: new text
+  m_Text: ??? won the game
 --- !u!222 &2099461331
 CanvasRenderer:
   m_ObjectHideFlags: 0

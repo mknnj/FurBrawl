@@ -356,6 +356,7 @@ public class Cat : MonoBehaviourPun
         float duration = stunTime;
         canMove = false; // a stunned cat can't move, should not attack either
         //Debug.Log("I am stunned");
+        rb.Sleep();
         StartCoroutine(StunFrame(duration));
         animator.SetBool("stunned", true);
     }
