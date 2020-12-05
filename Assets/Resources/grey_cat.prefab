@@ -300,7 +300,7 @@ MonoBehaviour:
   stunTime: 1
   _canBeHit: 1
   invincibility: 0
-  _jumpIntensity: 12.5
+  _jumpIntensity: 11
   _throwPoint: {fileID: 264376612385271229}
   _throwWaitTime: 0.2
   _isAttacking: 0
@@ -320,6 +320,7 @@ MonoBehaviour:
   velX: 0
   vely: 0
   _animationsController: {fileID: 7102598852515421500}
+  _avatarImage: {fileID: 21300000, guid: d4d63150d95f3e84ea620db8c17ce69f, type: 3}
 --- !u!114 &4743385851287857466
 MonoBehaviour:
   m_ObjectHideFlags: 0

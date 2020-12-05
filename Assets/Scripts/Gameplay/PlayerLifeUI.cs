@@ -22,4 +22,9 @@ public abstract class PlayerLifeUI : MonoBehaviour
     {
         playerName.text = name;
     }
+
+    public virtual void SetAvatar(Sprite avatar)
+    {
+        playerIcon.sprite = avatar;
+    }
 }

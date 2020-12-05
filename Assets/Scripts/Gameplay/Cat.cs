@@ -2,6 +2,7 @@
 using UnityEngine;
 using Photon.Pun;
 using System;
+using System.Collections.Generic;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -61,8 +62,11 @@ public class Cat : MonoBehaviourPun
     private PlayerLifeUI _lifeUI;
     private EnvironmentManager _envi;//reference to environment manager of room;
     [SerializeField] private AnimationTypeController _animationsController;
-
+    
     static System.Random random = new System.Random();
+
+    [SerializeField]
+    private Sprite _avatarImage;
     private void Awake()
     { 
         userInput = GetComponent<UserInput>();
@@ -82,6 +86,8 @@ public class Cat : MonoBehaviourPun
         _number = (photonView.ViewID - 1001) / 1000;
         _lifeUI = _envi.playerLifeUis[_number];
         _lifeUI.SetPlayerName("P"+(_number+1)+" - "+photonView.Owner.NickName);
+        if(_avatarImage)
+            _lifeUI.SetAvatar(_avatarImage);
         _lifeUI.gameObject.SetActive(true);
         identifier.text = "P" + (_number + 1);
     }
@@ -129,7 +135,7 @@ public class Cat : MonoBehaviourPun
 
         if (photonView.IsMine)
         {
-            if (canMove && !_isAttacking && userInput.throwInput && (furLevel >1 || furSubLevel>0))
+            if (canMove && !_isAttacking && userInput.throwInput && (furLevel >1 ))
             {
                 _isAttacking = true;
                 photonView.RPC("ThrowRPC", RpcTarget.AllViaServer, _throwPoint.position,_throwPoint.rotation);
@@ -426,7 +432,7 @@ public class Cat : MonoBehaviourPun
             FindObjectOfType<AudioManager>().Play("scream");
             //Debug.Log(photonView.Owner+" hitted by a furball");
             rb.Sleep();
-            rb.AddForce(other.GetComponent<FurBall>().direction * _pushImpact, ForceMode2D.Impulse);
+            rb.AddForce(other.GetComponent<FurBall>().direction * (_pushImpact- furLevel), ForceMode2D.Impulse);
             //Debug.Log("force applicate");
             StartCoroutine(HitKnockoutTime());
         }
