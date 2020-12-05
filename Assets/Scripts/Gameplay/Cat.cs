@@ -61,6 +61,8 @@ public class Cat : MonoBehaviourPun
     private PlayerLifeUI _lifeUI;
     private EnvironmentManager _envi;//reference to environment manager of room;
     [SerializeField] private AnimationTypeController _animationsController;
+
+    static System.Random random = new System.Random();
     private void Awake()
     { 
         userInput = GetComponent<UserInput>();
@@ -140,6 +142,7 @@ public class Cat : MonoBehaviourPun
                 photonView.RPC("MeleeRPC", RpcTarget.AllViaServer, _throwPoint.position,_throwPoint.rotation,photonView.Owner);
                 animator.SetTrigger("attacking");
                 StartCoroutine(AttackWait());
+                FindObjectOfType<AudioManager>().Play("cat_angry");
             }
             if (canMove && !_hitted)
             {
@@ -150,6 +153,8 @@ public class Cat : MonoBehaviourPun
         {
             smoothMovement(); // for other players, then get their new locations and smooth the movements 
         }*/
+        if (random.NextDouble() > 0.9999f)
+            FindObjectOfType<AudioManager>().Play("cat_purr");
     }
     private IEnumerator AttackWait()
     {   
@@ -291,7 +296,7 @@ public class Cat : MonoBehaviourPun
     {
         //[Sorre97]: There is SURELY a better way to find the environment manager
         GameObject.FindGameObjectWithTag("Manager").GetComponent<EnvironmentManager>().milkDrinked(balcony);
-        
+        FindObjectOfType<AudioManager>().Play("cat_drink_milk");
         canMove = false;
         StartCoroutine(IdleCoroutine(idleTime));
         furSubLevel = maxFurSubLevel; //a fur level corresponds to the maximum of the sublevels

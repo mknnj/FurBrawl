@@ -29,7 +29,7 @@ public class EnvironmentManager : MonoBehaviourPun
     [SerializeField]  private float timeBetweenJars = 5f;
     [SerializeField]  private float timeBetweenPlatforms = 10f;
     [SerializeField]  private float counter;
-    [SerializeField] [Range(0, 5f)] private float milkHeight = 1.28f;
+    [SerializeField] [Range(0, 5f)] private float milkHeight = 0.46f;
     [SerializeField] [Range(0, 20f)] private float jarHeight = 10f;  //TODO this should be based on background y
 
     [SerializeField] private int milkCounter = 0;
