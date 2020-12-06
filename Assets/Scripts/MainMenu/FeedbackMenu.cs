@@ -11,7 +11,7 @@ public class FeedbackMenu : MonoBehaviour
     
     public void OnClick_SendFeedback()
     {
-        string feedback = Feedback.text;
+        string feedback = Feedback.transform.GetComponentInParent<InputField>().text;
         StartCoroutine(PostFeedback("FurBrawl",feedback));
     }
     
