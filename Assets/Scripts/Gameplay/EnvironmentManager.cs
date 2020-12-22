@@ -198,7 +198,10 @@ public class EnvironmentManager : MonoBehaviourPun
             Debug.Log(_players[0].NickName+ " Wins");
             _victoryText.text = (_players[0].NickName + "\nWins");
             _victoryText.gameObject.SetActive(true);
-            StartCoroutine(exitRoom());
+            
+            CrossSceneVictoryInfo.SetWinner(_players[0]);
+            PhotonNetwork.LoadLevel(0);
+            //StartCoroutine(exitRoom());
         }
 
     }
@@ -209,5 +212,6 @@ public class EnvironmentManager : MonoBehaviourPun
         PhotonNetwork.Disconnect();
         PhotonNetwork.LoadLevel(0);
     }
+    
     
 }

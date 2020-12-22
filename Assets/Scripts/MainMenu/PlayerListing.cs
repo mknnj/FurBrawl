@@ -74,7 +74,8 @@ public class PlayerListing : MonoBehaviourPunCallbacks
         _skin = (int)player.CustomProperties["SkinID"];
 
         _image.sprite = catSkinsList[_skin];
-        _SkinIdText.text = _skin.ToString();
+        Debug.Log(((CatSkinsEnum) _skin).ToString());
+        _SkinIdText.text = ((CatSkinsEnum) _skin).ToString();
     }
 
     public void SetReady(bool ready)

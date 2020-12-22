@@ -79,6 +79,7 @@ public class Cat : MonoBehaviourPun
         furSubLevel = maxFurSubLevel;
         _envi=GameObject.FindWithTag("Manager").GetComponent<EnvironmentManager>();
         _animationsController = GetComponentInChildren<AnimationTypeController>();
+        invincibility = 1f;
     }
 
     private void Start()
@@ -183,7 +184,7 @@ public class Cat : MonoBehaviourPun
 
     private void Jump() //simple
     {
-        if (_feetCollider.IsOnGround && userInput.jumpInput)
+        if (_feetCollider.IsOnGround && userInput.jumpInput && rb.velocity.y <= 0.01f)
         {
             rb.AddForce(Vector3.up * (_jumpIntensity - furLevel), ForceMode2D.Impulse);
             
@@ -201,9 +202,6 @@ public class Cat : MonoBehaviourPun
     //Check if the player is grounded, otherwise he won't be able to jump
     private void Move() //simple
     {
-
-        
-        
         float move = userInput.movementInput.x;
         //transform.position += move * _speed * Time.deltaTime;
         rb.velocity=new Vector2(move*_speed,rb.velocity.y);
@@ -212,12 +210,13 @@ public class Cat : MonoBehaviourPun
         if (rb.velocity.x < 0)
         {
             rb.transform.localScale = new Vector2(Math.Abs(rb.transform.localScale.x), transform.localScale.y);
+            identifier.transform.localScale = new Vector2(Math.Abs(identifier.transform.localScale.x), identifier.transform.localScale.y);
             //_SR.flipX = true;
 
         } else if (rb.velocity.x > 0)
         {
             rb.transform.localScale = new Vector2(-Math.Abs(rb.transform.localScale.x), transform.localScale.y);
-
+            identifier.transform.localScale = new Vector2(-Math.Abs(identifier.transform.localScale.x), identifier.transform.localScale.y);
             //_SR.flipX = false;
         }
 
@@ -363,6 +362,7 @@ public class Cat : MonoBehaviourPun
     
     private IEnumerator StunFrame(float duration)
     {
+        rb.WakeUp();
         yield return new WaitForSeconds(duration);
         canMove = true;
         animator.SetBool("stunned", false);
@@ -406,18 +406,22 @@ public class Cat : MonoBehaviourPun
                     break;
             }
 
-            _canBeHit = false;
+            
             furLevel = maxFurLevel;
             furSubLevel = maxFurSubLevel;
             photonView.RPC("FurSyncRPC", RpcTarget.AllViaServer, furLevel, furSubLevel);
             transform.position = respawnPoint;
+            canMove = false;
+            _canBeHit = false;
+            rb.Sleep();
             StartCoroutine(InvincibilityFrame(invincibility));
         }
     }
     private IEnumerator InvincibilityFrame(float time)
     {
+        rb.WakeUp();
         yield return new WaitForSeconds(time);
-        
+        canMove = true;
         _canBeHit = true;
         yield return null;
     }

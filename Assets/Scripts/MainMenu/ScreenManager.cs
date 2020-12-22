@@ -20,7 +20,8 @@ public class ScreenManager : MonoBehaviourPunCallbacks
         TutorialScreen,
         DisconnectedScreen,
         FeedbackScreen,
-        RulesScreen
+        RulesScreen,
+        VictoryScreen
     };
     
     //Following the structure defined in the final game design document:
@@ -33,10 +34,19 @@ public class ScreenManager : MonoBehaviourPunCallbacks
     public GameObject DisconnectedScreen; //Used to display errors
     public GameObject FeedbackScreen; //used to submit feedback to the professor's drive
     public GameObject RulesScreen;
+    public GameObject VictoryScreen;
     
     public string Error; //the error message (not being used, yet)
     public InputField NickNameTF;
-    
+
+    public void Start()
+    {
+        if (CrossSceneVictoryInfo.GetWinner() == null)
+            OpenTitleScreen();
+        else
+            OpenVictoryScreen();
+    }
+
     public void SetMenu(Menu menu)
     {
         TitleScreen.SetActive(false);
@@ -48,6 +58,7 @@ public class ScreenManager : MonoBehaviourPunCallbacks
         DisconnectedScreen.SetActive(false);
         FeedbackScreen.SetActive(false);
         RulesScreen.SetActive(false);
+        VictoryScreen.SetActive(false);
         switch (menu)
         {
             case Menu.TitleScreen:
@@ -77,9 +88,16 @@ public class ScreenManager : MonoBehaviourPunCallbacks
             case Menu.RulesScreen:
                 RulesScreen.SetActive(true);
                 break;
+            case Menu.VictoryScreen:
+                VictoryScreen.SetActive(true);
+                break;
         }
     }
-    
+
+    public void OpenTitleScreen()
+    {
+        SetMenu(Menu.TitleScreen);
+    }
     public void OpenMainMenu()
     {
         SetMenu(Menu.MainMenu);
@@ -118,6 +136,11 @@ public class ScreenManager : MonoBehaviourPunCallbacks
     public void OpenRulesScreen()
     {
         SetMenu(Menu.RulesScreen);
+    }
+    
+    public void OpenVictoryScreen()
+    {
+        SetMenu(Menu.VictoryScreen);
     }
 
     public void  OnClick_ConnectToRoomsBtn()
