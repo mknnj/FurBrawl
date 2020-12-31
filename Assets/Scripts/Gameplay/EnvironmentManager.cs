@@ -25,6 +25,7 @@ the borders
 public class EnvironmentManager : MonoBehaviourPun
 {
     public GameObject[] catPrefabs;
+    public Material[] catMaterials;
     public GameObject milkPrefab;
     public GameObject jarPrefab;
     public GameObject platformPrefab;
@@ -86,15 +87,19 @@ public class EnvironmentManager : MonoBehaviourPun
 
     private int CatSpawn()
     {
-        //TODO Spawn the prefab corresponding to LocalPlayer.CustomProperty["SkinID"]
         var spawnPosition = Utility.getRandomSpawnLocation();
-        GameObject cat = PhotonNetwork.Instantiate(catPrefabs[(int)PhotonNetwork.LocalPlayer.CustomProperties["SkinID"]].name, spawnPosition, catPrefabs[(int)PhotonNetwork.LocalPlayer.CustomProperties["SkinID"]].transform.rotation); //spawn a cat :)
+        int skinID = (int) PhotonNetwork.LocalPlayer.CustomProperties["SkinID"];
+        int baseSkinID = CatSkins.catSkinsList[skinID].baseSkinID;
+        GameObject cat = PhotonNetwork.Instantiate(catPrefabs[baseSkinID].name, spawnPosition, catPrefabs[baseSkinID].transform.rotation); //spawn a cat :)
         PhotonView photon_view = cat.GetComponent<PhotonView>();
+        photon_view.RPC("setCatSkinRPC",RpcTarget.AllViaServer, skinID);
         //cat.GetComponent<Cat>().envi = this;
         return photon_view.ViewID;
         //_cats.Add(cat.GetComponent<Cat>());  TODO [Sorre97] THIS DOESN'T WORK FOR SOME REASON!
         //Instantiate(catPrefab, spawnPosition, catPrefab.transform.rotation); //spawn a cat :)
     }
+    
+    
 
     // Update is called once per frame
 

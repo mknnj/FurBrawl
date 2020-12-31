@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Photon.Pun;
@@ -18,10 +19,17 @@ public class PlayerListing : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject _rightSkinBtn;
     [SerializeField] private Text _SkinIdText; // for debugging purpose, or we can explicit the type of cat
 
-    [SerializeField] private Sprite[] catSkinsList;
+    [SerializeField] private Sprite[] catPortraitsList;
+    [SerializeField] private Material[] catMaterialList;
+    private PlayerListingMenu parentMenu;
     public Player Player { get; private set; }
     public bool IsReady {get; private set; }//tells if the player is ready or not
-    
+
+    //To be called immediately when the listing is instantiated to set the parent
+    public void SetParentMenu(PlayerListingMenu parentMenu)
+    {
+        this.parentMenu = parentMenu;
+    }
     public void SetPlayerInfo(Player player)
     {
         Player = player;
@@ -38,12 +46,12 @@ public class PlayerListing : MonoBehaviourPunCallbacks
         }
     }
     
+    //when you click left/right button, the client searches for the next available skin in that direction
     public void OnClick_LeftSkinBtn()
     {
         var newCustomProperties = new Hashtable();
-        newCustomProperties["SkinID"] = (int) PhotonNetwork.LocalPlayer.CustomProperties["SkinID"] - 1;
-        if ((int)newCustomProperties["SkinID"] < 0)
-            newCustomProperties["SkinID"] = catSkinsList.Length - 1;
+        newCustomProperties["SkinID"] =
+            parentMenu.GetNextAvailableSkin((int)PhotonNetwork.LocalPlayer.CustomProperties["SkinID"],-1);
         PhotonNetwork.SetPlayerCustomProperties(newCustomProperties) ;
        
     }
@@ -51,12 +59,14 @@ public class PlayerListing : MonoBehaviourPunCallbacks
     public void OnClick_RightSkinBtn()
     {
         var newCustomProperties = new Hashtable();
-        newCustomProperties["SkinID"] = (int) PhotonNetwork.LocalPlayer.CustomProperties["SkinID"] + 1;
-        if ((int)newCustomProperties["SkinID"] > catSkinsList.Length - 1)
-            newCustomProperties["SkinID"] = 0;
-        PhotonNetwork.SetPlayerCustomProperties(newCustomProperties) ;
+        newCustomProperties["SkinID"] = 
+            parentMenu.GetNextAvailableSkin((int)PhotonNetwork.LocalPlayer.CustomProperties["SkinID"],1);
+        PhotonNetwork.SetPlayerCustomProperties(newCustomProperties);
     }
 
+    
+
+    //Called whenever there is an update on custom player properties( ready/skin selection), it keeps updated the info stored on the client
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         if (targetPlayer != null && targetPlayer == Player)
@@ -68,16 +78,29 @@ public class PlayerListing : MonoBehaviourPunCallbacks
         }
     }
 
+    //Used to visualize custom player property on each player's screen
     private void SetPlayerProperties(Player player)
     {
         _name.text = player.NickName;
         _skin = (int)player.CustomProperties["SkinID"];
+        if (_skin >= 0)
+        {
+            CatSkin targetSkin = CatSkins.catSkinsList[_skin];
 
-        _image.sprite = catSkinsList[_skin];
-        Debug.Log(((CatSkinsEnum) _skin).ToString());
-        _SkinIdText.text = ((CatSkinsEnum) _skin).ToString();
+            _image.sprite = catPortraitsList[targetSkin.baseSkinID];
+            Material mat = new Material(catMaterialList[targetSkin.baseSkinID]);
+            mat.SetColor("_SkinABC",
+                new Color(targetSkin.skinColor.r / 255, targetSkin.skinColor.g / 255, targetSkin.skinColor.b / 255));
+            mat.SetColor("_DotsABC",
+                new Color(targetSkin.dotsColor.r / 255, targetSkin.dotsColor.g / 255, targetSkin.dotsColor.b / 255));
+            mat.SetColor("_DetailsABC",
+                new Color(targetSkin.detailsColor.r / 255, targetSkin.detailsColor.g / 255,
+                    targetSkin.detailsColor.b / 255));
+            _image.material = mat;
+            _SkinIdText.text = targetSkin.name;
+        }
     }
-
+    
     public void SetReady(bool ready)
     {
         IsReady = ready;

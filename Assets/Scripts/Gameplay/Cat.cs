@@ -65,9 +65,7 @@ public class Cat : MonoBehaviourPun
     [SerializeField] private AnimationTypeController _animationsController;
     
     static System.Random random = new System.Random();
-
-    [SerializeField]
-    private Sprite _avatarImage;
+    
     private void Awake()
     { 
         userInput = GetComponent<UserInput>();
@@ -88,8 +86,8 @@ public class Cat : MonoBehaviourPun
         _number = (photonView.ViewID - 1001) / 1000;
         _lifeUI = _envi.playerLifeUis[_number];
         _lifeUI.SetPlayerName("P"+(_number+1)+" - "+photonView.Owner.NickName);
-        if(_avatarImage)
-            _lifeUI.SetAvatar(_avatarImage);
+        if(photonView.Owner.CustomProperties.ContainsKey("SkinID"))
+            _lifeUI.SetAvatar((int)photonView.Owner.CustomProperties["SkinID"]);
         _lifeUI.gameObject.SetActive(true);
         identifier.text = "P" + (_number + 1);
     }
@@ -468,5 +466,14 @@ public class Cat : MonoBehaviourPun
     {
         Gizmos.color=Color.red;
         Gizmos.DrawWireSphere(_throwPoint.position,_radiusMelee);
+    }
+
+    [PunRPC]
+    public void setCatSkinRPC(int skinID)
+    {
+        GetComponent<SpriteRenderer>().material = new Material(GetComponent<SpriteRenderer>().material);
+        GetComponent<SpriteRenderer>().material.SetColor("_SkinABC", new Color(CatSkins.catSkinsList[skinID].skinColor.r/255,CatSkins.catSkinsList[skinID].skinColor.g/255, CatSkins.catSkinsList[skinID].skinColor.b/255 ));
+        GetComponent<SpriteRenderer>().material.SetColor("_DotsABC", new Color(CatSkins.catSkinsList[skinID].dotsColor.r/255,CatSkins.catSkinsList[skinID].dotsColor.g/255, CatSkins.catSkinsList[skinID].dotsColor.b/255 ));
+        GetComponent<SpriteRenderer>().material.SetColor("_DetailsABC", new Color(CatSkins.catSkinsList[skinID].detailsColor.r/255,CatSkins.catSkinsList[skinID].detailsColor.g/255, CatSkins.catSkinsList[skinID].detailsColor.b/255 ));
     }
 } 

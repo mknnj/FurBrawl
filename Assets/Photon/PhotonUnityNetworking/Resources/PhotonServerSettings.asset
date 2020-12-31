@@ -48,6 +48,7 @@ MonoBehaviour:
   - RemoveLifeUIRPC
   - DieRPC
   - OnChangeReadyState_RPC
+  - setCatSkinRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -158,7 +158,7 @@ public class ScreenManager : MonoBehaviourPunCallbacks
     private Hashtable GenerateCustomProperties()
     {
         Hashtable _myCustomProperties = new Hashtable();
-        _myCustomProperties["SkinID"] = 0;
+        _myCustomProperties["SkinID"] = -1;
         return _myCustomProperties;
     }
 

@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ColorMaskSiamese
+  m_Shader: {fileID: -6465566751694194690, guid: 1fb07e58dbcec444bac279df356b24aa,
+    type: 3}
+  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - Color_295DD2B6: {r: 0, g: 0, b: 0, a: 1}
+    - Color_29A75817: {r: 1, g: 0, b: 1, a: 1}
+    - Color_2FC25F9: {r: 0.19945063, g: 0.8490566, b: 0.19624422, a: 1}
+    - Color_37519360: {r: 0.3647059, g: 0.2588235, b: 0.2156863, a: 1}
+    - Color_85C8B476: {r: 0, g: 0, b: 0, a: 1}
+    - Color_AA497427: {r: 0.41960785, g: 0.5529412, b: 0, a: 1}
+    - Color_B5F1BF29: {r: 0.93725497, g: 0.8235295, b: 0.62352943, a: 1}
+    - Color_EC6DDD88: {r: 0.937255, g: 0.8235295, b: 0.6235294, a: 1}
+    - Color_EEDB83AC: {r: 0.3647059, g: 0.25882354, b: 0.21568629, a: 1}
