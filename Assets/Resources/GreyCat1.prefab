@@ -310,7 +310,7 @@ MonoBehaviour:
   _hitted: 0
   _hittedWaitTime: 0.5
   canMove: 1
-  _attackWaitTime: 0
+  _attackWaitTime: 0.3
   _radiusMelee: 0.4
   _distanceMelee: 1
   _pushMeleeImpact: 5

@@ -49,6 +49,7 @@ MonoBehaviour:
   - DieRPC
   - OnChangeReadyState_RPC
   - setCatSkinRPC
+  - Countdown
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

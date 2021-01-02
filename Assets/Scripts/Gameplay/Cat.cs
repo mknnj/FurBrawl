@@ -3,6 +3,7 @@ using UnityEngine;
 using Photon.Pun;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Photon.Realtime;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -37,7 +38,7 @@ public class Cat : MonoBehaviourPun
     [SerializeField] private float _hittedWaitTime = 0.2f;
     [SerializeField] private bool canMove = true;
     [Tooltip("Time to wait between melee attack")]
-    [SerializeField] private float _attackWaitTime;
+    [SerializeField] private float _attackWaitTime=0.3f;
     [Tooltip("radius of circle to control melee attack")]
     [SerializeField] private float _radiusMelee = 1;
     [Tooltip("Maximum distance over which to cast the circle")]
@@ -83,7 +84,8 @@ public class Cat : MonoBehaviourPun
     private void Start()
     {
         //set life ui for this cat 
-        _number = (photonView.ViewID - 1001) / 1000;
+        //_number = (photonView.ViewID - 1001) / 1000;
+        _number = PhotonNetwork.PlayerList.ToList().IndexOf(photonView.Owner);
         _lifeUI = _envi.playerLifeUis[_number];
         _lifeUI.SetPlayerName("P"+(_number+1)+" - "+photonView.Owner.NickName);
         if(photonView.Owner.CustomProperties.ContainsKey("SkinID"))
@@ -135,14 +137,14 @@ public class Cat : MonoBehaviourPun
 
         if (photonView.IsMine)
         {
-            if (canMove && !_isAttacking && userInput.throwInput && (furLevel >1 ))
+            if (canMove && !_isAttacking && userInput.throwInput && (furLevel >1 ) && !_hitted)
             {
                 _isAttacking = true;
                 photonView.RPC("ThrowRPC", RpcTarget.AllViaServer, _throwPoint.position,_throwPoint.rotation);
                 animator.SetTrigger("shooting");
                 StartCoroutine(ThrowWait());
             }
-            if (canMove && !_isAttacking && userInput.meleeInput)
+            if (canMove && !_isAttacking && userInput.meleeInput && !_hitted)
             {
                 _isAttacking = true;
                 photonView.RPC("MeleeRPC", RpcTarget.AllViaServer, _throwPoint.position,_throwPoint.rotation,photonView.Owner);
@@ -172,7 +174,7 @@ public class Cat : MonoBehaviourPun
 
     private void FixedUpdate()
     {
-        if (photonView.IsMine && !_hitted && canMove)
+        if (photonView.IsMine && !_hitted && canMove && !_isAttacking)
         {
             Move(); // if we're the player process user input and update location
         }
@@ -182,7 +184,7 @@ public class Cat : MonoBehaviourPun
 
     private void Jump() //simple
     {
-        if (_feetCollider.IsOnGround && userInput.jumpInput && rb.velocity.y <= 0.01f)
+        if (_feetCollider.IsOnGround && userInput.jumpInput && rb.velocity.y <= 0.01f && !_hitted && canMove && !_isAttacking)
         {
             rb.AddForce(Vector3.up * (_jumpIntensity - furLevel), ForceMode2D.Impulse);
             
@@ -226,6 +228,11 @@ public class Cat : MonoBehaviourPun
     public bool CanMove()
     {
         return canMove;
+    }
+
+    public void SetCanMove(bool v)
+    {
+        canMove = v;
     }
     
     
@@ -385,7 +392,7 @@ public class Cat : MonoBehaviourPun
     public void Die(String cause) { 
         _hearts -= 1;
         if(photonView.IsMine)
-            photonView.RPC("RemoveLifeUIRPC",RpcTarget.AllViaServer,_number);
+            photonView.RPC("RemoveLifeUIRPC",RpcTarget.AllViaServer,_number,_hearts==1);
         if (_hearts == 0) {
             print("player <...> died due to: " + cause);
             //lifeUI.gameObject.SetActive(false);
@@ -435,7 +442,8 @@ public class Cat : MonoBehaviourPun
             //YASEEN: Play sound
             FindObjectOfType<AudioManager>().Play("scream");
             //Debug.Log(photonView.Owner+" hitted by a furball");
-            float power = Mathf.Pow((_pushImpact - furLevel), 1.65f);
+            //float power = Mathf.Pow((_pushImpact - furLevel), 1.65f);
+            float power = _pushImpact * (1 / (float) furLevel)* 1.5f;
 
             rb.Sleep();
             rb.AddForce(other.GetComponent<FurBall>().direction * power, ForceMode2D.Impulse);
@@ -450,9 +458,10 @@ public class Cat : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void RemoveLifeUIRPC(int index)
+    public void RemoveLifeUIRPC(int index, bool last)
     {
         _envi.playerLifeUis[index].RemoveLife();
+        if(last) _envi.playerLifeUis[index].LastLife();
     }
 
     [PunRPC]
@@ -475,5 +484,11 @@ public class Cat : MonoBehaviourPun
         GetComponent<SpriteRenderer>().material.SetColor("_SkinABC", new Color(CatSkins.catSkinsList[skinID].skinColor.r/255,CatSkins.catSkinsList[skinID].skinColor.g/255, CatSkins.catSkinsList[skinID].skinColor.b/255 ));
         GetComponent<SpriteRenderer>().material.SetColor("_DotsABC", new Color(CatSkins.catSkinsList[skinID].dotsColor.r/255,CatSkins.catSkinsList[skinID].dotsColor.g/255, CatSkins.catSkinsList[skinID].dotsColor.b/255 ));
         GetComponent<SpriteRenderer>().material.SetColor("_DetailsABC", new Color(CatSkins.catSkinsList[skinID].detailsColor.r/255,CatSkins.catSkinsList[skinID].detailsColor.g/255, CatSkins.catSkinsList[skinID].detailsColor.b/255 ));
+    }
+    
+    [PunRPC]
+    public void Countdown()
+    {
+        StartCoroutine(_envi.CountdownCoroutine(this));
     }
 } 

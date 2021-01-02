@@ -430,7 +430,7 @@ MonoBehaviour:
   _hitted: 0
   _hittedWaitTime: 0.5
   canMove: 1
-  _attackWaitTime: 0
+  _attackWaitTime: 0.3
   _radiusMelee: 0.4
   _distanceMelee: 1
   _pushMeleeImpact: 5
@@ -440,7 +440,6 @@ MonoBehaviour:
   velX: 0
   vely: 0
   _animationsController: {fileID: 1888919800300269233}
-  _avatarImage: {fileID: 21300000, guid: 8e6a0d157a927374abbac0e327d7d880, type: 3}
 --- !u!114 &4140126124011051703
 MonoBehaviour:
   m_ObjectHideFlags: 0

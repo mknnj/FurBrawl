@@ -10,6 +10,8 @@ public abstract class PlayerLifeUI : MonoBehaviour
     [SerializeField] protected Transform lifeZone;
     [SerializeField] private Material[] catMaterials;
     [SerializeField] private Sprite[] catAvatars;
+    [SerializeField] private Image lastLifeWarnings;
+    [SerializeField] private int time = 5;
     /// <summary>
     /// Remove one life icon from UI
     /// </summary>
@@ -33,5 +35,19 @@ public abstract class PlayerLifeUI : MonoBehaviour
         mat.SetColor("_DotsABC", new Color(targetCatSkin.dotsColor.r/255,targetCatSkin.dotsColor.g/255, targetCatSkin.dotsColor.b/255 ));
         mat.SetColor("_DetailsABC", new Color(targetCatSkin.detailsColor.r/255,targetCatSkin.detailsColor.g/255, targetCatSkin.detailsColor.b/255 ));
         playerIcon.material = mat;
+    }
+
+    public virtual void LastLife()
+    {
+        lastLifeWarnings.gameObject.SetActive(true);
+        Debug.Log("Activate warning");
+        StartCoroutine(LastLifeWaitTime());
+    }
+
+    private IEnumerator LastLifeWaitTime()
+    {
+        yield return  new  WaitForSeconds(time);
+        Debug.Log("Deactivate warning");
+        lastLifeWarnings.gameObject.SetActive(false);
     }
 }

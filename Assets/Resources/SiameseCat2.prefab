@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 7849910317939670467}
   - component: {fileID: 8295997706265142427}
   m_Layer: 0
-  m_Name: siamese_cat
+  m_Name: SiameseCat2
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -202,7 +202,7 @@ MonoBehaviour:
   _hitted: 0
   _hittedWaitTime: 0.5
   canMove: 1
-  _attackWaitTime: 0
+  _attackWaitTime: 0.3
   _radiusMelee: 0.4
   _distanceMelee: 1
   _pushMeleeImpact: 5
@@ -212,7 +212,6 @@ MonoBehaviour:
   velX: 0
   vely: 0
   _animationsController: {fileID: 8295997706265142427}
-  _avatarImage: {fileID: 21300000, guid: 995c714e850e1cf40a263c2dfa60155a, type: 3}
 --- !u!114 &5792519446505754781
 MonoBehaviour:
   m_ObjectHideFlags: 0

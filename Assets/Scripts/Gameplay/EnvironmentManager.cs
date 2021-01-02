@@ -50,13 +50,17 @@ public class EnvironmentManager : MonoBehaviourPun
     private List<Player> _players;
 
     [SerializeField] private Text _victoryText;
-    
+
+    [SerializeField] private Image[] startingCountdown;
+
+    [SerializeField] private float timeCountdown = 0.5f;
     //private List<Cat> _cats;
 
     void Start()
     {
         _victoryText.gameObject.SetActive(false);
-        int id = CatSpawn();
+        PhotonView photon = CatSpawn();
+        int id = photon.ViewID;
         Debug.Log(id+ " logged");
         //if (PhotonNetwork.CurrentRoom.PlayerCount == 1) {
         //    Debug.LogWarning("MASTER SWITCHED");
@@ -71,6 +75,7 @@ public class EnvironmentManager : MonoBehaviourPun
             StartCoroutine(spawnPlatforms());
             Debug.LogWarning("MASTER CONNECTED");
             FindObjectOfType<AudioManager>().Play("scream");
+            photon.RPC("Countdown",RpcTarget.AllViaServer);
         }
         else
             Debug.LogWarning("NOT MASTER");
@@ -85,7 +90,7 @@ public class EnvironmentManager : MonoBehaviourPun
         
     }
 
-    private int CatSpawn()
+    private PhotonView CatSpawn()
     {
         var spawnPosition = Utility.getRandomSpawnLocation();
         int skinID = (int) PhotonNetwork.LocalPlayer.CustomProperties["SkinID"];
@@ -94,7 +99,7 @@ public class EnvironmentManager : MonoBehaviourPun
         PhotonView photon_view = cat.GetComponent<PhotonView>();
         photon_view.RPC("setCatSkinRPC",RpcTarget.AllViaServer, skinID);
         //cat.GetComponent<Cat>().envi = this;
-        return photon_view.ViewID;
+        return photon_view;
         //_cats.Add(cat.GetComponent<Cat>());  TODO [Sorre97] THIS DOESN'T WORK FOR SOME REASON!
         //Instantiate(catPrefab, spawnPosition, catPrefab.transform.rotation); //spawn a cat :)
     }
@@ -218,5 +223,23 @@ public class EnvironmentManager : MonoBehaviourPun
         PhotonNetwork.LoadLevel(0);
     }
     
+
+    public IEnumerator CountdownCoroutine(Cat cat)
+    {
+        cat.SetCanMove(false);
+        startingCountdown[0].gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(timeCountdown);
+        
+        startingCountdown[0].gameObject.SetActive(false);
+        startingCountdown[1].gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(timeCountdown);
+        
+        startingCountdown[1].gameObject.SetActive(false);
+        startingCountdown[2].gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(timeCountdown);
+        
+        startingCountdown[2].gameObject.SetActive(false);
+        cat.SetCanMove(true);
+    }
     
 }

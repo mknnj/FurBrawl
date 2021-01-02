@@ -67,7 +67,7 @@ public class FurBall : MonoBehaviour
         {
             direction *= -1;
         }
-
+        
        _rigidbody.velocity = direction * _speed;
        _rigidbody.position += _rigidbody.velocity * lag;
     }
