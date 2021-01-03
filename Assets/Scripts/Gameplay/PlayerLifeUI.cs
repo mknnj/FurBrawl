@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +12,9 @@ public abstract class PlayerLifeUI : MonoBehaviour
     [SerializeField] private Sprite[] catAvatars;
     [SerializeField] private Image lastLifeWarnings;
     [SerializeField] private int time = 5;
+
+    private Player player;
+    
     /// <summary>
     /// Remove one life icon from UI
     /// </summary>
@@ -21,11 +24,20 @@ public abstract class PlayerLifeUI : MonoBehaviour
     /// Set Ui text for player name
     /// </summary>
     /// <param name="name"></param>
-    public virtual void SetPlayerName(string name)
-    {
-        playerName.text = name;
+    public virtual void SetPlayerName(Player player, int number) {
+        this.player = player;
+        playerName.text = "P"+ (number) + " - " + player.NickName;
     }
 
+    public Player getOwner()
+    {
+        return player;
+    }
+
+    public virtual int getLives()
+    {
+        return 0;
+    }
     public virtual void SetAvatar(int avatarID)
     {
         CatSkin targetCatSkin = CatSkins.catSkinsList[avatarID];

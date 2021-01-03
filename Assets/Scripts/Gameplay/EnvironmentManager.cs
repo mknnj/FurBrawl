@@ -48,7 +48,9 @@ public class EnvironmentManager : MonoBehaviourPun
 
     private int _numberPlayerConnected;
     private List<Player> _players;
-
+    private bool _respawn = true;
+    private List<Player> _lastStandPlayers;
+    
     [SerializeField] private Text _victoryText;
 
     [SerializeField] private Image[] startingCountdown;
@@ -90,6 +92,11 @@ public class EnvironmentManager : MonoBehaviourPun
         
     }
 
+    public bool canRespawn()
+    {
+        return _respawn;
+    }
+    
     private PhotonView CatSpawn()
     {
         var spawnPosition = Utility.getRandomSpawnLocation();
@@ -205,17 +212,21 @@ public class EnvironmentManager : MonoBehaviourPun
             _players.Remove(player);
         if ( c-1< 2)
         {
-            Debug.Log(_players[0].NickName+ " Wins");
-            _victoryText.text = (_players[0].NickName + "\nWins");
-            _victoryText.gameObject.SetActive(true);
-            
-            CrossSceneVictoryInfo.SetWinner(_players[0]);
-            PhotonNetwork.LoadLevel(0);
-            //StartCoroutine(exitRoom());
+            victoryScreen(_players[0]);
         }
-
     }
 
+    private void victoryScreen(Player winner)
+    {
+        Debug.Log(winner.NickName + " Wins");
+        _victoryText.text = (winner.NickName + "\nWins");
+        _victoryText.gameObject.SetActive(true);
+            
+        CrossSceneVictoryInfo.SetWinner(winner);
+        PhotonNetwork.LoadLevel(0);
+        //StartCoroutine(exitRoom());
+    }
+    
     IEnumerator exitRoom()
     {
         yield return new WaitForSeconds(10);
@@ -240,6 +251,57 @@ public class EnvironmentManager : MonoBehaviourPun
         
         startingCountdown[2].gameObject.SetActive(false);
         cat.SetCanMove(true);
+        gameObject.GetComponent<Timer>().customStart();
     }
-    
+
+    public void endGame()
+    {
+        int max = -1;
+        List<Player> evenWinners = new List<Player>();
+        Player winner = null;
+        int winners = 0;
+
+        for (int counter = 0; counter < _players.Count; counter++)
+        {
+            PlayerLifeUI player = playerLifeUis[counter];
+            Debug.Log("[endGame] Player " + player.getOwner().NickName + " has " + player.getLives() + " lives left");
+            if (player.getLives() > max)
+            {
+                Debug.Log("[endGame] new Winner is " + player.getOwner().NickName);
+                max = player.getLives();
+                winner = player.getOwner();
+                evenWinners.Clear();
+                winners = 1;
+            }
+            else if (player.getLives() == max)
+            {
+                winners++;
+                evenWinners.Add(player.getOwner());
+            }
+        }
+
+        if (winners == 1)
+            victoryScreen(winner);
+        else
+        {
+            gameObject.GetComponent<Timer>().setLastStand();
+            _respawn = false;
+            _lastStandPlayers = evenWinners;
+        }
+    }
+
+    public void lastStand(Player player)
+    {
+        if (!_respawn)
+        {
+            if (_lastStandPlayers.Contains(player))
+            {
+                _lastStandPlayers.Remove(player);
+                if (_lastStandPlayers.Count == 1)
+                {
+                    victoryScreen(_lastStandPlayers[0]);
+                }
+            }
+        }
+    }
 }

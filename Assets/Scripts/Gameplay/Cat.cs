@@ -48,7 +48,8 @@ public class Cat : MonoBehaviourPun
     private float _pushMeleeImpact = 5;
 
     [SerializeField] private Text identifier;
-    
+
+    private Player _player;
     private BoxCollider2D _boxCollider;
     private Vector3 smoothMove;
     private UserInput userInput;
@@ -87,7 +88,7 @@ public class Cat : MonoBehaviourPun
         //_number = (photonView.ViewID - 1001) / 1000;
         _number = PhotonNetwork.PlayerList.ToList().IndexOf(photonView.Owner);
         _lifeUI = _envi.playerLifeUis[_number];
-        _lifeUI.SetPlayerName("P"+(_number+1)+" - "+photonView.Owner.NickName);
+        _lifeUI.SetPlayerName(photonView.Owner, _number + 1 );
         if(photonView.Owner.CustomProperties.ContainsKey("SkinID"))
             _lifeUI.SetAvatar((int)photonView.Owner.CustomProperties["SkinID"]);
         _lifeUI.gameObject.SetActive(true);
@@ -103,7 +104,15 @@ public class Cat : MonoBehaviourPun
         get => _canBeHit;
     }
 
-    
+    public void setOwner(Player player)
+    {
+        _player = player;
+    }
+
+    public Player getOwner()
+    {
+        return _player;
+    }
     private void Update() {
 
         //YASEEN: Change Animation based on Furlevel (Not the cleanest way to do it)
@@ -391,13 +400,18 @@ public class Cat : MonoBehaviourPun
 
     public void Die(String cause) { 
         _hearts -= 1;
+        bool canRespawn = FindObjectOfType<EnvironmentManager>().canRespawn();
         if(photonView.IsMine)
             photonView.RPC("RemoveLifeUIRPC",RpcTarget.AllViaServer,_number,_hearts==1);
-        if (_hearts == 0) {
+        if (_hearts == 0 || !canRespawn) {
             print("player <...> died due to: " + cause);
             //lifeUI.gameObject.SetActive(false);
             //gameObject.SetActive(false);
             photonView.RPC("DieRPC",RpcTarget.AllViaServer,photonView.Owner);
+            if (!canRespawn)
+            {
+                FindObjectOfType<EnvironmentManager>().lastStand(photonView.Owner);
+            }
         } else {
             Vector3 respawnPoint = Utility.getRandomSpawnLocation();
             switch (cause)

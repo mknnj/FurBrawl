@@ -14,4 +14,9 @@ public class PlayerLifeUIRight : PlayerLifeUI
         lifeZone.GetChild(childToRemove).gameObject.SetActive(false);
         childToRemove++;
     }
+    
+    public override int getLives()
+    {
+        return 8 - childToRemove;
+    }
 }
