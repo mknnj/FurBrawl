@@ -1788,6 +1788,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 715f2e36ae70f5d438b57a5d2e633048, type: 3}
   - {fileID: 21300000, guid: daaebb42b18eb854e82c9afe3d216c2c, type: 3}
   - {fileID: 21300000, guid: 0800b8bbcea08cc4f9d8873743b185f7, type: 3}
+  catMaterialList:
+  - {fileID: 2100000, guid: ebb36a97d8f30d6479724dda71d07161, type: 2}
+  - {fileID: 2100000, guid: 8bcb9a87430887c46b58212ec81517aa, type: 2}
+  - {fileID: 2100000, guid: 820ab689b210bcf4aa3211e3ca14a446, type: 2}
   screenManager: {fileID: 3996732}
 --- !u!222 &264724701
 CanvasRenderer:
