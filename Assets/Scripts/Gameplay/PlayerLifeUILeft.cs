@@ -10,7 +10,7 @@ public class PlayerLifeUILeft : PlayerLifeUI
     {
         if (childToRemove < 0)
             return;
-
+        
         lifeZone.GetChild(childToRemove).gameObject.SetActive(false);
         childToRemove--;
     }

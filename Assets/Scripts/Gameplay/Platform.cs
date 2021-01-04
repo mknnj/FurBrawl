@@ -23,7 +23,7 @@ public class Platform : MonoBehaviour
             //currentCollisions.Add(other.gameObject);
             _damageFactor += 1;
             _damage = true;
-            Debug.Log("EMTERING");
+            //Debug.Log("ENTERING");
             StartCoroutine(Damage(0));
         }
 
@@ -37,7 +37,7 @@ public class Platform : MonoBehaviour
             _damageFactor -= 1;
             if (_damageFactor <= 0)
                 _damage = false;
-            Debug.Log("EXITING");
+            //Debug.Log("EXITING");
         }
 
     }
@@ -46,14 +46,14 @@ public class Platform : MonoBehaviour
     private IEnumerator Damage(float time)
     {
         yield return new WaitForSeconds(time);
-        Debug.Log("DAMAGE DONE");
+        //Debug.Log("DAMAGE DONE");
 
         WaitForSeconds wait = new WaitForSeconds(0.5f);
         float initialHealth = _SR.color.g*255;
         Debug.Log("intial helth" + initialHealth);
         foreach (int value in System.Linq.Enumerable.Range(1, (int)initialHealth))
         {
-            Debug.Log("crnt helth" + initialHealth);
+            //Debug.Log("crnt health" + initialHealth);
             initialHealth -= 10 * Mathf.Pow(3, _damageFactor);
             _SR.color = new Color((255 - initialHealth)/255, Mathf.Max(initialHealth, 0)/255, 0);
             if (initialHealth <= 0)

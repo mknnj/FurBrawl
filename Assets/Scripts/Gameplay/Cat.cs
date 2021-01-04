@@ -159,7 +159,7 @@ public class Cat : MonoBehaviourPun
                 photonView.RPC("MeleeRPC", RpcTarget.AllViaServer, _throwPoint.position,_throwPoint.rotation,photonView.Owner);
                 animator.SetTrigger("attacking");
                 StartCoroutine(AttackWait());
-                FindObjectOfType<AudioManager>().Play("cat_angry");
+                //FindObjectOfType<AudioManager>().Play("cat_angry");
             }
             if (canMove && !_hitted)
             {
@@ -279,6 +279,7 @@ public class Cat : MonoBehaviourPun
         _hitted = true;
         Debug.Log(photonView.Owner+" hitted by a melee");
         rb.Sleep();
+        FindObjectOfType<AudioManager>().Play("cat_angry");
         RemoveFur(4);
         if (furLevel==1 && furSubLevel==0)
         {

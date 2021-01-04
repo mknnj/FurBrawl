@@ -177,24 +177,6 @@ public class EnvironmentManager : MonoBehaviourPun
         }
         yield return new WaitForSeconds(timeBetweenMilk);
         StartCoroutine(spawnMilk());
-
-        /* [Sorre97]: Old implementation of milk spawning, i didn't delete it
-         
-        foreach (int value in System.Linq.Enumerable.Range(1, maxNumber))
-        {
-            counter = value;
-            FindObjectOfType<AudioManager>().Play("milkDrop");
-            System.Random rnd = new System.Random();
-            int rnd_num = rnd.Next(0, _freeBalconies.Count);
-            var balcony = _freeBalconies[rnd_num];
-            var spawnPosition = Utility.getRandomMilkSpawn(milkHeight, balcony);
-            _freeBalconies.Remove(balcony);
-            GameObject milk = PhotonNetwork.Instantiate(milkPrefab.name, spawnPosition, milkPrefab.transform.rotation);
-            _milkCounter++;
-            milk.GetComponent<Milk>().setBalcony(balcony);
-            //Debug.Log("MILK COUNT - " + value);
-            yield return wait;
-        } */
     }
 
     public void milkDrinked(GameObject balcony)
@@ -212,6 +194,7 @@ public class EnvironmentManager : MonoBehaviourPun
             _players.Remove(player);
         if ( c-1< 2)
         {
+            Debug.Log("[Victory] Victory called from normal death");
             victoryScreen(_players[0]);
         }
     }
@@ -271,6 +254,7 @@ public class EnvironmentManager : MonoBehaviourPun
                 max = player.getLives();
                 winner = player.getOwner();
                 evenWinners.Clear();
+                evenWinners.Add(player.getOwner());
                 winners = 1;
             }
             else if (player.getLives() == max)
@@ -287,6 +271,11 @@ public class EnvironmentManager : MonoBehaviourPun
             gameObject.GetComponent<Timer>().setLastStand();
             _respawn = false;
             _lastStandPlayers = evenWinners;
+            Debug.Log("[LastStand] Even winners are:");
+            foreach (Player player in _lastStandPlayers)
+            {
+                Debug.Log("[LastStand] - " + player.NickName);
+            }
         }
     }
 
@@ -296,9 +285,11 @@ public class EnvironmentManager : MonoBehaviourPun
         {
             if (_lastStandPlayers.Contains(player))
             {
+                Debug.Log("[LastStand] Critical Player fell: " + player.NickName);
                 _lastStandPlayers.Remove(player);
                 if (_lastStandPlayers.Count == 1)
                 {
+                    Debug.Log("[Victory] Victory called from last stand death");
                     victoryScreen(_lastStandPlayers[0]);
                 }
             }
