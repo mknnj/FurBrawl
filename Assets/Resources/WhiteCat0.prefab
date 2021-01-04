@@ -197,7 +197,7 @@ MonoBehaviour:
   _distanceMelee: 1
   _pushMeleeImpact: 5
   identifier: {fileID: 5410945110500946217}
-  _feetCollider: {fileID: 0}
+  _feetCollider: {fileID: 7965267831584041220}
   animator: {fileID: 8207692213462885972}
   velX: 0
   vely: 0
@@ -664,3 +664,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isOnGround: 0
   catAnimator: {fileID: 8207692213462885972}
+  ownerCat: {fileID: 858362166988121075}

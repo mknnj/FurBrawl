@@ -22,7 +22,7 @@ Currently, the code for checks on borders and random spawning are
 hardcoded, we should pass "background" to this and use it to create
 the borders
  */
-public class EnvironmentManager : MonoBehaviourPun
+public class EnvironmentManager : MonoBehaviourPunCallbacks
 {
     public GameObject[] catPrefabs;
     public Material[] catMaterials;
@@ -60,6 +60,7 @@ public class EnvironmentManager : MonoBehaviourPun
 
     void Start()
     {
+        Cursor.visible = false;
         _victoryText.gameObject.SetActive(false);
         PhotonView photon = CatSpawn();
         int id = photon.ViewID;
@@ -206,6 +207,12 @@ public class EnvironmentManager : MonoBehaviourPun
         _victoryText.gameObject.SetActive(true);
             
         CrossSceneVictoryInfo.SetWinner(winner);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.IsOpen = true;
+            PhotonNetwork.CurrentRoom.IsVisible = true;
+        }
+        Cursor.visible = true;
         PhotonNetwork.LoadLevel(0);
         //StartCoroutine(exitRoom());
     }
@@ -213,6 +220,7 @@ public class EnvironmentManager : MonoBehaviourPun
     IEnumerator exitRoom()
     {
         yield return new WaitForSeconds(10);
+        Cursor.visible = true;
         PhotonNetwork.Disconnect();
         PhotonNetwork.LoadLevel(0);
     }
@@ -294,5 +302,12 @@ public class EnvironmentManager : MonoBehaviourPun
                 }
             }
         }
+    }
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        Cursor.visible = true;
+        PhotonNetwork.Disconnect();
+        PhotonNetwork.LoadLevel(0);
     }
 }

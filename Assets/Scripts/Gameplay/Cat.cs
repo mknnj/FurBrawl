@@ -187,6 +187,15 @@ public class Cat : MonoBehaviourPun
         {
             Move(); // if we're the player process user input and update location
         }
+        
+        if (rb.velocity.x < 0)
+        {
+            identifier.transform.localScale = new Vector2(Math.Abs(identifier.transform.localScale.x), identifier.transform.localScale.y);
+        } else if (rb.velocity.x > 0)
+        {
+            identifier.transform.localScale = new Vector2(-Math.Abs(identifier.transform.localScale.x), identifier.transform.localScale.y);
+        }
+        
     }
 
 
@@ -303,7 +312,7 @@ public class Cat : MonoBehaviourPun
         //Debug.Log("Furball RPC");
         float lag = (float) (PhotonNetwork.Time - info.SentServerTime);
         GameObject fb = Instantiate(_furBallPrefab, pos, q);
-
+        fb.GetComponent<SpriteRenderer>().material = GetComponent<SpriteRenderer>().material;
 
         //YASEEN: 'oppositeDirection' Passes the info of the direction to the lil cute Furball <3 
         bool oppositeDirection =rb.transform.localScale.x > 0;
@@ -431,10 +440,11 @@ public class Cat : MonoBehaviourPun
             furSubLevel = maxFurSubLevel;
             photonView.RPC("FurSyncRPC", RpcTarget.AllViaServer, furLevel, furSubLevel);
             transform.position = respawnPoint;
+            rb.Sleep();
+            rb.WakeUp();
             canMove = false;
             _canBeHit = false;
-            rb.Sleep();
-            StartCoroutine(InvincibilityFrame(invincibility));
+            //StartCoroutine(InvincibilityFrame(invincibility));
         }
     }
     private IEnumerator InvincibilityFrame(float time)
@@ -444,6 +454,15 @@ public class Cat : MonoBehaviourPun
         canMove = true;
         _canBeHit = true;
         yield return null;
+    }
+
+    public void EndInvincibility()
+    {
+        if (!canMove && !_canBeHit)
+        {
+            canMove = true;
+            _canBeHit = true;
+        }
     }
     
     private void OnTriggerEnter2D(Collider2D other)

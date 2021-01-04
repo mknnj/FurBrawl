@@ -17,8 +17,8 @@ public class UserInput : MonoBehaviour
     void Update()
     {
         movementInput = new Vector3(Input.GetAxis("Horizontal"), 0);
-        jumpInput = Input.GetKeyDown(KeyCode.Space);
-        throwInput = Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.E);
-        meleeInput = Input.GetMouseButtonDown(1);
+        jumpInput = Input.GetKeyDown(KeyBindings.Jump);
+        throwInput = Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyBindings.FurBall);
+        meleeInput = Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyBindings.Melee);
     }
 }

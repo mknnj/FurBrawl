@@ -196,7 +196,7 @@ MonoBehaviour:
   _throwPoint: {fileID: 1304791355272320026}
   _throwWaitTime: 0.2
   _isAttacking: 0
-  _furBallPrefab: {fileID: 6024337074199590728, guid: fa925b6b1e8acf3419f4766f061ce245,
+  _furBallPrefab: {fileID: 6024337074199590728, guid: 6abaf160293c5b241a96a11596b2b5f5,
     type: 3}
   _pushImpact: 5
   _hitted: 0
@@ -207,7 +207,7 @@ MonoBehaviour:
   _distanceMelee: 1
   _pushMeleeImpact: 5
   identifier: {fileID: 4921069519958008354}
-  _feetCollider: {fileID: 0}
+  _feetCollider: {fileID: 7050103376817388047}
   animator: {fileID: 9131958485228139871}
   velX: 0
   vely: 0
@@ -674,3 +674,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isOnGround: 0
   catAnimator: {fileID: 9131958485228139871}
+  ownerCat: {fileID: 339226381594718456}

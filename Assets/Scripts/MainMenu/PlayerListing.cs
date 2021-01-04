@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
@@ -17,7 +18,8 @@ public class PlayerListing : MonoBehaviourPunCallbacks
     [SerializeField] private Text _isReadyText; //used to show if a player is ready or not
     [SerializeField] private GameObject _leftSkinBtn; // references to btn to hide them if the player is not the local one
     [SerializeField] private GameObject _rightSkinBtn;
-    [SerializeField] private Text _SkinIdText; // for debugging purpose, or we can explicit the type of cat
+    
+    [SerializeField] private TextMeshProUGUI _SkinIdText; // for debugging purpose, or we can explicit the type of cat
 
     [SerializeField] private Sprite[] catPortraitsList;
     [SerializeField] private Material[] catMaterialList;
@@ -97,7 +99,7 @@ public class PlayerListing : MonoBehaviourPunCallbacks
                 new Color(targetSkin.detailsColor.r / 255, targetSkin.detailsColor.g / 255,
                     targetSkin.detailsColor.b / 255));
             _image.material = mat;
-            _SkinIdText.text = targetSkin.name;
+            _SkinIdText.text = "<mark=#8cc3cf55 padding=\"10, 10, 10, 10\">"+targetSkin.name+"</mark>";
         }
     }
     
@@ -105,5 +107,13 @@ public class PlayerListing : MonoBehaviourPunCallbacks
     {
         IsReady = ready;
         _isReadyText.enabled = ready;
+        //Hide arrows for skin selection if the player is ready
+        if (Player.Equals(PhotonNetwork.LocalPlayer))
+        {
+            _leftSkinBtn.SetActive(!IsReady);
+            _rightSkinBtn.SetActive(!IsReady);
+        }
     }
+    
+    
 }

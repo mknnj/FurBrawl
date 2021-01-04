@@ -228,6 +228,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isOnGround: 0
   catAnimator: {fileID: 1705945765905039221}
+  ownerCat: {fileID: 7900065681836489426}
 --- !u!1 &7900065681836489427
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,10 +22,10 @@ public class PlayerListingMenu : MonoBehaviourPunCallbacks
         base.OnEnable();
         SetReady(false);
         GetCurrentRoomPlayers();
-        Debug.Log("Entered room");
+        //Debug.Log("Entered room");
         var _myCustomProperties = new Hashtable();
         _myCustomProperties["SkinID"] = GetNextAvailableSkin(0,1); //start from 0 and scan towards right to find an available skin
-        Debug.Log("Selected skin: "+_myCustomProperties["SkinID"]);
+        //Debug.Log("Selected skin: "+_myCustomProperties["SkinID"]);
         PhotonNetwork.SetPlayerCustomProperties(_myCustomProperties);
     }
 
@@ -77,7 +77,7 @@ public class PlayerListingMenu : MonoBehaviourPunCallbacks
         var i = curr;
         while (alreadyTakenSkins.Contains(i))
         {
-            Debug.Log("Is already taken: "+i);
+            //Debug.Log("Is already taken: "+i);
             i += direction >= 0 ? 1 : -1;
             if (i < 0)
                 i = CatSkins.catSkinsList.Length - 1;
@@ -131,6 +131,7 @@ public class PlayerListingMenu : MonoBehaviourPunCallbacks
         {
             _ReadyBtn.GetComponentInChildren<Text>().text = "Not Ready";
             _ReadyBtn.GetComponentInChildren<Text>().color = Color.red;
+            
         }
         else
         {
