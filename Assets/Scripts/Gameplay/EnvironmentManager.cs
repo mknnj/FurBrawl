@@ -26,9 +26,10 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
 {
     public GameObject[] catPrefabs;
     public Material[] catMaterials;
-    public GameObject milkPrefab;
-    public GameObject jarPrefab;
-    public GameObject platformPrefab;
+    public GameObject[] milkPrefabsList;
+    public GameObject[] jarPrefabsList;
+    public GameObject[] platformPrefabsList;
+    [SerializeField] private GameObject[] mapPrefabList;
 
     [SerializeField]  private int maxMilkSpawned = 3;
     [SerializeField]  private float timeBetweenMilk = 2f;
@@ -61,6 +62,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
     void Start()
     {
         Cursor.visible = false;
+        Instantiate(mapPrefabList[CrossSceneMapInfo.MapID]);
         _victoryText.gameObject.SetActive(false);
         PhotonView photon = CatSpawn();
         int id = photon.ViewID;
@@ -69,7 +71,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
         //    Debug.LogWarning("MASTER SWITCHED");
         //    PhotonNetwork.SetMasterClient(PhotonNetwork.LocalPlayer);
         //}
-
+        
         if (PhotonNetwork.IsMasterClient)
         {
             //YASEEN: If I'm the owner of the scene ? 
@@ -126,7 +128,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
             int rnd_num = rnd.Next(0, _freePlatforms.Count);
             Vector3 platform = _freePlatforms[rnd_num];
             _freePlatforms.Remove(platform);
-            PhotonNetwork.Instantiate(platformPrefab.name, platform, platformPrefab.transform.rotation);
+            PhotonNetwork.Instantiate(platformPrefabsList[CrossSceneMapInfo.MapID].name, platform, platformPrefabsList[CrossSceneMapInfo.MapID].transform.rotation);
             
         }
         //var location_1 = new Vector3(0.009512998f, -2.128334f, -8.9f);
@@ -152,7 +154,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
             System.Random rnd = new System.Random();
             int rnd_num = rnd.Next(0, cats.Length);
             var spawnPosition = Utility.getRandomJarSpawn(cats[rnd_num].GetComponent<Transform>().position, jarHeight);
-            PhotonNetwork.Instantiate(jarPrefab.name, spawnPosition, jarPrefab.transform.rotation);
+            PhotonNetwork.Instantiate(jarPrefabsList[CrossSceneMapInfo.MapID].name, spawnPosition, jarPrefabsList[CrossSceneMapInfo.MapID].transform.rotation);
             yield return new WaitForSeconds(timeBetweenJars);  //TODO [Sorre97] Height should be retrieved by the background y
         }
         StartCoroutine(spawnJars());
@@ -171,7 +173,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
             var balcony = _freeBalconies[rnd_num];
             var spawnPosition = Utility.getRandomMilkSpawn(milkHeight, balcony);
             _freeBalconies.Remove(balcony);
-            GameObject milk = PhotonNetwork.Instantiate(milkPrefab.name, spawnPosition, milkPrefab.transform.rotation);
+            GameObject milk = PhotonNetwork.Instantiate(milkPrefabsList[CrossSceneMapInfo.MapID].name, spawnPosition, milkPrefabsList[CrossSceneMapInfo.MapID].transform.rotation);
             milkCounter++;
             milk.GetComponent<Milk>().setBalcony(balcony);
             //Debug.Log("MILK COUNT - " + value);
