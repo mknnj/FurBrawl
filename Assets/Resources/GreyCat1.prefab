@@ -121,6 +121,7 @@ GameObject:
   - component: {fileID: 1514864699429095770}
   - component: {fileID: 7931645850529478994}
   - component: {fileID: 1514864699429095772}
+  - component: {fileID: 4180084194145670171}
   - component: {fileID: 1514864699429095775}
   - component: {fileID: 4743385851287857466}
   - component: {fileID: 2230191517725249219}
@@ -267,6 +268,20 @@ MonoBehaviour:
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &4180084194145670171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514864699429095774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b20c9f56d95ca647b9fd27a1c409fa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallMuliplier: 2.5
+  lowJumpMultiplier: 2
 --- !u!114 &1514864699429095775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,7 +305,6 @@ MonoBehaviour:
   stunTime: 1
   _canBeHit: 1
   invincibility: 0
-  _jumpIntensity: 11
   _throwPoint: {fileID: 264376612385271229}
   _throwWaitTime: 0.2
   _isAttacking: 0

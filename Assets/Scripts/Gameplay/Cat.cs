@@ -13,6 +13,7 @@ using UnityEngine.UI;
 public class Cat : MonoBehaviourPun
 {
     public PhotonView pv;
+    [SerializeField] [Range(0, 3)] float PITCH=1;
     [SerializeField] private float _speed = 5;
     [SerializeField] [Range(1,5)] private int maxFurLevel=4; //will act like a weight, too (probably?)
     [SerializeField] [Range(1, 5)] private int furLevel;
@@ -24,7 +25,7 @@ public class Cat : MonoBehaviourPun
     [SerializeField] [Range(0,3f)] private float stunTime = 5f;
     [SerializeField] private bool _canBeHit = true;
     [SerializeField] private float invincibility;
-    [SerializeField] private float _jumpIntensity = 5f;
+    private float _jumpIntensity = 7.5f;
     [Tooltip("Point where prefab for furball is instantiated")]
     [SerializeField] private Transform _throwPoint;
     [Tooltip("Time to wait between furball throws ")]    
@@ -32,7 +33,7 @@ public class Cat : MonoBehaviourPun
     [SerializeField] private bool _isAttacking=false;
     [SerializeField] private GameObject _furBallPrefab;
     [Tooltip("force that it is applicated when hitted by a furball")]
-    [SerializeField] private float _pushImpact=5f;
+    [SerializeField] private float _pushImpact=2f;
     [SerializeField] private bool _hitted=false;
     [Tooltip("Time to wait to move again after being hitted")]
     [SerializeField] private float _hittedWaitTime = 0.2f;
@@ -170,8 +171,12 @@ public class Cat : MonoBehaviourPun
         {
             smoothMovement(); // for other players, then get their new locations and smooth the movements 
         }*/
-        if (random.NextDouble() > 0.9999f)
-            FindObjectOfType<AudioManager>().Play("cat_purr");
+        //if (random.NextDouble() > 0.9999f)
+        //    FindObjectOfType<AudioManager>().Play("cat_purr");
+
+
+
+
     }
     private IEnumerator AttackWait()
     {   
@@ -204,8 +209,7 @@ public class Cat : MonoBehaviourPun
     {
         if (_feetCollider.IsOnGround && userInput.jumpInput && rb.velocity.y <= 0.01f && !_hitted && canMove && !_isAttacking)
         {
-            rb.AddForce(Vector3.up * (_jumpIntensity - furLevel), ForceMode2D.Impulse);
-            
+            rb.AddForce(Vector2.up * (_jumpIntensity - 0.5f*furLevel), ForceMode2D.Impulse);
         }
         if( rb.velocity.y != 0)
         {
@@ -215,6 +219,10 @@ public class Cat : MonoBehaviourPun
         {
             animator.SetBool("jump", false);
         }
+        //if(rb.velocity.y < 0)
+        //{
+        //    rb.AddForce(Vector3.up * (-0.2f*furLevel), ForceMode2D.Impulse);
+        //}
     }
 
     //Check if the player is grounded, otherwise he won't be able to jump
@@ -278,7 +286,14 @@ public class Cat : MonoBehaviourPun
             }
         }
     }
-    
+
+
+    // Given the furlevel 1 (slim), gives pitch = 2
+    // Given the furlevel 4 (fat), gives pitch = 1
+    private float getPitch(int furLevel)
+    {
+        return (-1 / 3f) * furLevel + (7f / 3);
+    }
     /// <summary>
     /// Method called when hitted by a melee attack
     /// </summary>
@@ -288,7 +303,7 @@ public class Cat : MonoBehaviourPun
         _hitted = true;
         Debug.Log(photonView.Owner+" hitted by a melee");
         rb.Sleep();
-        FindObjectOfType<AudioManager>().Play("cat_angry");
+        FindObjectOfType<AudioManager>().Play("cat_angry", getPitch(furLevel));
         RemoveFur(4);
         if (furLevel==1 && furSubLevel==0)
         {
@@ -318,6 +333,7 @@ public class Cat : MonoBehaviourPun
         bool oppositeDirection =rb.transform.localScale.x > 0;
 
         fb.GetComponent<FurBall>().SetData(photonView.Owner,Mathf.Abs(lag),oppositeDirection);
+
     }
 
     //*************************************** BEGIN SECTION for Fur management *****************************************
@@ -326,7 +342,7 @@ public class Cat : MonoBehaviourPun
     {
         //[Sorre97]: There is SURELY a better way to find the environment manager
         GameObject.FindGameObjectWithTag("Manager").GetComponent<EnvironmentManager>().milkDrinked(balcony);
-        FindObjectOfType<AudioManager>().Play("cat_drink_milk");
+        FindObjectOfType<AudioManager>().Play("cat_drink_milk", getPitch(furLevel));
         canMove = false;
         StartCoroutine(IdleCoroutine(idleTime));
         furSubLevel = maxFurSubLevel; //a fur level corresponds to the maximum of the sublevels
@@ -430,7 +446,7 @@ public class Cat : MonoBehaviourPun
                     print("player <...> fell from an high place, " + _hearts + " lives left");
 
                     //YASEEN: Play sound
-                    FindObjectOfType<AudioManager>().Play("scream");
+                    FindObjectOfType<AudioManager>().Play("scream", getPitch(furLevel));
 
                     break;
             }
@@ -474,10 +490,10 @@ public class Cat : MonoBehaviourPun
             _hitted = true;
             
             //YASEEN: Play sound
-            FindObjectOfType<AudioManager>().Play("scream");
+            FindObjectOfType<AudioManager>().Play("scream", getPitch(furLevel));
             //Debug.Log(photonView.Owner+" hitted by a furball");
             //float power = Mathf.Pow((_pushImpact - furLevel), 1.65f);
-            float power = _pushImpact * (1 / (float) furLevel)* 1.5f;
+            float power = _pushImpact * (1 / (0.2f)* furLevel);
 
             rb.Sleep();
             rb.AddForce(other.GetComponent<FurBall>().direction * power, ForceMode2D.Impulse);

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 13888316948399394}
   - component: {fileID: 339226381594718459}
   - component: {fileID: 339226381594718456}
+  - component: {fileID: 5185138547350328477}
   - component: {fileID: 5792519446505754781}
   - component: {fileID: 1099993958143932260}
   - component: {fileID: 1141806192199252957}
@@ -202,6 +203,20 @@ MonoBehaviour:
   velX: 0
   vely: 0
   _animationsController: {fileID: 8295997706265142427}
+--- !u!114 &5185138547350328477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 339226381594718457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b20c9f56d95ca647b9fd27a1c409fa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallMuliplier: 2.5
+  lowJumpMultiplier: 2
 --- !u!114 &5792519446505754781
 MonoBehaviour:
   m_ObjectHideFlags: 0
