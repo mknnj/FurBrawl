@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BetterJump : MonoBehaviour
 {
-    public float fallMuliplier = 2.5f;
-    public float lowJumpMultiplier = 2f;
+    [SerializeField] private float fallMuliplier = 2.5f;
+    [SerializeField] private float lowJumpMultiplier = 2f;
     Rigidbody2D rb;
 
     private void Awake()

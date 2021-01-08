@@ -41,6 +41,7 @@ public class ScreenManager : MonoBehaviourPunCallbacks
 
     public void Start()
     {
+        Cursor.visible = true;
         if (CrossSceneVictoryInfo.GetWinner() == null)
             OpenTitleScreen();
         else

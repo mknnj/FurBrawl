@@ -48,6 +48,7 @@ public class MapSelector : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SyncMapIdRPC(int newMapID)
     {
+        Debug.Log("MapRPC");
         SetMapID(newMapID);
     }
 
@@ -71,6 +72,15 @@ public class MapSelector : MonoBehaviourPunCallbacks
         {
             nextMapBtn.SetActive(true);
             previousMapBtn.SetActive(true); 
+        }
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        base.OnPlayerEnteredRoom(newPlayer);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("SyncMapIdRPC", RpcTarget.AllViaServer, mapID);
         }
     }
 }

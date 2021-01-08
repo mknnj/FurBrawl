@@ -25,7 +25,7 @@ public class Cat : MonoBehaviourPun
     [SerializeField] [Range(0,3f)] private float stunTime = 5f;
     [SerializeField] private bool _canBeHit = true;
     [SerializeField] private float invincibility;
-    private float _jumpIntensity = 7.5f;
+    [SerializeField] private float _jumpIntensity = 7.5f;
     [Tooltip("Point where prefab for furball is instantiated")]
     [SerializeField] private Transform _throwPoint;
     [Tooltip("Time to wait between furball throws ")]    

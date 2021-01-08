@@ -295,6 +295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pv: {fileID: 1514864699429095772}
+  PITCH: 1
   _speed: 5
   maxFurLevel: 4
   furLevel: 0
@@ -305,6 +306,7 @@ MonoBehaviour:
   stunTime: 1
   _canBeHit: 1
   invincibility: 0
+  _jumpIntensity: 8.5
   _throwPoint: {fileID: 264376612385271229}
   _throwWaitTime: 0.2
   _isAttacking: 0

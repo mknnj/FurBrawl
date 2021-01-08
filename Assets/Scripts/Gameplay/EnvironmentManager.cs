@@ -214,7 +214,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
             PhotonNetwork.CurrentRoom.IsOpen = true;
             PhotonNetwork.CurrentRoom.IsVisible = true;
         }
-        Cursor.visible = true;
+        //Cursor.visible = true;
         PhotonNetwork.LoadLevel(0);
         //StartCoroutine(exitRoom());
     }
@@ -222,7 +222,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
     IEnumerator exitRoom()
     {
         yield return new WaitForSeconds(10);
-        Cursor.visible = true;
+        //Cursor.visible = true;
         PhotonNetwork.Disconnect();
         PhotonNetwork.LoadLevel(0);
     }
@@ -308,8 +308,10 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
 
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        Cursor.visible = true;
+        //Cursor.visible = true;
         PhotonNetwork.Disconnect();
         PhotonNetwork.LoadLevel(0);
     }
+    
+    
 }
