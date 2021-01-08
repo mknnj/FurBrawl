@@ -15,11 +15,11 @@ public class BetterJump : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (rb.velocity.y < 0)
+        if (rb.velocity.y < -Mathf.Epsilon)
         {
             rb.gravityScale = fallMuliplier;
         }
-        else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
+        else if (rb.velocity.y > Mathf.Epsilon && !Input.GetButton("Jump"))
         {
             rb.gravityScale = lowJumpMultiplier;
         }

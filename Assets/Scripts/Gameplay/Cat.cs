@@ -493,7 +493,7 @@ public class Cat : MonoBehaviourPun
             FindObjectOfType<AudioManager>().Play("scream", getPitch(furLevel));
             //Debug.Log(photonView.Owner+" hitted by a furball");
             //float power = Mathf.Pow((_pushImpact - furLevel), 1.65f);
-            float power = _pushImpact * (1 / (0.2f)* furLevel);
+            float power = _pushImpact * (1 / (float)furLevel)*1.5f;
 
             rb.Sleep();
             rb.AddForce(other.GetComponent<FurBall>().direction * power, ForceMode2D.Impulse);
