@@ -440,17 +440,7 @@ public class Cat : MonoBehaviourPun
             }
         } else {
             Vector3 respawnPoint = Utility.getRandomSpawnLocation();
-            switch (cause)
-            {
-                case "Fall":
-                    print("player <...> fell from an high place, " + _hearts + " lives left");
-
-                    //YASEEN: Play sound
-                    FindObjectOfType<AudioManager>().Play("scream", getPitch(furLevel));
-
-                    break;
-            }
-
+            FindObjectOfType<AudioManager>().Play("scream", getPitch(furLevel));
             
             furLevel = maxFurLevel;
             furSubLevel = maxFurSubLevel;

@@ -80,7 +80,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
             StartCoroutine(spawnPlatforms());
             Debug.LogWarning("MASTER CONNECTED");
             FindObjectOfType<AudioManager>().Play("scream");
-            photon.RPC("Countdown",RpcTarget.AllViaServer);
+            //photon.RPC("Countdown",RpcTarget.AllViaServer);
         }
         else
             Debug.LogWarning("NOT MASTER");
@@ -108,6 +108,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
         GameObject cat = PhotonNetwork.Instantiate(catPrefabs[baseSkinID].name, spawnPosition, catPrefabs[baseSkinID].transform.rotation); //spawn a cat :)
         PhotonView photon_view = cat.GetComponent<PhotonView>();
         photon_view.RPC("setCatSkinRPC",RpcTarget.AllViaServer, skinID);
+        StartCoroutine(CountdownCoroutine(cat.GetComponent<Cat>()));
         //cat.GetComponent<Cat>().envi = this;
         return photon_view;
         //_cats.Add(cat.GetComponent<Cat>());  TODO [Sorre97] THIS DOESN'T WORK FOR SOME REASON!
