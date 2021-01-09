@@ -130,13 +130,13 @@ public class PlayerListingMenu : MonoBehaviourPunCallbacks
         if (ready)
         {
             _ReadyBtn.GetComponentInChildren<Text>().text = "Not Ready";
-            _ReadyBtn.GetComponentInChildren<Text>().color = Color.red;
+            _ReadyBtn.GetComponentInChildren<Text>().color = Color.gray;
             
         }
         else
         {
             _ReadyBtn.GetComponentInChildren<Text>().text = "Ready";
-            _ReadyBtn.GetComponentInChildren<Text>().color = Color.magenta;
+            _ReadyBtn.GetComponentInChildren<Text>().color = new Color(0.6698f,0.12322f,0.12322f);
         }
     }
     

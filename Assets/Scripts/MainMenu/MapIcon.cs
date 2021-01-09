@@ -17,12 +17,14 @@ public class MapIcon : MonoBehaviour
 
     public void Select()
     {
-        GetComponent<Outline>().enabled = true;
+        GetComponent<Image>().color = new Color(GetComponent<Image>().color.r ,GetComponent<Image>().color.g, GetComponent<Image>().color.b, 1f);
+        //GetComponent<Outline>().enabled = true;
     }
     
     public void Deselect()
     {
-        GetComponent<Outline>().enabled = false;
+        GetComponent<Image>().color = new Color(GetComponent<Image>().color.r ,GetComponent<Image>().color.g, GetComponent<Image>().color.b, 0.5f);
+        //GetComponent<Outline>().enabled = false;
     }
 
     public void OnClick_MyBtn()

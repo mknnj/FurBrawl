@@ -114,8 +114,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4290205905
-  m_fontColor: {r: 0.8207547, g: 0.3445621, b: 0.7168026, a: 1}
+    rgba: 4281479730
+  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -518,9 +518,9 @@ MonoBehaviour:
   _rightSkinBtn: {fileID: 5199499636540234819}
   _SkinIdText: {fileID: 5530616317033833366}
   catPortraitsList:
-  - {fileID: 21300000, guid: f489c285e2bc87846867f8862327230a, type: 3}
-  - {fileID: 21300000, guid: d4d63150d95f3e84ea620db8c17ce69f, type: 3}
-  - {fileID: 21300000, guid: 995c714e850e1cf40a263c2dfa60155a, type: 3}
+  - {fileID: 21300000, guid: 3917a42b5ff652c41993c975efed1cc6, type: 3}
+  - {fileID: 21300000, guid: 589158d59aa7c224cbd4a0d809da82eb, type: 3}
+  - {fileID: 21300000, guid: 4ac1092c87cae2544b6b14846f06dc6a, type: 3}
   catMaterialList:
   - {fileID: 2100000, guid: ebb36a97d8f30d6479724dda71d07161, type: 2}
   - {fileID: 2100000, guid: 8bcb9a87430887c46b58212ec81517aa, type: 2}
