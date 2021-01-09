@@ -333,10 +333,33 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
                 if (_lastStandPlayers.Count == 1)
                 {
                     Debug.Log("[Victory] Victory called from last stand death");
-                    victoryScreen(_lastStandPlayers[0]);
+                    if (PhotonNetwork.IsMasterClient)
+                    {
+                        photonView.RPC("victoryScreenRPC", RpcTarget.AllViaServer, _lastStandPlayers[0]);
+                    }
+                    
                 }
             }
         }
+    }
+    
+    
+    [PunRPC]
+    private void victoryScreenRPC(Player winner)
+    {
+        Debug.Log(winner.NickName + " Wins");
+        _victoryText.text = (winner.NickName + "\nWins");
+        _victoryText.gameObject.SetActive(true);
+            
+        CrossSceneVictoryInfo.SetWinner(winner);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.IsOpen = true;
+            PhotonNetwork.CurrentRoom.IsVisible = true;
+            PhotonNetwork.LoadLevel(0);
+        }
+        //Cursor.visible = true;
+        //StartCoroutine(exitRoom());
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
