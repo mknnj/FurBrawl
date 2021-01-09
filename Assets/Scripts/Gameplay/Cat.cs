@@ -275,6 +275,15 @@ public class Cat : MonoBehaviourPun
 
     public void SetCanMove(bool v)
     {
+        if (!v)
+        {
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            rb.Sleep();
+        }
+        else{
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.WakeUp();
+        }
         canMove = v;
     }
     
@@ -456,12 +465,13 @@ public class Cat : MonoBehaviourPun
 
     //************************************* BEGIN SECTION for stun logic ***********************************************
     public void Stun() {
+        animator.SetBool("stunned", true);
         float duration = stunTime;
         canMove = false; // a stunned cat can't move, should not attack either
         //Debug.Log("I am stunned");
         rb.Sleep();
         StartCoroutine(StunFrame(duration));
-        animator.SetBool("stunned", true);
+        
     }
     
     private IEnumerator StunFrame(float duration)
@@ -566,7 +576,7 @@ public class Cat : MonoBehaviourPun
             FindObjectOfType<AudioManager>().Play("scream", getPitch(furLevel));
             //Debug.Log(photonView.Owner+" hitted by a furball");
             //float power = Mathf.Pow((_pushImpact - furLevel), 1.65f);
-            float power = _pushImpact * (1 / (float)furLevel)*1.5f;
+            float power = _pushImpact * (1 / (float)furLevel)*2f;
 
             rb.Sleep();
             rb.AddForce(other.GetComponent<FurBall>().direction * power, ForceMode2D.Impulse);
