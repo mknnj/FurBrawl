@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UserInput : MonoBehaviour
 {
@@ -20,5 +22,10 @@ public class UserInput : MonoBehaviour
         jumpInput = Input.GetKeyDown(KeyBindings.Jump);
         throwInput = Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyBindings.FurBall);
         meleeInput = Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyBindings.Melee);
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PhotonNetwork.LeaveRoom();
+            Application.Quit();
+        }
     }
 }

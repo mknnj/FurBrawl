@@ -614,7 +614,8 @@ public class Cat : MonoBehaviourPun
     public void RemoveLifeUIRPC(int index, bool last)
     {
         _envi.playerLifeUis[index].RemoveLife();
-        if(last) _envi.playerLifeUis[index].LastLife();
+        //if(last) _envi.playerLifeUis[index].LastLife();
+        if(last && photonView.IsMine) _envi.SetLastLife();
     }
 
     [PunRPC]

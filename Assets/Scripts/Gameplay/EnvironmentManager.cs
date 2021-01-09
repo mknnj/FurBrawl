@@ -30,6 +30,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
     public GameObject[] jarPrefabsList;
     public GameObject[] platformPrefabsList;
     [SerializeField] private GameObject[] mapPrefabList;
+    [SerializeField] private GameObject lastLifeImage;
 
     [SerializeField]  private int maxMilkSpawned = 3;
     [SerializeField]  private float timeBetweenMilk = 2f;
@@ -63,6 +64,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
     void Start()
     {
         Cursor.visible = false;
+        lastLifeImage.SetActive(false);
         Instantiate(mapPrefabList[CrossSceneMapInfo.MapID]);
         _victoryText.gameObject.SetActive(false);
         PhotonView photon = CatSpawn();
@@ -201,6 +203,18 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
         milkCounter--;
         _freeBalconies.Add(balcony);
 
+    }
+
+    public void SetLastLife()
+    {
+        StartCoroutine(LastLifeCoroutine());
+    }
+
+    private IEnumerator LastLifeCoroutine()
+    {
+        lastLifeImage.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        lastLifeImage.SetActive(false);
     }
 
     public void VictoryCheck(Player player)

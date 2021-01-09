@@ -1,28 +1,28 @@
 fileFormatVersion: 2
-guid: a098e1d78ab2cdf4c9e51e80225a6498
+guid: 4ea7eb6c310e9e0408a5359dec8ce0e9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -9103717969542712318
-    second: desert platform break sheet_0
+      213: 5940779408717306200
+    second: new platform breaks_0
   - first:
-      213: -2700726941968943517
-    second: desert platform break sheet_1
+      213: -5014282809754106800
+    second: new platform breaks_1
   - first:
-      213: -5927141814890406021
-    second: desert platform break sheet_2
+      213: -5983698300324576075
+    second: new platform breaks_2
   - first:
-      213: -9046880223303095863
-    second: desert platform break sheet_3
+      213: 1571364713574884696
+    second: new platform breaks_3
   - first:
-      213: -573680741676398539
-    second: desert platform break sheet_4
+      213: 5587410976411337562
+    second: new platform breaks_4
   - first:
-      213: 1784982583087102905
-    second: desert platform break sheet_5
+      213: 7453935439337931527
+    second: new platform breaks_5
   - first:
-      213: -8185208367171734400
-    second: desert platform break sheet_6
+      213: -415391167438486558
+    second: new platform breaks_6
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -156,7 +156,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: desert platform break sheet_0
+      name: new platform breaks_0
       rect:
         serializedVersion: 2
         x: 0
@@ -170,14 +170,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 204f0128db819a180800000000000000
-      internalID: -9103717969542712318
+      spriteID: 859dc898563e17250800000000000000
+      internalID: 5940779408717306200
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: desert platform break sheet_1
+      name: new platform breaks_1
       rect:
         serializedVersion: 2
         x: 0
@@ -191,14 +191,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3663d94c727158ad0800000000000000
-      internalID: -2700726941968943517
+      spriteID: 0544241f950b96ab0800000000000000
+      internalID: -5014282809754106800
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: desert platform break sheet_2
+      name: new platform breaks_2
       rect:
         serializedVersion: 2
         x: 0
@@ -212,14 +212,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b7fd7163cef8ebda0800000000000000
-      internalID: -5927141814890406021
+      spriteID: 5b48b0e4912a5fca0800000000000000
+      internalID: -5983698300324576075
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: desert platform break sheet_3
+      name: new platform breaks_3
       rect:
         serializedVersion: 2
         x: 0
@@ -233,14 +233,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9c9238c8e56037280800000000000000
-      internalID: -9046880223303095863
+      spriteID: 855e63da1eb9ec510800000000000000
+      internalID: 1571364713574884696
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: desert platform break sheet_4
+      name: new platform breaks_4
       rect:
         serializedVersion: 2
         x: 0
@@ -254,14 +254,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 53845e9a760e908f0800000000000000
-      internalID: -573680741676398539
+      spriteID: a53cd1ffda87a8d40800000000000000
+      internalID: 5587410976411337562
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: desert platform break sheet_5
+      name: new platform breaks_5
       rect:
         serializedVersion: 2
         x: 0
@@ -275,14 +275,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9bb7a2bb33885c810800000000000000
-      internalID: 1784982583087102905
+      spriteID: 703ce681ac2b17760800000000000000
+      internalID: 7453935439337931527
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: desert platform break sheet_6
+      name: new platform breaks_6
       rect:
         serializedVersion: 2
         x: 0
@@ -296,8 +296,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0847c2e6b5c486e80800000000000000
-      internalID: -8185208367171734400
+      spriteID: 2e38efd1feb3c3af0800000000000000
+      internalID: -415391167438486558
       vertices: []
       indices: 
       edges: []

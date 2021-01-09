@@ -10,8 +10,8 @@ public abstract class PlayerLifeUI : MonoBehaviour
     [SerializeField] protected Transform lifeZone;
     [SerializeField] private Material[] catMaterials;
     [SerializeField] private Sprite[] catAvatars;
-    [SerializeField] private Image lastLifeWarnings;
-    [SerializeField] private int time = 5;
+    //[SerializeField] private Image lastLifeWarnings;
+    //[SerializeField] private int time = 5;
 
     private Player player;
     
@@ -49,17 +49,17 @@ public abstract class PlayerLifeUI : MonoBehaviour
         playerIcon.material = mat;
     }
 
-    public virtual void LastLife()
-    {
-        lastLifeWarnings.gameObject.SetActive(true);
-        Debug.Log("Activate warning");
-        StartCoroutine(LastLifeWaitTime());
-    }
-
-    private IEnumerator LastLifeWaitTime()
-    {
-        yield return  new  WaitForSeconds(time);
-        Debug.Log("Deactivate warning");
-        lastLifeWarnings.gameObject.SetActive(false);
-    }
+    // public virtual void LastLife()
+    // {
+    //     lastLifeWarnings.gameObject.SetActive(true);
+    //     Debug.Log("Activate warning");
+    //     StartCoroutine(LastLifeWaitTime());
+    // }
+    //
+    // private IEnumerator LastLifeWaitTime()
+    // {
+    //     yield return  new  WaitForSeconds(time);
+    //     Debug.Log("Deactivate warning");
+    //     lastLifeWarnings.gameObject.SetActive(false);
+    // }
 }

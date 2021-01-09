@@ -8,12 +8,15 @@ public class Platform : MonoBehaviour
     private SpriteRenderer _SR;
     private bool _damage; //used to control starting and stopping the damage
     private float _damageFactor;
+
+    private Animator _breakAnimator;
     //List<GameObject> currentCollisions = new List<GameObject>();
     private void Awake()
     {
         _damage = false;
         _SR = GetComponent<SpriteRenderer>();
         _damageFactor = 0;
+        _breakAnimator = GetComponent<Animator>();
 
     }
     private void OnTriggerEnter2D(Collider2D other)
@@ -58,6 +61,8 @@ public class Platform : MonoBehaviour
             _SR.color = new Color((255 - initialHealth)/255, Mathf.Max(initialHealth, 0)/255, 0);
             if (initialHealth <= 0)
             {
+                _breakAnimator.SetTrigger("break");
+                yield return new WaitForSeconds(0.5f);
                 Destroy(gameObject);
                 GameObject.FindGameObjectWithTag("Manager").GetComponent<EnvironmentManager>()
                     .destroyedPlatform(transform.position.x, transform.position.y);
