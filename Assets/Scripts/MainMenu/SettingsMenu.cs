@@ -9,14 +9,7 @@ public class SettingsMenu : MonoBehaviour
 {
     [SerializeField] private Toggle fullScreenToggle;
     [SerializeField] private Dropdown resolutionDropdown;
-    [SerializeField] private Button jumpButton;
-    [SerializeField] private Button furBallButton;
-    [SerializeField] private Button meleeButton;
-    
-    Event keyEvent;
-    TextMeshProUGUI buttonText;
-    KeyCode newKey;
-    bool waitingForKey;
+    [SerializeField] private Slider volumeSlider;
     
     public void OnToggle_FullScreen()
     {
@@ -24,15 +17,6 @@ public class SettingsMenu : MonoBehaviour
         Screen.fullScreen = fullScreenToggle.isOn;
     }
     
-    void Start ()
-
-    {
-        waitingForKey = false;
-        meleeButton.GetComponentInChildren<TextMeshProUGUI>().text = KeyBindings.Melee.ToString();
-        jumpButton.GetComponentInChildren<TextMeshProUGUI>().text = KeyBindings.Jump.ToString();
-        furBallButton.GetComponentInChildren<TextMeshProUGUI>().text = KeyBindings.FurBall.ToString();
-    }
-
     public void OnChange_ResolutionDropdown()
     {
         Debug.Log("Chosen: "+resolutionDropdown.options[resolutionDropdown.value].text);
@@ -59,58 +43,10 @@ public class SettingsMenu : MonoBehaviour
         }
     }
 
-    void OnGUI()
-
+    public void SetVolume()
     {
-        keyEvent = Event.current;
-        if(keyEvent.isKey && waitingForKey)
-        {
-            newKey = keyEvent.keyCode; 
-            waitingForKey = false;
-        }
+        Debug.Log(AudioListener.volume);
+        AudioListener.volume = volumeSlider.value  ;
     }
 
-    
-    public void StartAssignment(string keyName)
-    {
-        if(!waitingForKey)
-            StartCoroutine(AssignKey(keyName));
-    }
-
-    public void SendText(TextMeshProUGUI text)
-    {
-        buttonText = text;
-    }
-    
-
-    IEnumerator WaitForKey()
-    {
-        while(!keyEvent.isKey)
-            yield return null;
-    }
-
-    
-
-    public IEnumerator AssignKey(string keyName)
-    {
-        waitingForKey = true;
-        yield return WaitForKey();
-        switch(keyName)
-        {
-            case "furball":
-            //set new keycode and update button
-            KeyBindings.FurBall = newKey;
-            buttonText.text = KeyBindings.FurBall.ToString();
-            break;
-        case "melee":
-            KeyBindings.Melee = newKey; 
-            buttonText.text = KeyBindings.Melee.ToString(); 
-            break;
-        case "jump":
-            KeyBindings.Jump = newKey;
-            buttonText.text = KeyBindings.Jump.ToString();
-            break;
-        }
-        yield return null;
-    }
 }

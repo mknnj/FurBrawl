@@ -12,6 +12,7 @@ TagManager:
   - Platform
   - Manager
   - AnimationsController
+  - Golden
   layers:
   - Default
   - TransparentFX

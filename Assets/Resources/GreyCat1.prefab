@@ -315,13 +315,15 @@ MonoBehaviour:
   _goldenFurBallPrefab: {fileID: 6024337074199590728, guid: 3cc2e682f4da0e440948f9c27b0bfc37,
     type: 3}
   _pushImpact: 6
+  _goldenImpact: 10
   _hitted: 0
   _hittedWaitTime: 0.5
   canMove: 1
   _attackWaitTime: 0.5
   _radiusMelee: 0.4
   _distanceMelee: 1
-  _goldenTime: 10
+  _goldenTime: 3
+  _respawnTime: 1
   _pushMeleeImpact: 7.5
   identifier: {fileID: 6195804458610170757}
   _feetCollider: {fileID: 8099216336864904104}

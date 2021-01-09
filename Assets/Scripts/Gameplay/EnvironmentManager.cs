@@ -81,7 +81,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
             StartCoroutine(spawnPlatforms());
             Debug.LogWarning("MASTER CONNECTED");
             FindObjectOfType<AudioManager>().Play("scream");
-            //photon.RPC("Countdown",RpcTarget.AllViaServer);
+            photon.RPC("Countdown",RpcTarget.AllViaServer);
         }
         else
             Debug.LogWarning("NOT MASTER");
@@ -109,7 +109,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
         GameObject cat = PhotonNetwork.Instantiate(catPrefabs[baseSkinID].name, spawnPosition, catPrefabs[baseSkinID].transform.rotation); //spawn a cat :)
         PhotonView photon_view = cat.GetComponent<PhotonView>();
         photon_view.RPC("setCatSkinRPC",RpcTarget.AllViaServer, skinID);
-        StartCoroutine(CountdownCoroutine(cat.GetComponent<Cat>()));
+        cat.GetComponent<Cat>().SetUINameColor(Color.white);
         //cat.GetComponent<Cat>().envi = this;
         return photon_view;
         //_cats.Add(cat.GetComponent<Cat>());  TODO [Sorre97] THIS DOESN'T WORK FOR SOME REASON!
@@ -227,9 +227,9 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.CurrentRoom.IsOpen = true;
             PhotonNetwork.CurrentRoom.IsVisible = true;
+            PhotonNetwork.LoadLevel(0);
         }
         //Cursor.visible = true;
-        PhotonNetwork.LoadLevel(0);
         //StartCoroutine(exitRoom());
     }
     
@@ -242,9 +242,13 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
     }
     
 
-    public IEnumerator CountdownCoroutine(Cat cat)
+    public IEnumerator CountdownCoroutine()
     {
-        cat.SetCanMove(false);
+        FindObjectOfType<AudioManager>().Play("countdown_sound");
+        GameObject[] cats = GameObject.FindGameObjectsWithTag("Player");
+        foreach (var cat in cats)
+            cat.GetComponent<Cat>().SetCanMove(false);
+        
         startingCountdown[0].gameObject.SetActive(true);
         yield return new WaitForSecondsRealtime(timeCountdown);
         
@@ -257,7 +261,8 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
         yield return new WaitForSecondsRealtime(timeCountdown);
         
         startingCountdown[2].gameObject.SetActive(false);
-        cat.SetCanMove(true);
+        foreach (var cat in cats)
+            cat.GetComponent<Cat>().SetCanMove(true);
         gameObject.GetComponent<Timer>().customStart();
     }
 

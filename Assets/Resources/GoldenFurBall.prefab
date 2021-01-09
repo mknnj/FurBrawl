@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7956419577675264927}
   m_Layer: 0
   m_Name: GoldenFurBall
-  m_TagString: FurBall
+  m_TagString: Golden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

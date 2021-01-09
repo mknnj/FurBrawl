@@ -35,6 +35,7 @@ public class Cat : MonoBehaviourPun
     [SerializeField] private GameObject _goldenFurBallPrefab;
     [Tooltip("force that it is applicated when hitted by a furball")]
     [SerializeField] private float _pushImpact=2f;
+    [SerializeField] private float _goldenImpact = 5f;
     [SerializeField] private bool _hitted=false;
     [Tooltip("Time to wait to move again after being hitted")]
     [SerializeField] private float _hittedWaitTime = 0.2f;
@@ -47,6 +48,8 @@ public class Cat : MonoBehaviourPun
     [SerializeField] private float _distanceMelee = 1;
     [Tooltip("Number of seconds in which the cat shoots golden furballs")]
     [SerializeField] private float _goldenTime = 10f;
+    [Tooltip("Number of seconds that the cat takes to respawn")]
+    [SerializeField] private float _respawnTime = 1f;
 
     [Tooltip("force that it is applicated when hitted by a melee")] [SerializeField]
     private float _pushMeleeImpact = 5;
@@ -62,7 +65,8 @@ public class Cat : MonoBehaviourPun
     public Animator animator;
     private SpriteRenderer _SR;
 
-    private bool isGolden; //whether it shoots golden furballs or not
+    private bool _isGolden; //whether it shoots golden furballs or not
+    private bool _facingLeft=true;
     private int _number;
     public float velX;
     public float vely;
@@ -181,14 +185,19 @@ public class Cat : MonoBehaviourPun
 
 
     }
+
+    public void SetUINameColor(Color c)
+    {
+        identifier.color = c;
+    }
     private IEnumerator AttackWait()
     {   
         Debug.Log(photonView.Owner+" melee");
         yield return new WaitForSeconds(_attackWaitTime);
         _isAttacking = false;
     }
-
-
+    
+    
     private void FixedUpdate()
     {
         if (photonView.IsMine && !_hitted && canMove && !_isAttacking)
@@ -196,17 +205,22 @@ public class Cat : MonoBehaviourPun
             Move(); // if we're the player process user input and update location
         }
         
-        if (rb.velocity.x < 0)
+        if ( rb.velocity.x < 0)
         {
+            _facingLeft = true;
             identifier.transform.localScale = new Vector2(Math.Abs(identifier.transform.localScale.x), identifier.transform.localScale.y);
         } else if (rb.velocity.x > 0)
         {
+            _facingLeft = false;
             identifier.transform.localScale = new Vector2(-Math.Abs(identifier.transform.localScale.x), identifier.transform.localScale.y);
         }
-        
+        else
+        {
+            int sign = _facingLeft ? 1 : -1;
+            identifier.transform.localScale = new Vector2(sign*Math.Abs(identifier.transform.localScale.x), identifier.transform.localScale.y);
+        }
     }
-
-
+    
 
     private void Jump() //simple
     {
@@ -329,7 +343,7 @@ public class Cat : MonoBehaviourPun
     {
         //Debug.Log("Furball RPC");
         float lag = (float) (PhotonNetwork.Time - info.SentServerTime);
-        if (isGolden)
+        if (_isGolden)
         {
             GameObject fb = Instantiate(_goldenFurBallPrefab, pos, q);
             bool oppositeDirection =rb.transform.localScale.x > 0;
@@ -376,7 +390,7 @@ public class Cat : MonoBehaviourPun
         GameObject.FindGameObjectWithTag("Manager").GetComponent<EnvironmentManager>().milkDrinked(balcony);
         FindObjectOfType<AudioManager>().Play("golden_milk", getPitch(furLevel));
         canMove = false;
-        isGolden = true;
+        _isGolden = true;
         photonView.RPC("SetGoldenRPC", RpcTarget.AllViaServer);
         StartCoroutine(IdleCoroutine(idleTime));
         
@@ -393,7 +407,7 @@ public class Cat : MonoBehaviourPun
     [PunRPC]
     public void SetGoldenRPC()
     {
-        isGolden = true;
+        _isGolden = true;
         StartCoroutine(GoldenCoroutine(_goldenTime));
     }
     
@@ -409,7 +423,7 @@ public class Cat : MonoBehaviourPun
     {
         yield return new WaitForSeconds(time);
 
-        isGolden = false;
+        _isGolden = false;
         yield return null;
     }
     
@@ -495,12 +509,13 @@ public class Cat : MonoBehaviourPun
             furLevel = maxFurLevel;
             furSubLevel = maxFurSubLevel;
             photonView.RPC("FurSyncRPC", RpcTarget.AllViaServer, furLevel, furSubLevel);
-            transform.position = respawnPoint;
+            StartCoroutine(DieCoroutine(respawnPoint));
+            /*transform.position = respawnPoint;
             rb.Sleep();
             rb.WakeUp();
-            canMove = false;
+            canMove = false;*/
             _canBeHit = false;
-            isGolden = false;
+            _isGolden = false;
             //StartCoroutine(InvincibilityFrame(invincibility));
         }
     }
@@ -510,6 +525,23 @@ public class Cat : MonoBehaviourPun
         yield return new WaitForSeconds(time);
         canMove = true;
         _canBeHit = true;
+        yield return null;
+    }
+    
+    private IEnumerator DieCoroutine(Vector3 respawnPoint)
+    {
+        canMove = false;
+        
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.Sleep();
+        GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<CapsuleCollider2D>().enabled = false;
+        transform.position = respawnPoint;
+        yield return new WaitForSecondsRealtime(_respawnTime);
+        GetComponent<CapsuleCollider2D>().enabled = true;
+        GetComponent<SpriteRenderer>().enabled = true;
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        rb.WakeUp();
         yield return null;
     }
 
@@ -535,6 +567,21 @@ public class Cat : MonoBehaviourPun
             //Debug.Log(photonView.Owner+" hitted by a furball");
             //float power = Mathf.Pow((_pushImpact - furLevel), 1.65f);
             float power = _pushImpact * (1 / (float)furLevel)*1.5f;
+
+            rb.Sleep();
+            rb.AddForce(other.GetComponent<FurBall>().direction * power, ForceMode2D.Impulse);
+            //Debug.Log("force applicate");
+            StartCoroutine(HitKnockoutTime());
+        }
+        if (other.CompareTag("Golden") && _canBeHit && !other.GetComponent<FurBall>().Launcher.Equals(photonView.Owner))
+        {
+            _hitted = true;
+            
+            //YASEEN: Play sound
+            FindObjectOfType<AudioManager>().Play("scream", getPitch(furLevel));
+            //Debug.Log(photonView.Owner+" hitted by a furball");
+            //float power = Mathf.Pow((_pushImpact - furLevel), 1.65f);
+            float power = _pushImpact * (1 / (float)furLevel)*_goldenImpact;
 
             rb.Sleep();
             rb.AddForce(other.GetComponent<FurBall>().direction * power, ForceMode2D.Impulse);
@@ -580,6 +627,6 @@ public class Cat : MonoBehaviourPun
     [PunRPC]
     public void Countdown()
     {
-        StartCoroutine(_envi.CountdownCoroutine(this));
+        StartCoroutine(_envi.CountdownCoroutine());
     }
 } 

@@ -99,7 +99,7 @@ public class PlayerListing : MonoBehaviourPunCallbacks
                 new Color(targetSkin.detailsColor.r / 255, targetSkin.detailsColor.g / 255,
                     targetSkin.detailsColor.b / 255));
             _image.material = mat;
-            _SkinIdText.text = "<mark=#8cc3cf55 padding=\"10, 10, 10, 10\">"+targetSkin.name+"</mark>";
+            _SkinIdText.text = targetSkin.name;
         }
     }
     
