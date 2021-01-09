@@ -275,15 +275,20 @@ public class Cat : MonoBehaviourPun
 
     public void SetCanMove(bool v)
     {
-        if (!v)
+        if (photonView.IsMine)
         {
-            rb.bodyType = RigidbodyType2D.Kinematic;
-            rb.Sleep();
+            if (!v)
+            {
+                rb.bodyType = RigidbodyType2D.Kinematic;
+                rb.Sleep();
+            }
+            else
+            {
+                rb.bodyType = RigidbodyType2D.Dynamic;
+                rb.WakeUp();
+            }
         }
-        else{
-            rb.bodyType = RigidbodyType2D.Dynamic;
-            rb.WakeUp();
-        }
+
         canMove = v;
     }
     
