@@ -275,7 +275,7 @@ public class Cat : MonoBehaviourPun
 
     public void SetCanMove(bool v)
     {
-        if (photonView.IsMine)
+        /*if (photonView.IsMine)
         {
             if (!v)
             {
@@ -287,7 +287,7 @@ public class Cat : MonoBehaviourPun
                 rb.bodyType = RigidbodyType2D.Dynamic;
                 rb.WakeUp();
             }
-        }
+        }*/
 
         canMove = v;
     }
