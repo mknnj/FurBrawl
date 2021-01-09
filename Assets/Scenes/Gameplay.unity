@@ -558,7 +558,7 @@ PrefabInstance:
     - target: {fileID: 4829226218645396843, guid: c005b1289e636c04f9189293a54abd7a,
         type: 3}
       propertyPath: sounds.Array.size
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4829226218645396843, guid: c005b1289e636c04f9189293a54abd7a,
         type: 3}
@@ -728,6 +728,31 @@ PrefabInstance:
     - target: {fileID: 4829226218645396843, guid: c005b1289e636c04f9189293a54abd7a,
         type: 3}
       propertyPath: sounds.Array.data[6].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829226218645396843, guid: c005b1289e636c04f9189293a54abd7a,
+        type: 3}
+      propertyPath: sounds.Array.data[7].name
+      value: golden_milk
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829226218645396843, guid: c005b1289e636c04f9189293a54abd7a,
+        type: 3}
+      propertyPath: sounds.Array.data[7].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: deb15412215ffe044a0aa4729a5b7585, type: 3}
+    - target: {fileID: 4829226218645396843, guid: c005b1289e636c04f9189293a54abd7a,
+        type: 3}
+      propertyPath: sounds.Array.data[7].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829226218645396843, guid: c005b1289e636c04f9189293a54abd7a,
+        type: 3}
+      propertyPath: sounds.Array.data[7].volumeVariance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829226218645396843, guid: c005b1289e636c04f9189293a54abd7a,
+        type: 3}
+      propertyPath: sounds.Array.data[7].pitch
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
