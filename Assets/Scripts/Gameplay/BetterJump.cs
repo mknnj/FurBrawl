@@ -27,7 +27,7 @@ public class BetterJump : MonoBehaviour
         }
         else
         {
-            rb.gravityScale = 1f;W
+            rb.gravityScale = 1f;
         }
     }
 }
