@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1114,15 +1114,23 @@ MonoBehaviour:
   milkPrefabsList:
   - {fileID: 7100667282729621235, guid: e7f40eed274946b4e9476cb280839b22, type: 3}
   - {fileID: 7100667282729621235, guid: df8d52566fb44b54baf8da880f6461e2, type: 3}
+  - {fileID: 7100667282729621235, guid: 9702c175a2da2e14e85f6d819b1904ab, type: 3}
+  goldenMilkPrefabsList:
+  - {fileID: 7100667282729621235, guid: afbd9d80cee6c5541a6dfd7fa2251077, type: 3}
+  - {fileID: 7100667282729621235, guid: 7da378b573a139e408bde44e873e7e5b, type: 3}
+  - {fileID: 7100667282729621235, guid: 3241e16be094d614c93546d2948b607c, type: 3}
   jarPrefabsList:
   - {fileID: 391908430186353253, guid: 7eb4f02d8d9d0dd4d8bb485c4db55519, type: 3}
   - {fileID: 391908430186353253, guid: dc98330fffa7c1c4785a0f2a062f1bfa, type: 3}
+  - {fileID: 391908430186353253, guid: 0cc09ec1257a2df48bddb33bb487011d, type: 3}
   platformPrefabsList:
   - {fileID: 5939788716329023289, guid: b14723c93b8a52347ab045ce72a2dfe6, type: 3}
   - {fileID: 5939788716329023289, guid: 861416f5f8620e643843dc77dc218fe1, type: 3}
+  - {fileID: 5939788716329023289, guid: bdcf7c150e830fb498649f4d942ee742, type: 3}
   mapPrefabList:
   - {fileID: 8213611887952527824, guid: e2962040f5d77f24caa286065205d0f2, type: 3}
   - {fileID: 5896882430885778285, guid: bc849c428ff517b44a05d17156e1c7c2, type: 3}
+  - {fileID: 8213611887952527824, guid: 2c6f89aba60e2634287cb6175ed0a861, type: 3}
   maxMilkSpawned: 3
   timeBetweenMilk: 2
   timeBetweenJars: 5
@@ -1130,6 +1138,7 @@ MonoBehaviour:
   counter: 0
   milkHeight: 0.74
   jarHeight: 10
+  goldenMilkProbability: 0.1
   milkCounter: 0
   playerLifeUis:
   - {fileID: 3701583933790082148}

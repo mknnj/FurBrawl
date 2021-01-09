@@ -21,7 +21,8 @@ public class ScreenManager : MonoBehaviourPunCallbacks
         DisconnectedScreen,
         FeedbackScreen,
         RulesScreen,
-        VictoryScreen
+        VictoryScreen,
+        CreditsScreen
     };
     
     //Following the structure defined in the final game design document:
@@ -35,6 +36,7 @@ public class ScreenManager : MonoBehaviourPunCallbacks
     public GameObject FeedbackScreen; //used to submit feedback to the professor's drive
     public GameObject RulesScreen;
     public GameObject VictoryScreen;
+    public GameObject CreditsScreen;
     
     public string Error; //the error message (not being used, yet)
     public InputField NickNameTF;
@@ -60,6 +62,7 @@ public class ScreenManager : MonoBehaviourPunCallbacks
         FeedbackScreen.SetActive(false);
         RulesScreen.SetActive(false);
         VictoryScreen.SetActive(false);
+        CreditsScreen.SetActive(false);
         switch (menu)
         {
             case Menu.TitleScreen:
@@ -91,6 +94,9 @@ public class ScreenManager : MonoBehaviourPunCallbacks
                 break;
             case Menu.VictoryScreen:
                 VictoryScreen.SetActive(true);
+                break;
+            case Menu.CreditsScreen:
+                CreditsScreen.SetActive(true);
                 break;
         }
     }
@@ -142,6 +148,11 @@ public class ScreenManager : MonoBehaviourPunCallbacks
     public void OpenVictoryScreen()
     {
         SetMenu(Menu.VictoryScreen);
+    }
+
+    public void OpenCreditsScreen()
+    {
+        SetMenu(Menu.CreditsScreen);
     }
 
     public void  OnClick_ConnectToRoomsBtn()

@@ -8,8 +8,7 @@ using Photon.Realtime;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-
-
+using Random = UnityEngine.Random;
 
 
 /*
@@ -27,6 +26,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
     public GameObject[] catPrefabs;
     public Material[] catMaterials;
     public GameObject[] milkPrefabsList;
+    public GameObject[] goldenMilkPrefabsList;
     public GameObject[] jarPrefabsList;
     public GameObject[] platformPrefabsList;
     [SerializeField] private GameObject[] mapPrefabList;
@@ -38,6 +38,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
     [SerializeField]  private float counter;
     [SerializeField] [Range(0, 5f)] private float milkHeight = 0.46f;
     [SerializeField] [Range(0, 20f)] private float jarHeight = 10f;  //TODO this should be based on background y
+    [SerializeField] [Range(0, 1f)] private float goldenMilkProbability = 0.1f;
 
     [SerializeField] private int milkCounter = 0;
 
@@ -174,9 +175,21 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
             var balcony = _freeBalconies[rnd_num];
             var spawnPosition = Utility.getRandomMilkSpawn(milkHeight, balcony);
             _freeBalconies.Remove(balcony);
-            GameObject milk = PhotonNetwork.Instantiate(milkPrefabsList[CrossSceneMapInfo.MapID].name, spawnPosition, milkPrefabsList[CrossSceneMapInfo.MapID].transform.rotation);
+
+            if (Random.Range(0f, 1) > goldenMilkProbability)
+            {
+                GameObject milk = PhotonNetwork.Instantiate(milkPrefabsList[CrossSceneMapInfo.MapID].name,
+                    spawnPosition, milkPrefabsList[CrossSceneMapInfo.MapID].transform.rotation);
+                milk.GetComponent<Milk>().setBalcony(balcony, false);
+            }
+            else
+            {
+                GameObject milk = PhotonNetwork.Instantiate(goldenMilkPrefabsList[CrossSceneMapInfo.MapID].name, spawnPosition, milkPrefabsList[CrossSceneMapInfo.MapID].transform.rotation);
+                milk.GetComponent<Milk>().setBalcony(balcony, true);
+            }
             milkCounter++;
-            milk.GetComponent<Milk>().setBalcony(balcony);
+                
+            
             //Debug.Log("MILK COUNT - " + value);
         }
         yield return new WaitForSeconds(timeBetweenMilk);

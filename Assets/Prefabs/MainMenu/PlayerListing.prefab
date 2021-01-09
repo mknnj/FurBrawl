@@ -106,8 +106,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Gray Siamese
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 787ac883ae052f34eb4c6c4d0b485901, type: 2}
-  m_sharedMaterial: {fileID: 5426859536519013755, guid: 787ac883ae052f34eb4c6c4d0b485901,
+  m_fontAsset: {fileID: 11400000, guid: b23e7589ac1ef2e45bcf071f1ef0247e, type: 2}
+  m_sharedMaterial: {fileID: -2130535861106644340, guid: b23e7589ac1ef2e45bcf071f1ef0247e,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -239,7 +239,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 495c9e2a934bcc640a8d7427b13cb680, type: 3}
+    m_Font: {fileID: 12800000, guid: 5b98332dcb1cf6f4fb640dbe9a07dbe3, type: 3}
     m_FontSize: 17
     m_FontStyle: 0
     m_BestFit: 0
@@ -798,7 +798,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 495c9e2a934bcc640a8d7427b13cb680, type: 3}
+    m_Font: {fileID: 12800000, guid: db437dc0adb79204cbea1846f6922667, type: 3}
     m_FontSize: 16
     m_FontStyle: 0
     m_BestFit: 0

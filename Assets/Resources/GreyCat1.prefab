@@ -312,6 +312,8 @@ MonoBehaviour:
   _isAttacking: 0
   _furBallPrefab: {fileID: 6024337074199590728, guid: 9616c890d8b497847a50efb1866dcbb9,
     type: 3}
+  _goldenFurBallPrefab: {fileID: 6024337074199590728, guid: 3cc2e682f4da0e440948f9c27b0bfc37,
+    type: 3}
   _pushImpact: 6
   _hitted: 0
   _hittedWaitTime: 0.5
@@ -319,6 +321,7 @@ MonoBehaviour:
   _attackWaitTime: 0.5
   _radiusMelee: 0.4
   _distanceMelee: 1
+  _goldenTime: 10
   _pushMeleeImpact: 7.5
   identifier: {fileID: 6195804458610170757}
   _feetCollider: {fileID: 8099216336864904104}

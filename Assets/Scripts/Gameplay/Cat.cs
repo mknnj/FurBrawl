@@ -32,6 +32,7 @@ public class Cat : MonoBehaviourPun
     [SerializeField] private float _throwWaitTime = 0.2f;
     [SerializeField] private bool _isAttacking=false;
     [SerializeField] private GameObject _furBallPrefab;
+    [SerializeField] private GameObject _goldenFurBallPrefab;
     [Tooltip("force that it is applicated when hitted by a furball")]
     [SerializeField] private float _pushImpact=2f;
     [SerializeField] private bool _hitted=false;
@@ -44,6 +45,8 @@ public class Cat : MonoBehaviourPun
     [SerializeField] private float _radiusMelee = 1;
     [Tooltip("Maximum distance over which to cast the circle")]
     [SerializeField] private float _distanceMelee = 1;
+    [Tooltip("Number of seconds in which the cat shoots golden furballs")]
+    [SerializeField] private float _goldenTime = 10f;
 
     [Tooltip("force that it is applicated when hitted by a melee")] [SerializeField]
     private float _pushMeleeImpact = 5;
@@ -58,8 +61,8 @@ public class Cat : MonoBehaviourPun
     public FeetCollider _feetCollider;
     public Animator animator;
     private SpriteRenderer _SR;
-    
-    
+
+    private bool isGolden; //whether it shoots golden furballs or not
     private int _number;
     public float velX;
     public float vely;
@@ -326,13 +329,26 @@ public class Cat : MonoBehaviourPun
     {
         //Debug.Log("Furball RPC");
         float lag = (float) (PhotonNetwork.Time - info.SentServerTime);
-        GameObject fb = Instantiate(_furBallPrefab, pos, q);
-        fb.GetComponent<SpriteRenderer>().material = GetComponent<SpriteRenderer>().material;
+        if (isGolden)
+        {
+            GameObject fb = Instantiate(_goldenFurBallPrefab, pos, q);
+            bool oppositeDirection =rb.transform.localScale.x > 0;
+            fb.GetComponent<FurBall>().SetData(photonView.Owner,Mathf.Abs(lag),oppositeDirection);
+        }
+        else
+        {
+            GameObject fb = Instantiate(_furBallPrefab, pos, q);
+            fb.GetComponent<SpriteRenderer>().material = GetComponent<SpriteRenderer>().material;
+            //YASEEN: 'oppositeDirection' Passes the info of the direction to the lil cute Furball <3 
+            bool oppositeDirection =rb.transform.localScale.x > 0;
+            fb.GetComponent<FurBall>().SetData(photonView.Owner,Mathf.Abs(lag),oppositeDirection);
+        }
+        
 
-        //YASEEN: 'oppositeDirection' Passes the info of the direction to the lil cute Furball <3 
-        bool oppositeDirection =rb.transform.localScale.x > 0;
+        
+        
 
-        fb.GetComponent<FurBall>().SetData(photonView.Owner,Mathf.Abs(lag),oppositeDirection);
+        
 
     }
 
@@ -354,12 +370,38 @@ public class Cat : MonoBehaviourPun
         }
         photonView.RPC("FurSyncRPC", RpcTarget.AllViaServer, furLevel, furSubLevel);
     }
+
+    public void DrinkGoldenMilk(GameObject balcony)
+    {
+        GameObject.FindGameObjectWithTag("Manager").GetComponent<EnvironmentManager>().milkDrinked(balcony);
+        FindObjectOfType<AudioManager>().Play("golden_milk", getPitch(furLevel));
+        canMove = false;
+        isGolden = true;
+        StartCoroutine(IdleCoroutine(idleTime));
+        StartCoroutine(GoldenCoroutine(_goldenTime));
+        furSubLevel = maxFurSubLevel; //a fur level corresponds to the maximum of the sublevels
+        if (furLevel == maxFurLevel) {
+            
+            //Sorre97: if cat has already the max Fur there is something to do?
+        } else {
+            furLevel++;
+        }
+        photonView.RPC("FurSyncRPC", RpcTarget.AllViaServer, furLevel, furSubLevel);
+    }
     
     private IEnumerator IdleCoroutine(float time)
     {
         yield return new WaitForSeconds(time);
 
         canMove = true;
+        yield return null;
+    }
+    
+    private IEnumerator GoldenCoroutine(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        isGolden = false;
         yield return null;
     }
     

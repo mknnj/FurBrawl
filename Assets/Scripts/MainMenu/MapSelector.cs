@@ -8,41 +8,36 @@ using UnityEngine.UI;
 
 public class MapSelector : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private GameObject nextMapBtn;
-    [SerializeField] private GameObject previousMapBtn;
     [SerializeField] private int mapID;
     [SerializeField] private Sprite[] mapLayoutsList;
-    [SerializeField] private string[] mapNamesList;
-    [SerializeField] private Text mapName;
-    [SerializeField] private Image mapLayout; 
+    [SerializeField] private RectTransform content;
+    [SerializeField] private MapIcon iconPrefab;
+    [SerializeField] private List<MapIcon> mapIcons = new List<MapIcon>(); 
     
     public override void OnEnable()
     {
         base.OnEnable();
         Debug.Log("Master: "+PhotonNetwork.MasterClient.NickName); //If error here, start by enabling another screen
+        mapIcons.Clear();
+        for (int i =0 ; i< mapLayoutsList.Length; i++ )
+        {
+            var icon = Instantiate(iconPrefab, content);
+            icon.SetData(mapLayoutsList[i], this, i);
+            mapIcons.Add(icon);
+        }
         if (!PhotonNetwork.IsMasterClient)
         {
-            nextMapBtn.SetActive(false);
-            previousMapBtn.SetActive(false);
+            foreach (var icon in mapIcons)
+                icon.GetComponent<Button>().enabled = false;
         }
         SetMapID(0);
     }
-
-    public void OnClick_NextMapBtn()
-    {
-        mapID++;
-        if (mapID >= mapLayoutsList.Length)
-            mapID = 0;
-        photonView.RPC("SyncMapIdRPC", RpcTarget.AllViaServer, mapID);
-    }
     
-    public void OnClick_PrevMapBtn()
+    public void Clicked(int id)
     {
-        Debug.Log("Clicked prev");
-        mapID--;
-        if (mapID < 0)
-            mapID = mapLayoutsList.Length-1;
+        mapID = id;
         photonView.RPC("SyncMapIdRPC", RpcTarget.AllViaServer, mapID);
+        CrossSceneMapInfo.SetMapID(mapID);
     }
 
     [PunRPC]
@@ -55,9 +50,11 @@ public class MapSelector : MonoBehaviourPunCallbacks
     public void SetMapID(int id)
     {
         mapID = id;
-        mapLayout.sprite = mapLayoutsList[mapID];
-        mapName.text = mapNamesList[mapID];
-        
+        foreach (var i in mapIcons)
+            if (i.mapID != id)
+                i.Deselect();
+            else
+                i.Select();
         CrossSceneMapInfo.SetMapID(mapID);
     }
 
@@ -65,13 +62,13 @@ public class MapSelector : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.IsMasterClient)
         {
-            nextMapBtn.SetActive(false);
-            previousMapBtn.SetActive(false);
+            foreach (var icon in mapIcons)
+                icon.GetComponent<Button>().enabled = false;
         }
         else
         {
-            nextMapBtn.SetActive(true);
-            previousMapBtn.SetActive(true); 
+            foreach (var icon in mapIcons)
+                icon.GetComponent<Button>().enabled = true;
         }
     }
 
