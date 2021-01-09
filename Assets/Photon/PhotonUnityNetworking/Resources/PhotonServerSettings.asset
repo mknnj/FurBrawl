@@ -51,6 +51,7 @@ MonoBehaviour:
   - setCatSkinRPC
   - Countdown
   - SyncMapIdRPC
+  - SetGoldenRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

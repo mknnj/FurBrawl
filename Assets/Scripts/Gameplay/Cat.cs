@@ -377,8 +377,9 @@ public class Cat : MonoBehaviourPun
         FindObjectOfType<AudioManager>().Play("golden_milk", getPitch(furLevel));
         canMove = false;
         isGolden = true;
+        photonView.RPC("SetGoldenRPC", RpcTarget.AllViaServer);
         StartCoroutine(IdleCoroutine(idleTime));
-        StartCoroutine(GoldenCoroutine(_goldenTime));
+        
         furSubLevel = maxFurSubLevel; //a fur level corresponds to the maximum of the sublevels
         if (furLevel == maxFurLevel) {
             
@@ -387,6 +388,13 @@ public class Cat : MonoBehaviourPun
             furLevel++;
         }
         photonView.RPC("FurSyncRPC", RpcTarget.AllViaServer, furLevel, furSubLevel);
+    }
+
+    [PunRPC]
+    public void SetGoldenRPC()
+    {
+        isGolden = true;
+        StartCoroutine(GoldenCoroutine(_goldenTime));
     }
     
     private IEnumerator IdleCoroutine(float time)
@@ -492,6 +500,7 @@ public class Cat : MonoBehaviourPun
             rb.WakeUp();
             canMove = false;
             _canBeHit = false;
+            isGolden = false;
             //StartCoroutine(InvincibilityFrame(invincibility));
         }
     }

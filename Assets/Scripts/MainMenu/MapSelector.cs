@@ -19,6 +19,7 @@ public class MapSelector : MonoBehaviourPunCallbacks
         base.OnEnable();
         Debug.Log("Master: "+PhotonNetwork.MasterClient.NickName); //If error here, start by enabling another screen
         mapIcons.Clear();
+        content.DestroyChildren();
         for (int i =0 ; i< mapLayoutsList.Length; i++ )
         {
             var icon = Instantiate(iconPrefab, content);

@@ -1190,7 +1190,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &135453188
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4311,11 +4311,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Your connection with the master client has been closed unexpectedly ...
-    sad meow :(
+  m_text: Your connection with the master client has been closed unexpectedly, sad
+    meow :(
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b23e7589ac1ef2e45bcf071f1ef0247e, type: 2}
-  m_sharedMaterial: {fileID: 5426859536519013755, guid: 787ac883ae052f34eb4c6c4d0b485901,
+  m_sharedMaterial: {fileID: -2130535861106644340, guid: b23e7589ac1ef2e45bcf071f1ef0247e,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -4340,7 +4340,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36.2
+  m_fontSize: 30.95
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4379,7 +4379,7 @@ MonoBehaviour:
   m_margin: {x: -202.99675, y: -29.393213, z: -227.79724, w: -29.331392}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &650097731
