@@ -287,7 +287,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
         Player winner = null;
         int winners = 0;
 
-        for (int counter = 0; counter < _players.Count; counter++)
+        for (int counter = 0; counter < _numberPlayerConnected; counter++)
         {
             PlayerLifeUI player = playerLifeUis[counter];
             Debug.Log("[endGame] Player " + player.getOwner().NickName + " has " + player.getLives() + " lives left");

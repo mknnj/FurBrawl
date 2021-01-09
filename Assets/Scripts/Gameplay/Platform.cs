@@ -53,7 +53,7 @@ public class Platform : MonoBehaviour
 
         WaitForSeconds wait = new WaitForSeconds(0.5f);
         float initialHealth = _SR.color.g*255;
-        Debug.Log("intial helth" + initialHealth);
+        //Debug.Log("intial helth" + initialHealth);
         foreach (int value in System.Linq.Enumerable.Range(1, (int)initialHealth))
         {
             //Debug.Log("crnt health" + initialHealth);

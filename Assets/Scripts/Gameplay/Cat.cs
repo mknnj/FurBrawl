@@ -505,6 +505,7 @@ public class Cat : MonoBehaviourPun
 
     public void Die(String cause) { 
         _hearts -= 1;
+        Debug.Log("[DEATH] Player " + photonView.Owner.NickName + " has " + _hearts + " left");
         bool canRespawn = FindObjectOfType<EnvironmentManager>().canRespawn();
         if(photonView.IsMine)
             photonView.RPC("RemoveLifeUIRPC",RpcTarget.AllViaServer,_number,_hearts==1);
