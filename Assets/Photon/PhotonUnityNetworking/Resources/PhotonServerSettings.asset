@@ -52,6 +52,7 @@ MonoBehaviour:
   - Countdown
   - SyncMapIdRPC
   - SetGoldenRPC
+  - RequestSyncIdRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

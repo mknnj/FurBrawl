@@ -26,12 +26,13 @@ public class MapSelector : MonoBehaviourPunCallbacks
             icon.SetData(mapLayoutsList[i], this, i);
             mapIcons.Add(icon);
         }
+        SetMapID(0);
         if (!PhotonNetwork.IsMasterClient)
         {
             foreach (var icon in mapIcons)
                 icon.GetComponent<Button>().enabled = false;
+            photonView.RPC("RequestSyncIdRPC", RpcTarget.MasterClient);
         }
-        SetMapID(0);
     }
     
     public void Clicked(int id)
@@ -44,8 +45,14 @@ public class MapSelector : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SyncMapIdRPC(int newMapID)
     {
-        Debug.Log("MapRPC");
         SetMapID(newMapID);
+    }
+    
+    [PunRPC]
+    public void RequestSyncIdRPC()
+    {
+        if(PhotonNetwork.IsMasterClient)
+            photonView.RPC("SyncMapIdRPC", RpcTarget.AllViaServer, mapID);
     }
 
     public void SetMapID(int id)

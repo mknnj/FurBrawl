@@ -17,12 +17,10 @@ public class BetterJump : MonoBehaviour
     {
         if (rb.velocity.y < -0.1)
         {
-            Debug.Log(rb.velocity.y + "fall");
             rb.gravityScale = fallMuliplier;
         }
         else if (rb.velocity.y > 0.1 && !Input.GetKey(KeyBindings.Jump))
         {
-            Debug.Log(rb.velocity.y + "lowjump");
             rb.gravityScale = lowJumpMultiplier;
         }
         else
