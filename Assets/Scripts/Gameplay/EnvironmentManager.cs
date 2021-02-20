@@ -241,7 +241,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.CurrentRoom.IsOpen = true;
             PhotonNetwork.CurrentRoom.IsVisible = true;
-            PhotonNetwork.LoadLevel(0);
+            PhotonNetwork.LoadLevel("MainMenu");
         }
         //Cursor.visible = true;
         //StartCoroutine(exitRoom());
@@ -252,7 +252,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(10);
         //Cursor.visible = true;
         PhotonNetwork.Disconnect();
-        PhotonNetwork.LoadLevel(0);
+        PhotonNetwork.LoadLevel("MainMenu");
     }
     
 
@@ -356,7 +356,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.CurrentRoom.IsOpen = true;
             PhotonNetwork.CurrentRoom.IsVisible = true;
-            PhotonNetwork.LoadLevel(0);
+            PhotonNetwork.LoadLevel("MainMenu");
         }
         //Cursor.visible = true;
         //StartCoroutine(exitRoom());
@@ -366,7 +366,7 @@ public class EnvironmentManager : MonoBehaviourPunCallbacks
     {
         //Cursor.visible = true;
         PhotonNetwork.Disconnect();
-        PhotonNetwork.LoadLevel(0);
+        PhotonNetwork.LoadLevel("MainMenu");
     }
     
     
