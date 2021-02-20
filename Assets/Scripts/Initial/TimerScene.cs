@@ -9,11 +9,9 @@ namespace Initial
     {
         [SerializeField] private Image image;
         [SerializeField] private float time = 0;
+        [SerializeField] private string scene;
 
-        private void Start()
-        {
-            //StartCoroutine(TimerCoroutine());
-        }
+        
 
 
         private void Update()
@@ -27,14 +25,10 @@ namespace Initial
             }
             else
             {
-                SceneManager.LoadScene("MainMenu");
+                SceneManager.LoadScene(scene);
             }
         }
 
-        IEnumerator TimerCoroutine()
-        {
-            yield return new WaitForSeconds(2);
-            SceneManager.LoadScene("MainMenu");
-        }
+        
     }
 }
